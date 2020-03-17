@@ -1,6 +1,7 @@
 ﻿using EquipApps.WorkBench.ViewModels;
 using ReactiveUI;
 using System.Reactive.Disposables;
+using System.Windows;
 
 namespace EquipApps.WorkBench.Views
 {
@@ -15,6 +16,18 @@ namespace EquipApps.WorkBench.Views
 
             this.WhenActivated(disposable =>
             {
+                //-- Привязка Скрывает Column_BreakPoint 
+                this.OneWayBind(this.ViewModel, x => x.Action.IsEnabledBreakPoint, x => x.Column_BreakPoint.Visibility, ToVisibility)
+                    .DisposeWith(disposable);
+
+                //-- Привязка Скрывает Column_BreakPoint 
+                this.OneWayBind(this.ViewModel, x => x.Action.IsEnabledBreakPoint, x => x.Column_CheckPoint.Visibility, ToVisibility)
+                    .DisposeWith(disposable);
+
+
+
+
+
                 //-- Привязка поллекции
                 this.OneWayBind(this.ViewModel, x => x.Action.Items, x => x.dataGrid.ItemsSource)
                     .DisposeWith(disposable);
@@ -27,6 +40,15 @@ namespace EquipApps.WorkBench.Views
                 this.BindCommand(this.ViewModel, x => x.Action.Filter, x => x.dataGrid_cm_FilterButton)
                     .DisposeWith(disposable);
             });
+        }
+
+        private static Visibility ToVisibility(bool IsEnabled)
+        {
+            if (IsEnabled)
+                return Visibility.Visible;
+            else
+                return Visibility.Collapsed;
+
         }
     }
 }

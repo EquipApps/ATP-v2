@@ -17,12 +17,17 @@ namespace B.EK.ViewModels
     /// </summary>
     public class OptionsViewModel : FlyoutSettingsViewModelBase
     {
+        private ActionViewModel _actionViewModel;
+
         /// <summary>
         /// Конструктор
         /// </summary>
         public OptionsViewModel(
+            ActionViewModel actionViewModel,
             IOptions<TestOptions> options) : base(options)
         {
+            _actionViewModel = actionViewModel ?? throw new ArgumentNullException(nameof(actionViewModel));
+
             //--Создаем Правила
             UserNameRule = this.ValidationRule(vm => vm.UserName,   x => !string.IsNullOrWhiteSpace(x), "Поле не заполнено");
             NumberRule   = this.ValidationRule(vm => vm.Number,     x => !string.IsNullOrWhiteSpace(x), "Поле не заполнено");
@@ -49,6 +54,8 @@ namespace B.EK.ViewModels
 
           
         }
+
+        
 
         public ValidationHelper UserNameRule { get; }
 
@@ -103,6 +110,22 @@ namespace B.EK.ViewModels
             options.SetWorkingMode  <string>  (WorkingMode);
             options.SetExecutingMode<string>  (ExecutingMode);
             options.SetPowerMode    <string>  (PowerMode);
+
+
+            //--- Если введен режим "НАСТРОЙКА", то
+            // 1) Разрешаем точки      остановок
+            // 2) Разрешаем прорускать проверки
+
+            if (WorkingMode == Settings.WorkingMode_NS)
+            {
+                _actionViewModel.IsEnabledBreakPoint = true;
+                _actionViewModel.IsEnabledCheckPoint = true;
+            }
+            else
+            {
+                _actionViewModel.IsEnabledBreakPoint = false;
+                _actionViewModel.IsEnabledCheckPoint = false;
+            }
         }
     }
 }

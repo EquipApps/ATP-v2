@@ -10,17 +10,17 @@ using System.Reactive.Linq;
 
 namespace EquipApps.WorkBench.ViewModels
 {
-    public class ActionViewViewModel : ViewModelBase, IDisposable
+    public class ActionViewModel : ViewModelBase, IDisposable
     {
-        private ReadOnlyObservableCollection<ActionItemViewModel> _items;
+        private ReadOnlyObservableCollection<ActionItem> _items;
         private IDisposable _cleanUpConnect;
 
-        public ActionViewViewModel(IActionService actionDescriptorService)
+        public ActionViewModel(IActionService actionDescriptorService)
         {
             _cleanUpConnect = actionDescriptorService.Observable
                 .Connect()
-                .Transform(x => new ActionItemViewModel(x))
-                .Sort(SortExpressionComparer<ActionItemViewModel>.Ascending(x => x.Number))
+                .Transform(x => new ActionItem(x))
+                .Sort(SortExpressionComparer<ActionItem>.Ascending(x => x.Number))
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Bind(out _items)
                 .DisposeMany()
@@ -29,7 +29,20 @@ namespace EquipApps.WorkBench.ViewModels
             Filter = ReactiveCommand.Create(OnFilterd);
         }
 
-        public ReadOnlyObservableCollection<ActionItemViewModel> Items
+        /// <summary>
+        /// Разрешить / запретить BreakPoint
+        /// </summary>
+        [Reactive] public bool IsEnabledBreakPoint { get; set; } = true;
+
+        /// <summary>
+        /// Разрешить / запретить CheckPoint
+        /// </summary>
+        [Reactive] public bool IsEnabledCheckPoint { get; set; } = true;
+
+
+
+
+        public ReadOnlyObservableCollection<ActionItem> Items
         {
             get
             {
@@ -38,7 +51,7 @@ namespace EquipApps.WorkBench.ViewModels
         }
 
         [Reactive]
-        public ActionItemViewModel SelectedItem
+        public ActionItem SelectedItem
         {
             get;
             set;

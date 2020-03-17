@@ -7,12 +7,12 @@ using System.Reactive.Disposables;
 
 namespace EquipApps.WorkBench.ViewModels
 {
-    public class ActionItemViewModel : ViewModelBase, IDisposable
+    public class ActionItem : ViewModelBase, IDisposable
     {
         private ActionDescriptor _model;
         private IDisposable _cleanUp;
 
-        ~ActionItemViewModel()
+        ~ActionItem()
         {
             if (true)
             {
@@ -21,7 +21,7 @@ namespace EquipApps.WorkBench.ViewModels
         }
 
 
-        public ActionItemViewModel(ActionDescriptor model)
+        public ActionItem(ActionDescriptor model)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
 

@@ -6,9 +6,12 @@
                                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                                 xmlns:local="clr-namespace:EquipApps.WorkBench.Views"
                                 xmlns:reactiveUI="http://reactiveui.net"
-                                xmlns:vm="clr-namespace:EquipApps.WorkBench.ViewModels"
+                                xmlns:vm="clr-namespace:EquipApps.WorkBench.ViewModels"                              
                                 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+   
+    
     <Grid>
         <DataGrid x:Name="dataGrid" Grid.Row="1"
                   SelectionMode             ="Single"
@@ -25,12 +28,14 @@
 
             <DataGrid.Columns>
 
-                <DataGridCheckBoxColumn Binding             ="{Binding Path=IsBreak, Mode=TwoWay}"
+                <DataGridCheckBoxColumn x:Name="Column_BreakPoint" 
+                                        Binding             ="{Binding Path=IsBreak, Mode=TwoWay}"
                                         ElementStyle        ="{DynamicResource MahApps.Styles.CheckBox.DataGrid}"
                                         EditingElementStyle ="{DynamicResource MahApps.Styles.CheckBox.DataGrid}"                                         
                                         CanUserResize="False" CanUserReorder="False" CanUserSort="False" />
 
-                <DataGridCheckBoxColumn Binding             ="{Binding Path=IsCheck, Mode=TwoWay}"
+                <DataGridCheckBoxColumn x:Name="Column_CheckPoint" 
+                                        Binding             ="{Binding Path=IsCheck, Mode=TwoWay}"
                                         ElementStyle        ="{DynamicResource MahApps.Styles.CheckBox.DataGrid}"
                                         EditingElementStyle ="{DynamicResource MahApps.Styles.CheckBox.DataGrid}"                                         
                                         CanUserResize="False" CanUserReorder="False" CanUserSort="False" />
