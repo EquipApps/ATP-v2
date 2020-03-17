@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net472;</TargetFrameworks>
+    <RootNamespace>EquipApps.Hardware</RootNamespace>
+    <Version>1.0.0-rc6</Version>
+    <Authors>Alexandr G</Authors>
+    <Company>EquipApps</Company>
+    <Copyright>Copyright © 2020 EquipApps</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>Define hardware core</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Abstractions\src\EquipApps.Hardware.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

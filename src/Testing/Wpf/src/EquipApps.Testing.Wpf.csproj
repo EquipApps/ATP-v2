@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1;net472</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <Authors>Alexandr G</Authors>
+    <Company>EquipApps</Company>
+    <Description>Define test infrastructure for WPF UI</Description>
+    <Copyright>Copyright © 2020 EquipApps</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>1.0.0-rc4</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Abstractions\src\EquipApps.Testing.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

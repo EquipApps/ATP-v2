@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net472;</TargetFrameworks>
+    <RootNamespace>EquipApps.Hardware</RootNamespace>
+    <Version>1.0.0-rc6</Version>
+    <Authors>Alexandr G</Authors>
+    <Company>EquipApps</Company>
+    <Description>Define hardware infrastructure</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © 2020 EquipApps</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DynamicData" Version="6.14.3" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' ==  'net472'">
+    <Reference Include="System.Transactions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Testing\Abstractions\src\EquipApps.Testing.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

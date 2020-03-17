@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net472;</TargetFrameworks>
+    <RootNamespace>EquipApps.Hardware</RootNamespace>
+    <Version>1.0.0-rc9</Version>
+    <Authors>Alexandr G</Authors>
+    <Company>EquipApps</Company>
+    <Description>Define digital behavior</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' ==  'net472'">
+    <Reference Include="System.Transactions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Abstractions\src\EquipApps.Hardware.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
