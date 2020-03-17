@@ -5,6 +5,7 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                  xmlns:local="clr-namespace:B.EK.Views"
                  xmlns:m="clr-namespace:B.EK.Models"
+                 xmlns:c="clr-namespace:B.EK.Configure"
                  xmlns:Controls  ="http://metro.mahapps.com/winfx/xaml/controls"  
                  mc:Ignorable="d" 
                 
@@ -20,13 +21,9 @@
                  
                  Position="Left"
                  CloseButtonIsCancel="False">
-    
-    
+
+
     <ContentControl.Resources>
-        <!--<Style x:Key="RadioButtonListItem" TargetType="{x:Type ListBoxItem}">
-
-        </Style>-->
-
         <Style x:Key="CastButton" TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button.Flat}">
             <Setter Property="Margin" Value="3"/>
         </Style>
@@ -50,32 +47,26 @@
             </GroupBox>
 
             <GroupBox Margin="10" Header="Режим работы" >
-                <ListBox x:Name="WmType">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
+                <ListBox x:Name="WorkingMode" SelectedValuePath="Content">
+                    <ListBoxItem Content="{x:Static c:Settings.WorkingMode_NS}"/>
+                    <ListBoxItem Content="{x:Static c:Settings.WorkingMode_ZI}"/>
+                    <ListBoxItem Content="{x:Static c:Settings.WorkingMode_PC}"/>
                 </ListBox>
             </GroupBox>
 
             <GroupBox Margin="10" Header="Режим проверки" >
-                <ListBox x:Name="CmType">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
+                <ListBox x:Name="ExecutingMode" SelectedValuePath="Content">
+                    <ListBoxItem Content="{x:Static c:Settings.ExecutingMode_Main}"/>
+                    <ListBoxItem Content="{x:Static c:Settings.ExecutingMode_Operate}"/>
+                    <ListBoxItem Content="{x:Static c:Settings.ExecutingMode_Power}"/>
                 </ListBox>
             </GroupBox>
 
             <GroupBox Margin="10" Header="Режим источника питания" >
-                <ListBox x:Name="PmType">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
+                <ListBox x:Name="PowerMode" SelectedValuePath="Content">
+                    <ListBoxItem Content="{x:Static c:Settings.PowerMode_MIN}"/>
+                    <ListBoxItem Content="{x:Static c:Settings.PowerMode_NOM}"/>
+                    <ListBoxItem Content="{x:Static c:Settings.PowerMode_MAX}"/>
                 </ListBox>
             </GroupBox>
 

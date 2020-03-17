@@ -43,22 +43,26 @@ namespace B.EK.Views
                
 
                 //--
-                this.Bind(this.ViewModel, x => x.UserName,  x => x.UserName.Text)   .DisposeWith(disposable);
-                this.Bind(this.ViewModel, x => x.Number,    x => x.Number.Text)     .DisposeWith(disposable);
+                this.Bind(this.ViewModel, x => x.UserName,  x => x.UserName.Text)  
+                    .DisposeWith(disposable);
+                this.Bind(this.ViewModel, x => x.Number,    x => x.Number.Text)    
+                    .DisposeWith(disposable);
 
                 //--
-                this.OneWayBind(this.ViewModel, x => x.OperationModeCollection, x => x.WmType.ItemsSource)  .DisposeWith(disposable);
-                this.Bind(this.ViewModel,       x => x.WorkingMode,   x => x.WmType.SelectedItem) .DisposeWith(disposable);
+                this.Bind(this.ViewModel,       x => x.WorkingMode,   x => x.WorkingMode.SelectedValue)
+                    .DisposeWith(disposable);
                 
                 //--
-                this.OneWayBind(this.ViewModel, x => x.CheckModeIsEnabled,  x => x.CmType.IsEnabled)        .DisposeWith(disposable);
-                this.OneWayBind(this.ViewModel, x => x.CheckModeCollection, x => x.CmType.ItemsSource)      .DisposeWith(disposable);
-                this.Bind      (this.ViewModel, x => x.ExecutingMode,   x => x.CmType.SelectedItem)     .DisposeWith(disposable);
+                this.OneWayBind(this.ViewModel, x => x.ExecutingModeIsEnabled,  x => x.ExecutingMode.IsEnabled)     
+                    .DisposeWith(disposable);               
+                this.Bind      (this.ViewModel, x => x.ExecutingMode,           x => x.ExecutingMode.SelectedValue)  
+                    .DisposeWith(disposable);
                 
                 //--
-                this.OneWayBind(this.ViewModel, x => x.PowerModeIsEnabled,  x => x.PmType.IsEnabled)        .DisposeWith(disposable);
-                this.OneWayBind(this.ViewModel, x => x.PowerModeCollection, x => x.PmType.ItemsSource)      .DisposeWith(disposable);
-                this.Bind      (this.ViewModel, x => x.PowerMode,   x => x.PmType.SelectedItem)     .DisposeWith(disposable);
+                this.OneWayBind(this.ViewModel, x => x.PowerModeIsEnabled,  x => x.PowerMode.IsEnabled)       
+                    .DisposeWith(disposable);              
+                this.Bind      (this.ViewModel, x => x.PowerMode,           x => x.PowerMode.SelectedValue)     
+                    .DisposeWith(disposable);
 
             });
 

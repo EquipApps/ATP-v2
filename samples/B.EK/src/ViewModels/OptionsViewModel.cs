@@ -12,34 +12,17 @@ using System.Reactive.Linq;
 
 namespace B.EK.ViewModels
 {
-
+    /// <summary>
+    /// Модель представление ввода данных.  
+    /// </summary>
     public class OptionsViewModel : FlyoutSettingsViewModelBase
     {
         /// <summary>
         /// Конструктор
         /// </summary>
-        public OptionsViewModel(IOptions<TestOptions> options) : base(options)
+        public OptionsViewModel(
+            IOptions<TestOptions> options) : base(options)
         {
-            //---
-            OperationModeCollection = new ObservableCollection<string>();
-            OperationModeCollection.Add(Settings.WorkingMode_NS);
-            OperationModeCollection.Add(Settings.WorkingMode_ZI);
-            OperationModeCollection.Add(Settings.WorkingMode_PC);
-            WorkingMode = Settings.WorkingMode_ZI;
-
-            //---
-            PowerModeCollection = new ObservableCollection<string>();
-            PowerModeCollection.Add(Settings.PowerMode_MIN);
-            PowerModeCollection.Add(Settings.PowerMode_NOM);
-            PowerModeCollection.Add(Settings.PowerMode_MAX);
-            PowerMode = Settings.PowerMode_NOM;
-
-            CheckModeCollection = new ObservableCollection<string>();
-            CheckModeCollection.Add(Settings.ExecutingMode_Main);
-            CheckModeCollection.Add(Settings.ExecutingMode_Operate);
-            CheckModeCollection.Add(Settings.ExecutingMode_Power);
-            ExecutingMode = Settings.ExecutingMode_Main;
-
             //--Создаем Правила
             UserNameRule = this.ValidationRule(vm => vm.UserName,   x => !string.IsNullOrWhiteSpace(x), "Поле не заполнено");
             NumberRule   = this.ValidationRule(vm => vm.Number,     x => !string.IsNullOrWhiteSpace(x), "Поле не заполнено");
@@ -50,15 +33,15 @@ namespace B.EK.ViewModels
                 {
                     if(x == Settings.WorkingMode_PC)
                     {
-                        CheckModeIsEnabled = false;
+                        ExecutingModeIsEnabled = false;
                         PowerModeIsEnabled = false;
 
-                        ExecutingMode  = Settings.ExecutingMode_Main;
-                        PowerMode  = Settings.PowerMode_NOM;
+                        ExecutingMode   = Settings.ExecutingMode_Main;
+                        PowerMode       = Settings.PowerMode_NOM;
                     }
                     else
                     {
-                        CheckModeIsEnabled = true;
+                        ExecutingModeIsEnabled = true;
                         PowerModeIsEnabled = true;
                     }
                 });
@@ -67,41 +50,34 @@ namespace B.EK.ViewModels
           
         }
 
+        public ValidationHelper UserNameRule { get; }
+
+        public ValidationHelper NumberRule   { get; }
 
         /// <summary>
-        /// Режимы работ
+        /// Имя оператора
         /// </summary>
-        public ObservableCollection<string> OperationModeCollection { get; }
+        [Reactive] public string UserName   { get; set; }
+
+        /// <summary>
+        /// Номер продукции (Заводской номер)
+        /// </summary>
+        [Reactive] public string Number     { get; set; }
 
         /// <summary>
         /// Режим работ - выбранный
         /// </summary>
         [Reactive] public string WorkingMode { get; set; }
 
-
-
-
-
-
-
-        //-------------------------------------------------------
-
         /// <summary>
         /// 
         /// </summary>
-        [Reactive] public bool CheckModeIsEnabled { get; set; }
-
-        /// <summary>
-        /// Режимы работ
-        /// </summary>
-        public ObservableCollection<string> CheckModeCollection { get; }
+        [Reactive] public bool ExecutingModeIsEnabled { get; set; }
 
         /// <summary>
         /// Режим работ - выбранный
         /// </summary>
         [Reactive] public string ExecutingMode { get; set; }
-
-        //-------------------------------------------------------
 
         /// <summary>
         /// 
@@ -109,35 +85,10 @@ namespace B.EK.ViewModels
         [Reactive] public bool PowerModeIsEnabled { get; set; }
 
         /// <summary>
-        /// Режимы работ
-        /// </summary>
-        public ObservableCollection<string> PowerModeCollection { get; }
-
-        /// <summary>
         /// Режим работ - выбранный
         /// </summary>
         [Reactive] public string PowerMode { get; set; }
 
-
-
-        public ValidationHelper  UserNameRule   { get; }
-
-        public ValidationHelper  NumberRule     { get; }
-
-
-        /// <summary>
-        /// Имя оператора
-        /// </summary>
-        [Reactive] public string UserName { get; set; }
-
-        /// <summary>
-        /// Номер продукции (Заводской номер)
-        /// </summary>
-        [Reactive] public string Number { get; set; }
-
-
-        
-        
 
 
         protected override void LoadOptinos(TestOptions options)
@@ -149,9 +100,9 @@ namespace B.EK.ViewModels
 
         protected override void SaveOptinos(TestOptions options)
         {
-            options.SetWorkingMode<string>(WorkingMode);
-            options.SetExecutingMode<string>(ExecutingMode);
-            options.SetPowerMode<string>(PowerMode);
+            options.SetWorkingMode  <string>  (WorkingMode);
+            options.SetExecutingMode<string>  (ExecutingMode);
+            options.SetPowerMode    <string>  (PowerMode);
         }
     }
 }
