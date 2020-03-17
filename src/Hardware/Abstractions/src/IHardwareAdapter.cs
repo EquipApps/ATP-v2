@@ -9,7 +9,7 @@ namespace EquipApps.Hardware
     {
         /// <summary>
         /// Инициализация адаптера.
-        /// Тут происходит логика инициализации устройств.
+        /// Тут происходит логика инициализации адаптера.
         /// </summary>
         /// 
         /// <param name="device">
@@ -18,8 +18,10 @@ namespace EquipApps.Hardware
         /// 
         /// <param name="deviceName">
         /// Имя устройства
-        /// </param>
+        /// </param>         
         void Initialize(IHardwareFeature hardwareManager, object device, string deviceName);
+
+        
 
         /// <summary>
         /// Сброс устройства в исходное состояние

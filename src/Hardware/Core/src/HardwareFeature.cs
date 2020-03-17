@@ -32,22 +32,6 @@ namespace EquipApps.Hardware
         //---
         public IHardwareCollection HardwareCollection { get; }
 
-
-        /* Unmerged change from project 'AtpNetCore.Hardware.Core (netcoreapp3.1)'
-        Before:
-                //---
-
-
-                /// <summary>
-        After:
-                //---
-
-
-                /// <summary>
-        */
-        //---
-
-
         /// <summary>
         /// Освобождение ресурсов..       
         /// </summary>  
