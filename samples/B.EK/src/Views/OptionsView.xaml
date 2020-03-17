@@ -1,0 +1,87 @@
+﻿<Controls:Flyout x:Class="B.EK.Views.OptionsView"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                 xmlns:local="clr-namespace:B.EK.Views"
+                 xmlns:m="clr-namespace:B.EK.Models"
+                 xmlns:Controls  ="http://metro.mahapps.com/winfx/xaml/controls"  
+                 mc:Ignorable="d" 
+                
+                 
+                 Theme="Adapt"
+                 Header="Ввод данных"
+                 
+                 IsModal="True" IsPinned="True"
+                 IsAutoCloseEnabled="False" 
+                 
+                 CloseButtonVisibility  ="Collapsed"
+                 TitleVisibility        ="Visible"
+                 
+                 Position="Left"
+                 CloseButtonIsCancel="False">
+    
+    
+    <ContentControl.Resources>
+        <!--<Style x:Key="RadioButtonListItem" TargetType="{x:Type ListBoxItem}">
+
+        </Style>-->
+
+        <Style x:Key="CastButton" TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button.Flat}">
+            <Setter Property="Margin" Value="3"/>
+        </Style>
+
+    </ContentControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="200"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Vertical" Grid.Column="0">
+
+            <GroupBox Header="Ввод данных" 
+                  Margin="10">
+                <StackPanel>
+                    <TextBox x:Name="UserName" Controls:TextBoxHelper.Watermark="ФИО:"/>
+                    <TextBox x:Name="Number"   Controls:TextBoxHelper.Watermark="ЗАВ:"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Margin="10" Header="Режим работы" >
+                <ListBox x:Name="WmType">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+
+            <GroupBox Margin="10" Header="Режим проверки" >
+                <ListBox x:Name="CmType">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+
+            <GroupBox Margin="10" Header="Режим источника питания" >
+                <ListBox x:Name="PmType">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+
+            <Button x:Name="Accept" Content="Сохранить" Style="{StaticResource CastButton}"/>
+            <Button x:Name="Cancel" Content="Отмена"    Style="{DynamicResource CastButton}" />
+
+        </StackPanel>
+    </Grid>
+</Controls:Flyout>

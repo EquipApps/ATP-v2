@@ -1,0 +1,18 @@
+using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Markup;
+
+[assembly: ThemeInfo(
+    ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
+                                     //(used if a resource is not found in the page,
+                                     // or application resource dictionaries)
+    ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located
+                                              //(used if a resource is not found in the page,
+                                              // app, or any theme specific resource dictionaries)
+)]
+
+[assembly: ComVisible(false)]
+
+[assembly: XmlnsPrefix(@"http://workbench.equipapps.com/xaml/controls", "wb")]
+[assembly: XmlnsDefinition(@"http://workbench.equipapps.com/xaml/app",      "EquipApps.WorkBench")]
+

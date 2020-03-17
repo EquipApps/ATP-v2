@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>49afa899-8310-4b08-9b4c-b4930229b739</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>EquipApps.WorkBench</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BatteryBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\BatteryViewer\BatteryViewerViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\BatteryViewer\BatteryViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\RelayViewer\RelayViewerViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\RelayViewer\RelayViewModel.cs" />
+  </ItemGroup>
+</Project>

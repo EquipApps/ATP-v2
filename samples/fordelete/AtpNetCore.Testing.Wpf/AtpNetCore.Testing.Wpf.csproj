@@ -1,0 +1,61 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>EquipApps.WorkBench</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\icon-error.png" />
+    <None Remove="Images\icon-info.png" />
+    <None Remove="Images\icon-warning.png" />
+    <None Remove="Images\TestAborted.png" />
+    <None Remove="Images\TestCompleted.png" />
+    <None Remove="Images\TestFailed.png" />
+    <None Remove="Images\TestInitialize.png" />
+    <None Remove="Images\TestInProgress.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EquipApps.Hardware.Abstractions" Version="1.0.0-rc6" />
+    <PackageReference Include="EquipApps.Hardware.Behavior.Digital" Version="1.0.0-rc9" />
+    <PackageReference Include="EquipApps.Hardware.Behavior.Relay" Version="1.0.0-rc5" />
+    <PackageReference Include="EquipApps.Hardware.Core" Version="1.0.0-rc6" />
+    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="3.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.1" />
+    <PackageReference Include="ReactiveUI" Version="11.2.3" />
+    <PackageReference Include="ReactiveUI.Events.WPF" Version="11.2.1" />
+    <PackageReference Include="ReactiveUI.Fody" Version="11.2.3" />
+    <PackageReference Include="ReactiveUI.WPF" Version="11.2.3" />
+    <PackageReference Include="Splat" Version="9.3.11" />
+    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="9.3.11" />
+    <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="9.3.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AtpNetCore.Mvc.Core\EquipApps.Mvc.Core.csproj" />
+    <ProjectReference Include="..\EquipApps.WorkBench.WPF\EquipApps.WorkBench.WPF.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Transactions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\icon-error.png" />
+    <Resource Include="Images\icon-info.png" />
+    <Resource Include="Images\icon-warning.png" />
+    <Resource Include="Images\TestAborted.png" />
+    <Resource Include="Images\TestCompleted.png" />
+    <Resource Include="Images\TestFailed.png" />
+    <Resource Include="Images\TestInitialize.png" />
+    <Resource Include="Images\TestInProgress.png" />
+  </ItemGroup>
+
+  <Import Project="..\AtpNetCore.Testing.Shared\AtpNetCore.Testing.Shared.projitems" Label="Shared" />
+
+</Project>

@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ReactiveUI.Fody" Version="11.2.3" />
+    <PackageReference Include="ReactiveUI.WPF" Version="11.2.3" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\WorkBench\Wpf\src\EquipApps.WorkBench.WPF.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Transactions" />
+  </ItemGroup>
+
+  <Import Project="..\..\fordelete\AtpNetCore.Testing.Shared\AtpNetCore.Testing.Shared.projitems" Label="Shared" />
+
+  
+  
+
+</Project>

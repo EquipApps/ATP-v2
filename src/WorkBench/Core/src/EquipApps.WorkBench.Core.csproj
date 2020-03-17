@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
+    <RootNamespace>EquipApps.WorkBench</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ReactiveUI" Version="11.2.3" />
+    <PackageReference Include="ReactiveUI.Fody" Version="11.2.3" />
+    <PackageReference Include="ReactiveUI.Validation" Version="1.4.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Hardware\Abstractions\src\EquipApps.Hardware.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Hardware\Behavior.Digital\src\EquipApps.Hardware.Behavior.Digital.csproj" />
+    <ProjectReference Include="..\..\..\Hardware\Behavior.Relay\src\EquipApps.Hardware.Behavior.Relay.csproj" />
+    <ProjectReference Include="..\..\..\Hardware\Core\src\EquipApps.Hardware.Core.csproj" />
+    <ProjectReference Include="..\..\..\Mvc\Abstractions\src\EquipApps.Mvc.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Mvc\Core\src\EquipApps.Mvc.Core.csproj" />
+    <ProjectReference Include="..\..\..\Testing\Abstractions\src\EquipApps.Testing.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
