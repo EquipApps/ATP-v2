@@ -94,7 +94,7 @@ namespace B.EK
             //-- MVC
             serviceCollection.AddMvc();
             serviceCollection.AddMvcAssemply(Assembly.GetEntryAssembly());
-            serviceCollection.AddActionDescriptorProvider<AppFilter>();
+            serviceCollection.AddActionDescriptorProvider<ConfigureActions>();
 
             serviceCollection.AddMvcModelProvider<Command, CommandProvider>();
 

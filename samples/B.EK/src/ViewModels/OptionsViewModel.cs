@@ -22,23 +22,23 @@ namespace B.EK.ViewModels
         {
             //---
             OperationModeCollection = new ObservableCollection<string>();
-            OperationModeCollection.Add(Settings.Operation_NS);
-            OperationModeCollection.Add(Settings.Operation_ZI);
-            OperationModeCollection.Add(Settings.Operation_PC);
-            WorkingMode = Settings.Operation_ZI;
+            OperationModeCollection.Add(Settings.WorkingMode_NS);
+            OperationModeCollection.Add(Settings.WorkingMode_ZI);
+            OperationModeCollection.Add(Settings.WorkingMode_PC);
+            WorkingMode = Settings.WorkingMode_ZI;
 
             //---
             PowerModeCollection = new ObservableCollection<string>();
-            PowerModeCollection.Add(Settings.POW_MIN);
-            PowerModeCollection.Add(Settings.POW_NOM);
-            PowerModeCollection.Add(Settings.POW_MAX);
-            PowerMode = Settings.POW_NOM;
+            PowerModeCollection.Add(Settings.PowerMode_MIN);
+            PowerModeCollection.Add(Settings.PowerMode_NOM);
+            PowerModeCollection.Add(Settings.PowerMode_MAX);
+            PowerMode = Settings.PowerMode_NOM;
 
             CheckModeCollection = new ObservableCollection<string>();
-            CheckModeCollection.Add(Settings.CHECK_MAIN);
-            CheckModeCollection.Add(Settings.CHECK_OP);
-            CheckModeCollection.Add(Settings.CHECK_POW);
-            ExecutingMode = Settings.CHECK_MAIN;
+            CheckModeCollection.Add(Settings.ExecutingMode_Main);
+            CheckModeCollection.Add(Settings.ExecutingMode_Operate);
+            CheckModeCollection.Add(Settings.ExecutingMode_Power);
+            ExecutingMode = Settings.ExecutingMode_Main;
 
             //--Создаем Правила
             UserNameRule = this.ValidationRule(vm => vm.UserName,   x => !string.IsNullOrWhiteSpace(x), "Поле не заполнено");
@@ -48,13 +48,13 @@ namespace B.EK.ViewModels
             this.WhenAnyValue(x => x.WorkingMode)
                 .Subscribe   (x =>
                 {
-                    if(x == Settings.Operation_PC)
+                    if(x == Settings.WorkingMode_PC)
                     {
                         CheckModeIsEnabled = false;
                         PowerModeIsEnabled = false;
 
-                        ExecutingMode  = Settings.CHECK_MAIN;
-                        PowerMode  = Settings.POW_NOM;
+                        ExecutingMode  = Settings.ExecutingMode_Main;
+                        PowerMode  = Settings.PowerMode_NOM;
                     }
                     else
                     {

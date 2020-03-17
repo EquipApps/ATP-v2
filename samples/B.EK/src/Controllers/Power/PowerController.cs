@@ -1,12 +1,12 @@
-﻿using EquipApps.Mvc;
+﻿using B.EK.Configure;
+using EquipApps.Mvc;
 using EquipApps.WorkBench;
-using Microsoft.Extensions.Logging;
 using NLib.AtpNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace B.EK.Controllers.check_Power
 {
-    [Area("check_Power")]
+    [Area(Areas.Power)]
     [Suit("10 Циклов подачи питания")]
     public class PowerController : Controller
     {
