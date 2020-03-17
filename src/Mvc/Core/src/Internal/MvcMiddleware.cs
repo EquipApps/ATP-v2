@@ -2,13 +2,14 @@
 using EquipApps.Mvc.Abstractions;
 using EquipApps.Testing;
 using Microsoft.Extensions.Options;
+using NLib.AtpNetCore.Mvc;
 using NLib.AtpNetCore.Testing.Mvc.Internal;
 using NLib.AtpNetCore.Testing.Mvc.Runtime.Internal;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace NLib.AtpNetCore.Mvc.Internal
+namespace EquipApps.Mvc.Internal
 {
     /// <summary>
     /// Процес выполнения. 
@@ -89,7 +90,7 @@ namespace NLib.AtpNetCore.Mvc.Internal
             //-- 2) Обновляем состояние
             foreach (var actionDescriptor in actionDescriptors)
             {
-                actionDescriptor.Result = Result.NotExecuted;
+                actionDescriptor.Result    = Result.NotExecuted;
                 actionDescriptor.Exception = null;
             }
 

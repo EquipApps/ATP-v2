@@ -1,6 +1,6 @@
-﻿using EquipApps.Testing;
+﻿using EquipApps.Mvc.Internal;
+using EquipApps.Testing;
 using Microsoft.Extensions.DependencyInjection;
-using NLib.AtpNetCore.Mvc.Internal;
 using System;
 
 namespace NLib.AtpNetCore.Builder
