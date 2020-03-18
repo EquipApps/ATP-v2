@@ -5,7 +5,7 @@ namespace EquipApps.WorkBench.ViewModels
 {
     public class TestViewerViewModel : FileViewModel
     {
-        public TestViewerViewModel(ActionViewModel actionViewViewModel)
+        public TestViewerViewModel(ActionsViewer actionViewViewModel)
             :base()
         {
             Action = actionViewViewModel ?? throw new ArgumentNullException(nameof(actionViewViewModel));
@@ -21,6 +21,6 @@ namespace EquipApps.WorkBench.ViewModels
         /// <summary>
         /// 
         /// </summary>
-        public ActionViewModel Action { get; }
+        public ActionsViewer Action { get; }
     }
 }

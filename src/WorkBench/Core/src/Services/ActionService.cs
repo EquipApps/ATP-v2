@@ -36,13 +36,32 @@ namespace EquipApps.WorkBench.Services
 
         public IObservableCache<ActionDescriptor, TestNumber> Observable { get; }
 
-        public Task CleanAsync()
+        public Task CleanAsync()    
         {
             return Task.Run(() =>
             {
-                sourceCache.Clear();
+                sourceCache.Edit(updater =>
+                {
+                    foreach (var item in updater.Items)
+                    {
+                        item.Dispose();
+                    }
+
+                    updater.Clear();
+                });
+               
             });
         }
+
+        public Task UpdateAsync()   
+        {
+            return Task.CompletedTask;
+        }
+
+
+
+
+
 
         public IReadOnlyList<ActionDescriptor> GetActionDescriptors()
         {
@@ -58,6 +77,8 @@ namespace EquipApps.WorkBench.Services
                 _providers[i].OnProvidersExecuted(context);
             }
 
+            
+
             //--- Добавляем в коллекцию!
             sourceCache.Edit(updater =>
             {
@@ -65,6 +86,7 @@ namespace EquipApps.WorkBench.Services
 
                 foreach (var item in context.Results)
                 {
+                    item.UpdateEvent += Item_UpdateEvent;
                     updater.AddOrUpdate(item);
                 }
             });
@@ -73,9 +95,11 @@ namespace EquipApps.WorkBench.Services
             return context.Results.ToArray();
         }
 
-        public Task UpdateAsync()
+        private void Item_UpdateEvent(ActionDescriptor action)
         {
-            return Task.CompletedTask;
+            sourceCache.AddOrUpdate(action);
         }
+
+        
     }
 }

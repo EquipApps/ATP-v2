@@ -119,6 +119,7 @@ namespace NLib.AtpNetCore.Testing.Mvc.Runtime.Internal
             finally
             {
                 descriptor.State = State.Empy;
+                descriptor.Update();
                 context.StateEnumerator.MoveNext();
             }
         }

@@ -42,7 +42,11 @@ namespace EquipApps.WorkBench
             serviceCollection.AddTransient<TestViewerViewModel>();
             serviceCollection.AddTransient<WorkViewerViewModel>();
 
-           
+
+
+            serviceCollection.AddTransient<ActionsByResultTool>();
+
+
 
         }
 

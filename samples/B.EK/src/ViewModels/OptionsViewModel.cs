@@ -17,13 +17,13 @@ namespace B.EK.ViewModels
     /// </summary>
     public class OptionsViewModel : FlyoutSettingsViewModelBase
     {
-        private ActionViewModel _actionViewModel;
+        private ActionsViewer _actionViewModel;
 
         /// <summary>
         /// Конструктор
         /// </summary>
         public OptionsViewModel(
-            ActionViewModel actionViewModel,
+            ActionsViewer actionViewModel,
             IOptions<TestOptions> options) : base(options)
         {
             _actionViewModel = actionViewModel ?? throw new ArgumentNullException(nameof(actionViewModel));

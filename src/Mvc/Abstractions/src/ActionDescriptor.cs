@@ -6,10 +6,12 @@ using System.Reactive.Subjects;
 
 namespace EquipApps.Mvc.Abstractions
 {
+    public delegate void ActionDescriptorUpdate(ActionDescriptor action);
+
     /// <summary>
     /// Дескриптер действия
     /// </summary>
-    public abstract class ActionDescriptor
+    public abstract class ActionDescriptor : IDisposable
     {
         private readonly ISubject<bool> _checkChangedSubject = new ReplaySubject<bool>();
         private readonly ISubject<bool> _breakChangedSubject = new ReplaySubject<bool>();
@@ -22,12 +24,14 @@ namespace EquipApps.Mvc.Abstractions
         private Result _result;
         private State _state;
 
+        private static int Count = 0;
+
         public ActionDescriptor(TestObject testCase, TestObject testStep)
         {
             TestCase = testCase ?? throw new ArgumentNullException(nameof(testCase));
             TestStep = testStep ?? throw new ArgumentNullException(nameof(testStep));
 
-
+            Count++;
             Exception = null;
             Result = Result.NotExecuted;
             State = State.Empy;
@@ -117,5 +121,35 @@ namespace EquipApps.Mvc.Abstractions
         #endregion
 
         public IDictionary<object, object> Properties { get; } = new Dictionary<object, object>();
+
+        public void Update()
+        {
+            var updaeteEvent = UpdateEvent;
+            if (updaeteEvent != null)
+            {
+                updaeteEvent(this);
+            }
+        }
+
+        
+
+        public event ActionDescriptorUpdate UpdateEvent;
+
+
+        ~ActionDescriptor()
+        {
+            Count--;
+            System.Diagnostics.Debug.WriteLine("ActionDescriptor Count :" + Count);
+
+            if (true)
+            {
+
+            }
+        }
+
+        public void Dispose()
+        {
+            
+        }
     }
 }

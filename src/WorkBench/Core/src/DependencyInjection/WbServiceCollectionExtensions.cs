@@ -16,7 +16,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<ILogEntryService, LogEntryService>();
 
             
-            services.AddSingleton<ActionViewModel>();
+            services.AddSingleton<ActionsViewer>();
+
+            services.AddTransient<ActionsByResultViewer>();
 
 
             // ----------------------------------------------------------------------------------------

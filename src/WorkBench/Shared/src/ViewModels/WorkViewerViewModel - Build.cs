@@ -8,12 +8,15 @@ namespace EquipApps.WorkBench.ViewModels
     {
         private volatile ITest test;
 
-        private void ClearTest()
+        private async Task ClearTest()
         {
             try
             {
                 //-- 
                 test?.Dispose();
+
+                await testService.CleanAsync();
+                await logsService.CleanAsync();
             }
             finally
             {
@@ -21,7 +24,8 @@ namespace EquipApps.WorkBench.ViewModels
                 HesTest = false;
 
                 GC.Collect();
-                GC.WaitForFullGCComplete();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
             }
         }
 
@@ -38,11 +42,9 @@ namespace EquipApps.WorkBench.ViewModels
                     return;
 
                 //-- Подчистка
-                ClearTest();
+                await ClearTest();
 
-                await testService.CleanAsync();
-                await logsService.CleanAsync();
-
+                
 
                 var newTest  = await testFactory.CreateTestAsync();
                 if (newTest != null)
@@ -71,10 +73,9 @@ namespace EquipApps.WorkBench.ViewModels
                 //-- Флаг создание
                 IsBuilding = true;
 
-                ClearTest();
+                await ClearTest();
 
-                await testService.CleanAsync();
-                await logsService.CleanAsync();
+                
             }
             catch (Exception ex)
             {

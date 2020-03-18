@@ -10,12 +10,12 @@ using System.Reactive.Linq;
 
 namespace EquipApps.WorkBench.ViewModels
 {
-    public class ActionViewModel : ViewModelBase, IDisposable
+    public class ActionsViewer : ViewModelBase, IDisposable
     {
         private ReadOnlyObservableCollection<ActionItem> _items;
         private IDisposable _cleanUpConnect;
 
-        public ActionViewModel(IActionService actionDescriptorService)
+        public ActionsViewer(IActionService actionDescriptorService)
         {
             _cleanUpConnect = actionDescriptorService.Observable
                 .Connect()
