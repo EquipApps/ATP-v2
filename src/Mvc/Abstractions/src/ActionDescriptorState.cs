@@ -8,21 +8,21 @@
         /// <summary>
         /// 
         /// </summary>
-        Empy = 1,
+        Empy = 0,
 
         /// <summary>
         /// Выполняется
         /// </summary>
-        Invoke,
+        Invoke = 1,
 
         /// <summary>
         /// Пауза
         /// </summary>
-        Pause,
+        Pause = 2,
 
         /// <summary>
         /// Точка остановки
         /// </summary>
-        BreakPoint,
+        BreakPoint = 3,
     }
 }
