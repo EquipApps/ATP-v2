@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace EquipApps.Mvc.Internal
 {
-    public class MvcActionDescriptorFactory : IActionDescripterFactory
+    public class MvcActionDescriptorFactory : IActionFactory
     {
-        IActionDescriptorProvider[] _providers;
+        IActionProvider[] _providers;
 
         public MvcActionDescriptorFactory(
-            IEnumerable<IActionDescriptorProvider> actionDescriptorProviders)
+            IEnumerable<IActionProvider> actionDescriptorProviders)
         {
             if (actionDescriptorProviders == null)
                 throw new ArgumentNullException(nameof(actionDescriptorProviders));

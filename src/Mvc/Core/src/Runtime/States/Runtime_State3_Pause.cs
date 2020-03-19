@@ -16,14 +16,14 @@ namespace NLib.AtpNetCore.Testing.Mvc.Runtime
         private volatile bool _isPaused = false;
         private WeakReference<RuntimeContext> weakContext = new WeakReference<RuntimeContext>(null);
 
-        public void Run(RuntimeContext context)
+        public void Handle(RuntimeContext context)
         {
             if (IsEnabled)
             {
                 //
                 // Получаем текущий элемент ActionDescriptor
                 //
-                var descriptor = context.Enumerator.Current;
+                var descriptor = context.Action.Current;
                 if (descriptor == null)
                 {
                     throw new ArgumentNullException(nameof(descriptor));
@@ -47,7 +47,7 @@ namespace NLib.AtpNetCore.Testing.Mvc.Runtime
             }
             else
             {
-                context.StateEnumerator.MoveNext();
+                context.State.MoveNext();
             }
         }
 
@@ -59,7 +59,7 @@ namespace NLib.AtpNetCore.Testing.Mvc.Runtime
             // Извлекаем контекст, изменяем состояние конвеера 
             if (weakContext.TryGetTarget(out RuntimeContext context))
             {
-                context.StateEnumerator.MoveNext();
+                context.State.MoveNext();
 
                 weakContext.SetTarget(null);
                 locker.Set();
@@ -74,8 +74,8 @@ namespace NLib.AtpNetCore.Testing.Mvc.Runtime
             // Извлекаем контекст, изменяем состояние конвеера 
             if (weakContext.TryGetTarget(out RuntimeContext context))
             {
-                context.StateEnumerator.JumpTo(RuntimeStateType.INVOKE);
-                context.StateEnumerator.MoveNext();
+                context.State.JumpTo(RuntimeStateType.INVOKE);
+                context.State.MoveNext();
 
                 weakContext.SetTarget(null);
                 locker.Set();
@@ -90,7 +90,7 @@ namespace NLib.AtpNetCore.Testing.Mvc.Runtime
             // Извлекаем контекст, изменяем состояние конвеера 
             if (weakContext.TryGetTarget(out RuntimeContext context))
             {
-                context.StateEnumerator.JumpTo(RuntimeStateType.INVOKE);
+                context.State.JumpTo(RuntimeStateType.INVOKE);
 
                 weakContext.SetTarget(null);
                 locker.Set();

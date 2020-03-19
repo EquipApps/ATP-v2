@@ -1,4 +1,5 @@
-﻿using EquipApps.Mvc.Abstractions;
+﻿using EquipApps.Mvc;
+using EquipApps.Mvc.Abstractions;
 using EquipApps.Mvc.Objects;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;

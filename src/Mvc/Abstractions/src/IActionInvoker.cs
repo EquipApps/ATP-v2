@@ -1,12 +1,12 @@
 ﻿namespace EquipApps.Mvc
 {
     /// <summary>
-    /// Определяет интерфейс для выполнения BDD действий
+    /// Определяет интерфейс для выполнения действий
     /// </summary>
     public interface IActionInvoker
     {
         /// <summary>
-        /// Выполняет BDD действие
+        /// Выполняет действие
         /// </summary>
         void Invoke();
     }

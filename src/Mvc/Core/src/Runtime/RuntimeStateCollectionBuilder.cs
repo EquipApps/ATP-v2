@@ -1,100 +1,86 @@
-﻿using EquipApps.Mvc.Runtime;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
-namespace NLib.AtpNetCore.Testing.Mvc.Internal
+namespace EquipApps.Mvc.Runtime
 {
-    public class MvcRuntimeStateCollection : IRuntimeStateCollection
+    public static class RuntimeStateCollectionBuilder
     {
-        private IRuntimeState[] states;
-
-        public MvcRuntimeStateCollection(IEnumerable<KeyValuePair<RuntimeStateId, IRuntimeState>> enumerable)
+        public static RuntimeStateCollection Build(IEnumerable<KeyValuePair<RuntimeStateId, IRuntimeState>> enumerable)
         {
             if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
 
+            //-- Сортируем по ключу
             var arrayOrdered = enumerable
-                .OrderBy(x => x.Key)
-                .ToArray();
+               .OrderBy(x => x.Key)
+               .ToArray();
 
             if (arrayOrdered.Length == 0)
             {
                 throw new ArgumentNullException(nameof(enumerable));
             }
 
-            states = arrayOrdered
-                .Select(x => x.Value)
-                .ToArray();
+            //-- Поиск индексов
+            var index_start     = 0;
+            var index_invoke    = 0;
+            var index_move      = 0;
+            var index_end       = 0;
 
-
-            /*
-            * Поиск индексов дял типов состояний!
-            * pattern state
-            */
-            Initialize(arrayOrdered);
-        }
-
-        private void Initialize(KeyValuePair<RuntimeStateId, IRuntimeState>[] arrayOrdered)
-        {
-            var index = 0;
-            var state = RuntimeStateType.START;
+            var counter         = 0;
+            var state           = RuntimeStateType.START;
+            var end             = false;
 
             foreach (var pair in arrayOrdered)
             {
+                if (end) 
+                    break;
+
                 switch (state)
                 {
                     case RuntimeStateType.START:
                         if (pair.Key.StateType == RuntimeStateType.START)
                         {
-                            Index_start = index;
+                            index_start = counter;
                             state = RuntimeStateType.INVOKE;
                         }
                         break;
                     case RuntimeStateType.INVOKE:
                         if (pair.Key.StateType == RuntimeStateType.INVOKE)
                         {
-                            Index_invoke = index;
+                            index_invoke = counter;
                             state = RuntimeStateType.MOVE;
                         }
                         break;
                     case RuntimeStateType.MOVE:
                         if (pair.Key.StateType == RuntimeStateType.MOVE)
                         {
-                            Index_move = index;
+                            index_move = counter;
                             state = RuntimeStateType.END;
                         }
                         break;
                     case RuntimeStateType.END:
                         if (pair.Key.StateType == RuntimeStateType.END)
                         {
-                            Index_end = index;
+                            index_end = counter;
                             state++;
                         }
                         break;
                     default:
-                        return;
+                        end = true;
+                        break;                      
                 }
 
-                index++;
+                counter++;
             }
+
+
+            var arrayStates = arrayOrdered
+                .Select(x => x.Value)
+                .ToArray();
+
+            return new RuntimeStateCollection(arrayStates, index_start, index_invoke, index_move, index_end);
         }
-
-        public IRuntimeState this[int index]
-        {
-            get => states[index];
-        }
-
-        public int Index_start { get; private set; }
-        public int Index_invoke { get; private set; }
-        public int Index_move { get; private set; }
-        public int Index_end { get; private set; }
-        public int Count => states.Length;
-
-        public IRuntimeStateEnumerator GetEnumerator()
-        {
-            return new MvcRuntimeStateEnumerator(this);
-        }
-
     }
 }

@@ -14,12 +14,12 @@ namespace NLib.AtpNetCore.Testing.Mvc.Runtime.Internal
         /// 
         /// <param name="context">
         /// </param>
-        public void Run(RuntimeContext context)
+        public void Handle(RuntimeContext context)
         {
             //
             // Получаем текущий элемент actionDescriptor
             //
-            var descriptor = context.Enumerator.Current;
+            var descriptor = context.Action.Current;
             if (descriptor == null)
             {
                 throw new ArgumentNullException(nameof(descriptor));
@@ -31,8 +31,8 @@ namespace NLib.AtpNetCore.Testing.Mvc.Runtime.Internal
             if (!descriptor.IsCheck)
             {
                 descriptor.Result = Result.NotExecuted;
-                context.StateEnumerator.JumpTo(RuntimeStateType.MOVE);
-                context.StateEnumerator.MoveNext();
+                context.State.JumpTo(RuntimeStateType.MOVE);
+                context.State.MoveNext();
                 return;
             }
 
@@ -120,7 +120,7 @@ namespace NLib.AtpNetCore.Testing.Mvc.Runtime.Internal
             {
                 descriptor.State = State.Empy;
                 descriptor.Update();
-                context.StateEnumerator.MoveNext();
+                context.State.MoveNext();
             }
         }
     }

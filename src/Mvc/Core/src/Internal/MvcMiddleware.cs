@@ -1,9 +1,9 @@
-﻿using EquipApps.Mvc;
-using EquipApps.Mvc.Abstractions;
+﻿using EquipApps.Mvc.Abstractions;
+using EquipApps.Mvc.Infrastucture;
+using EquipApps.Mvc.Runtime;
 using EquipApps.Testing;
 using Microsoft.Extensions.Options;
 using NLib.AtpNetCore.Mvc;
-using NLib.AtpNetCore.Testing.Mvc.Internal;
 using NLib.AtpNetCore.Testing.Mvc.Runtime.Internal;
 using System;
 using System.Collections.Generic;
@@ -32,13 +32,13 @@ namespace EquipApps.Mvc.Internal
             this.actionInvokerProviders = actionInvokerProviders ?? throw new ArgumentNullException(nameof(actionInvokerProviders));
 
 
-            States = new MvcRuntimeStateCollection(options.Value.RuntimeStates);
+            States = RuntimeStateCollectionBuilder.Build(options.Value.RuntimeStates);
         }
 
         /// <summary>
-        /// Возврвщвет <see cref="MvcRuntimeStateCollection"/>
+        /// Возврвщвет <see cref="RuntimeStateCollection"/>
         /// </summary>
-        public MvcRuntimeStateCollection States { get; }
+        public RuntimeStateCollection States { get; }
 
 
 
@@ -50,39 +50,8 @@ namespace EquipApps.Mvc.Internal
             return Task.Run(() => Run(testContext));
         }
 
+
         public void Run(TestContext testContext)
-        {
-            if (testContext == null)
-            {
-                throw new ArgumentNullException(nameof(testContext));
-            }
-
-            using (var context = GetRuntimeContext(testContext))
-            {
-                //-- КОНВЕЕР RUNTIME STATE
-                context.StateEnumerator.Reset();
-                context.StateEnumerator.MoveNext();
-
-                while (true)
-                {
-                    if (context.Handled)
-                        break;
-
-                    if (context.TestContext.TestAborted.IsCancellationRequested)
-                        break;
-
-                    context.StateEnumerator.Current.Run(context);
-                }
-            }
-        }
-
-
-
-
-
-
-
-        private MvcRuntimeContext GetRuntimeContext(TestContext testContext)
         {
             //-- 1) Извлечение
             var actionDescriptors = testContext.GetActionDescriptors();
@@ -90,28 +59,35 @@ namespace EquipApps.Mvc.Internal
             //-- 2) Обновляем состояние
             foreach (var actionDescriptor in actionDescriptors)
             {
-                actionDescriptor.Result    = Result.NotExecuted;
+                actionDescriptor.Result = Result.NotExecuted;
                 actionDescriptor.Exception = null;
             }
 
-            //-- 3) Создаем перечисление
-            var enumerator = new RuntimeActionDescriptorEnumerator(actionDescriptors);
+            using (var actionEnumerator = new RuntimeActionEnumerator    (actionDescriptors))
+            using (var actionFactory    = new RuntimeActionInvokerFactory(actionInvokerProviders))
+            using (var stateEnumerator  = new RuntimeStateEnumerator     (States))
+            {
+                var runtimeContext = new RuntimeContext(
+                        testContext,
+                        actionEnumerator,
+                        actionFactory,
+                        stateEnumerator);
 
-            var factory = new RuntimeActionInvokerFactory(actionInvokerProviders);
+                //-- КОНВЕЕР RUNTIME STATE
+                runtimeContext.State.Reset();
+                runtimeContext.State.MoveNext();
 
-            //-- 4) Снятие блокировки потока
+                while (true)
+                {
+                    if (runtimeContext.Handled)
+                        break;
 
+                    if (runtimeContext.TestContext.TestAborted.IsCancellationRequested)
+                        break;
 
-            return new MvcRuntimeContext(
-                testContext,
-                States,
-                enumerator,
-                factory);
+                    runtimeContext.State.Current.Handle(runtimeContext);
+                }
+            }
         }
-
-
-
-
-
     }
 }

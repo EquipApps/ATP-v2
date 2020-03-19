@@ -1,12 +1,11 @@
-﻿using EquipApps.Mvc.Abstractions;
-using EquipApps.Testing;
+﻿using EquipApps.Testing;
 using EquipApps.Testing.Features;
 using System;
 using System.Collections.Generic;
 
 namespace EquipApps.Mvc
 {
-    public static class TestContextExtantoions
+    public static class TestContextEx
     {
         public static IReadOnlyList<ActionDescriptor> GetActionDescriptors(this TestContext testContext)
         {

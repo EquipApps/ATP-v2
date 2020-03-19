@@ -14,8 +14,4 @@
     <ProjectReference Include="..\..\..\Testing\Abstractions\src\EquipApps.Testing.Abstractions.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Abstractions\" />
-  </ItemGroup>
-
 </Project>

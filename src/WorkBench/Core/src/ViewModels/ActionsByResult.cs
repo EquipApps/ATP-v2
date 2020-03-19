@@ -1,5 +1,6 @@
 ﻿using DynamicData;
 using DynamicData.Aggregation;
+using EquipApps.Mvc;
 using EquipApps.Mvc.Abstractions;
 using EquipApps.Mvc.Objects;
 using ReactiveUI.Fody.Helpers;

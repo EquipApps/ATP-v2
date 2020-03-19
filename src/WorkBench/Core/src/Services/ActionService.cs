@@ -1,4 +1,5 @@
 ﻿using DynamicData;
+using EquipApps.Mvc;
 using EquipApps.Mvc.Abstractions;
 using EquipApps.Mvc.Objects;
 using System;
@@ -10,14 +11,14 @@ namespace EquipApps.WorkBench.Services
 {
     /// <summary>
     /// Реализация <see cref="IActionService"/>.
-    /// Также переопределяет реализацию <see cref="IActionDescripterFactory"/> по умолчаеию.
+    /// Также переопределяет реализацию <see cref="IActionFactory"/> по умолчаеию.
     /// </summary>
-    public class ActionService : IActionService, IActionDescripterFactory
+    public class ActionService : IActionService, IActionFactory
     {
-        IActionDescriptorProvider[] _providers;
+        IActionProvider[] _providers;
         private readonly SourceCache<ActionDescriptor, TestNumber> sourceCache;
 
-        public ActionService(IEnumerable<IActionDescriptorProvider> actionDescriptorProviders)
+        public ActionService(IEnumerable<IActionProvider> actionDescriptorProviders)
         {
             if (actionDescriptorProviders == null)
                 throw new ArgumentNullException(nameof(actionDescriptorProviders));

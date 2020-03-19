@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace EquipApps.Mvc.Internal
 {
-    public class MvcActionDescriptorProvider : IActionDescriptorProvider
+    public class MvcActionDescriptorProvider : IActionProvider
     {
         private IApplicationModelService appModelFactory;
         private ILogger<MvcActionDescriptorProvider> logger;

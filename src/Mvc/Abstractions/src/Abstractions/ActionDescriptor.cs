@@ -1,10 +1,11 @@
-﻿using EquipApps.Mvc.Objects;
+﻿using EquipApps.Mvc.Abstractions;
+using EquipApps.Mvc.Objects;
 using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
-namespace EquipApps.Mvc.Abstractions
+namespace EquipApps.Mvc
 {
     public delegate void ActionDescriptorUpdate(ActionDescriptor action);
 
@@ -131,7 +132,7 @@ namespace EquipApps.Mvc.Abstractions
             }
         }
 
-        
+
 
         public event ActionDescriptorUpdate UpdateEvent;
 
@@ -149,7 +150,7 @@ namespace EquipApps.Mvc.Abstractions
 
         public void Dispose()
         {
-            
+
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Microsoft.Extensions.DependencyInjection
             // Action Descriptor Factory
             // Singleton
             // ( Переопределяет провайдер по умолчанию )
-            services.AddSingleton<IActionDescripterFactory>(serviceProvider =>
+            services.AddSingleton<IActionFactory>(serviceProvider =>
             {
                 return serviceProvider.GetService<IActionService>() as ActionService;
             });

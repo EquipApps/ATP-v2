@@ -3,7 +3,7 @@
 namespace EquipApps.Mvc.Abstractions
 {
     /// <summary>
-    /// Контекс. Используется в <see cref="IActionDescriptorProvider"/> для создания <see cref="ActionDescriptor"/>
+    /// Контекс. Используется в <see cref="IActionProvider"/> для создания <see cref="ActionDescriptor"/>
     /// </summary>
     public class ActionDescriptorContext
     {

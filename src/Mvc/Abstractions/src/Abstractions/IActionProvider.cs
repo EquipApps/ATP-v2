@@ -3,7 +3,7 @@
     /// <summary>
     ///  Определяет интерфейс для кастомизации создания <see cref="ActionDescriptor"/>
     /// </summary>
-    public interface IActionDescriptorProvider
+    public interface IActionProvider
     {
         int Order { get; }
 

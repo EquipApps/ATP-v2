@@ -4,25 +4,25 @@ namespace NLib.AtpNetCore.Testing.Mvc.Runtime.Internal
 {
     public class Runtime_State5_Move : IRuntimeState
     {
-        public void Run(RuntimeContext context)
+        public void Handle(RuntimeContext context)
         {
             //
             // Переход к следующему шагу
             //
-            if (context.Enumerator.MoveNext())
+            if (context.Action.MoveNext())
             {
                 //
                 // Переходим в состояние      
                 //
-                context.StateEnumerator.JumpTo(RuntimeStateType.INVOKE);
-                context.StateEnumerator.MoveNext();
+                context.State.JumpTo(RuntimeStateType.INVOKE);
+                context.State.MoveNext();
             }
             else
             {
                 //
                 // OБОШЛИ ВСЮ КОЛЛЕКЦИЮ!..
                 //
-                context.StateEnumerator.MoveNext();
+                context.State.MoveNext();
             }
         }
     }

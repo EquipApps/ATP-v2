@@ -1,5 +1,4 @@
-﻿using EquipApps.Mvc.Abstractions;
-using System;
+﻿using System;
 
 namespace EquipApps.Mvc.ModelBinding
 {

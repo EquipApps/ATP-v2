@@ -1,4 +1,4 @@
-﻿using EquipApps.Mvc.Abstractions;
+﻿using EquipApps.Mvc;
 using EquipApps.Mvc.ApplicationModels;
 using EquipApps.Mvc.Objects;
 using System;

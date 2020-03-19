@@ -1,5 +1,5 @@
 ﻿using DynamicData;
-using EquipApps.Mvc.Abstractions;
+using EquipApps.Mvc;
 using EquipApps.Mvc.Objects;
 using System.Threading.Tasks;
 

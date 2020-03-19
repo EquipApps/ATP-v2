@@ -5,22 +5,22 @@ namespace NLib.AtpNetCore.Testing.Mvc.Runtime.Internal
 {
     public class Runtime_State1_Reset : IRuntimeState
     {
-        public void Run(RuntimeContext context)
+        public void Handle(RuntimeContext context)
         {
             //
             // Обновляем перечисление
             //
-            context.Enumerator.Reset();
+            context.Action.Reset();
 
             //
             // Проверка наличия ПЕРВОГО элемента
             //
-            if (context.Enumerator.MoveNext())
+            if (context.Action.MoveNext())
             {
                 //
                 // Переходим в следующее состояние      
                 //
-                context.StateEnumerator.MoveNext();
+                context.State.MoveNext();
 
             }
             else

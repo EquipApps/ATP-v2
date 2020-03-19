@@ -1,4 +1,4 @@
-﻿using EquipApps.Mvc.Abstractions;
+﻿using EquipApps.Mvc;
 using EquipApps.Mvc.Objects;
 
 namespace NLib.AtpNetCore.Testing.Mvc.Controllers

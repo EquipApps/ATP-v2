@@ -8,18 +8,18 @@ namespace NLib.AtpNetCore.Testing.Mvc.Runtime
         private volatile bool _isEnabled = false;
         private volatile int _millisecondsTimeout = 100;
 
-        public void Run(RuntimeContext context)
+        public void Handle(RuntimeContext context)
         {
             if (IsEnabled)
             {
-                context.StateEnumerator.JumpTo(RuntimeStateType.START);
-                context.StateEnumerator.MoveNext();
+                context.State.JumpTo(RuntimeStateType.START);
+                context.State.MoveNext();
 
                 Thread.Sleep(MillisecondsTimeout);
             }
             else
             {
-                context.StateEnumerator.MoveNext();
+                context.State.MoveNext();
             }
         }
 

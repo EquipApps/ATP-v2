@@ -55,7 +55,7 @@ namespace NLib.AtpNetCore.Testing.Mvc
 
             controllerContext
                 .RuntimeContext
-                .Enumerator
+                .Action
                 .JumpTo(actionDescriptor);
         }
     }

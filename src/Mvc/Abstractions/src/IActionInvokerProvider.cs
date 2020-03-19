@@ -1,5 +1,8 @@
 ﻿namespace EquipApps.Mvc
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IActionInvokerProvider
     {
         int Order { get; }

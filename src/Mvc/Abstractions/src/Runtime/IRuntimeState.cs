@@ -1,17 +1,13 @@
 ﻿namespace EquipApps.Mvc.Runtime
 {
     /// <summary>
-    /// 
+    /// Паттерн State
     /// </summary>
     public interface IRuntimeState
     {
         /// <summary>
-        /// 
+        /// Обработка контекста
         /// </summary>
-        /// 
-        /// <param name="context">
-        /// 
-        /// </param>
-        void Run(RuntimeContext context);
+        void Handle(RuntimeContext context);
     }
 }

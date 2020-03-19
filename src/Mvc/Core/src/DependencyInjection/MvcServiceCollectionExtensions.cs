@@ -67,14 +67,14 @@ namespace NLib.AtpNetCore.Testing
 
         //-- AddActionDescriptorProvider
         public static void AddActionDescriptorProvider<TProvider>(this IServiceCollection serviceDescriptors)
-            where TProvider : class, IActionDescriptorProvider
+            where TProvider : class, IActionProvider
         {
             //
             // Action Descriptor Provider
             // Transient
             // 
             serviceDescriptors.TryAddEnumerable(
-                ServiceDescriptor.Transient<IActionDescriptorProvider, TProvider>());
+                ServiceDescriptor.Transient<IActionProvider, TProvider>());
         }
 
 
@@ -129,7 +129,7 @@ namespace NLib.AtpNetCore.Testing
         /// Transient
         /// </summary>       
         public static IMvcBuilder AddActionDescriptorProvider<TProvider>(this IMvcBuilder builder)
-            where TProvider : class, IActionDescriptorProvider
+            where TProvider : class, IActionProvider
         {
             builder.Services.AddActionDescriptorProvider<TProvider>();
            
@@ -197,14 +197,14 @@ namespace NLib.AtpNetCore.Testing
             // Action Descriptor Factory
             // Singleton
             // 
-            services.AddSingleton<IActionDescripterFactory, MvcActionDescriptorFactory>();
+            services.AddSingleton<IActionFactory, MvcActionDescriptorFactory>();
 
             //
             // Action Descriptor Provider
             // Transient
             // 
             services.TryAddEnumerable(
-                ServiceDescriptor.Transient<IActionDescriptorProvider, MvcActionDescriptorProvider>());
+                ServiceDescriptor.Transient<IActionProvider, MvcActionDescriptorProvider>());
 
 
 

@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace EquipApps.Mvc
+﻿namespace EquipApps.Mvc
 {
-    public interface IActionInvokerFactory : IDisposable
+    public interface IActionInvokerFactory
     {
         IActionInvoker CreateInvoker(ActionContext actionContext);
     }

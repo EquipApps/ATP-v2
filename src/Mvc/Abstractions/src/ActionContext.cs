@@ -1,5 +1,4 @@
-﻿using EquipApps.Mvc.Abstractions;
-using EquipApps.Mvc.Runtime;
+﻿using EquipApps.Mvc.Runtime;
 using EquipApps.Testing;
 using System;
 
@@ -24,7 +23,7 @@ namespace EquipApps.Mvc
             RuntimeContext runtimeContext,
             ActionDescriptor actionDescriptor)
         {
-            RuntimeContext = runtimeContext ?? throw new ArgumentNullException(nameof(runtimeContext));
+            RuntimeContext   = runtimeContext   ?? throw new ArgumentNullException(nameof(runtimeContext));
             ActionDescriptor = actionDescriptor ?? throw new ArgumentNullException(nameof(actionDescriptor));
         }
 

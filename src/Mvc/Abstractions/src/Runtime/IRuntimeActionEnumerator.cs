@@ -1,12 +1,11 @@
-﻿using EquipApps.Mvc.Abstractions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace EquipApps.Mvc.Runtime
 {
     /// <summary>
-    /// 
+    /// Интератор с возможностью перехода
     /// </summary>
-    public interface IRuntimeEnumerator : IEnumerator<ActionDescriptor>
+    public interface IRuntimeActionEnumerator : IEnumerator<ActionDescriptor>
     {
         /// <summary>
         /// Переход на <see cref="ActionDescriptor"/>.

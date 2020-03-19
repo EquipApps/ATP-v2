@@ -1,5 +1,4 @@
 ﻿using EquipApps.Mvc;
-using EquipApps.Mvc.Abstractions;
 using System;
 using System.Collections.Generic;
 

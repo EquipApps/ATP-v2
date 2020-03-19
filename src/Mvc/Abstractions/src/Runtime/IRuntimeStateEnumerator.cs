@@ -2,6 +2,9 @@
 
 namespace EquipApps.Mvc.Runtime
 {
+    /// <summary>
+    /// Интератор с возможностью перехода
+    /// </summary>
     public interface IRuntimeStateEnumerator : IEnumerator<IRuntimeState>
     {
         /// <summary>

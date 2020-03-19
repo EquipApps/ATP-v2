@@ -9,14 +9,14 @@ namespace NLib.AtpNetCore.Testing.Mvc.Internal
     /// <summary>
     /// Реализация  <see cref="IMvcFeature"/> провайдера по умолчанию .
     /// Добавляет <see cref="IMvcFeature"/> в  <see cref="IFeatureCollection"/>.
-    /// Заполняет <see cref="IMvcFeature"/> из <see cref="IActionDescripterFactory"/>.
+    /// Заполняет <see cref="IMvcFeature"/> из <see cref="IActionFactory"/>.
     /// Функции вызыветя при создании тестовой проверки в  <see cref="ITestFactory"/>.
     /// </summary>
     public class MvcFeatureProvider : IFeatureProvider
     {
-        private readonly IActionDescripterFactory _actionDescripterService;
+        private readonly IActionFactory _actionDescripterService;
 
-        public MvcFeatureProvider(IActionDescripterFactory actionDescripterService)
+        public MvcFeatureProvider(IActionFactory actionDescripterService)
         {
             _actionDescripterService = actionDescripterService ?? throw new ArgumentNullException(nameof(actionDescripterService));
         }
