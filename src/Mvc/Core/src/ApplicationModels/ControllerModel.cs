@@ -17,8 +17,8 @@ namespace EquipApps.Mvc.ApplicationModels
         {
             Info        = info ?? throw new ArgumentNullException(nameof(info));
             Attributes  = attributes ?? throw new ArgumentNullException(nameof(attributes));
-            Methods     = new List<MethodModel>();
-            Properties  = new List<PropertyModel>();
+            Actions     = new List<ActionModel>();
+            ControllerProperties  = new List<PropertyModel>();
 
             Name = Info.Name;
         }
@@ -55,9 +55,9 @@ namespace EquipApps.Mvc.ApplicationModels
         public TypeInfo Info { get; }
 
         /// <summary>
-        /// Возвращает список <see cref="MethodModel"/>
+        /// Возвращает список <see cref="ActionModel"/>
         /// </summary>
-        public IList<MethodModel> Methods { get; }
+        public IList<ActionModel> Actions { get; }
 
         /// <summary>
         /// Задает или возвращает <see cref="IBinder"/>.
@@ -90,7 +90,7 @@ namespace EquipApps.Mvc.ApplicationModels
         /// <summary>
         /// Возвращает список <see cref="PropertyModel"/>
         /// </summary>        
-        public IList<PropertyModel> Properties { get; }
+        public IList<PropertyModel> ControllerProperties { get; }
 
         /// <summary>
         /// Возвращает или задает заголовок

@@ -4,22 +4,22 @@ using System;
 
 namespace EquipApps.Mvc
 {
-    public class MvcOptionSetup : IConfigureOptions<MvcOption>
+    public class MvcOptionsSetup : IConfigureOptions<MvcOptions>
     {
         private IServiceProvider _serviceProvider;
 
-        public MvcOptionSetup(IServiceProvider serviceProvider)
+        public MvcOptionsSetup(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        public void Configure(MvcOption options)
+        public void Configure(MvcOptions options)
         {
             ConfigureBindingProviders(options);
         }
 
 
-        private void ConfigureBindingProviders(MvcOption options)
+        private void ConfigureBindingProviders(MvcOptions options)
         {
             options.BindingProviders.Add(new ModelProviderModelBinderProvider(_serviceProvider));
             options.BindingProviders.Add(new DataContextModelBinderProvider());

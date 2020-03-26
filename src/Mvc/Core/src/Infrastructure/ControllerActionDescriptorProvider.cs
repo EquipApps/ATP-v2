@@ -11,15 +11,15 @@ namespace EquipApps.Mvc.Internal
 {
     public class ControllerActionDescriptorProvider : IActionDescriptorProvider
     {
-        private IApplicationModelFactory appModelFactory;
+        private ApplicationModelFactory appModelFactory;
         private ILogger<ControllerActionDescriptorProvider> logger;
-        private MvcOption options;
+        private MvcOptions options;
 
         private int startIndex = 0;
 
-        public ControllerActionDescriptorProvider(IApplicationModelFactory appModelFactory,
+        public ControllerActionDescriptorProvider(ApplicationModelFactory appModelFactory,
                                                   ILoggerFactory loggerFactory,
-                                                  IOptions<MvcOption> options)
+                                                  IOptions<MvcOptions> options)
         {
             this.appModelFactory = appModelFactory ?? throw new ArgumentNullException(nameof(appModelFactory));
             this.options         = options?.Value  ?? throw new ArgumentNullException(nameof(options));
@@ -216,7 +216,7 @@ namespace EquipApps.Mvc.Internal
         private IEnumerable<ControllerTestStep> ToTestSteps(ControllerTestCase testCase)
         {
             var controllerModel = testCase.ControllerModel;
-            var methods = controllerModel.Methods;
+            var methods = controllerModel.Actions;
 
             for (int actionModelIndex = 0; actionModelIndex < methods.Count; actionModelIndex++)
             {

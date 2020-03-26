@@ -1,51 +1,66 @@
 ﻿using EquipApps.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace EquipApps.Mvc.ApplicationModels
 {
-    public class PropertyModel : IBindingModel
+    /// <summary>
+    /// A type which is used to represent a property in a <see cref="ControllerModel"/>.
+    /// </summary>
+    [DebuggerDisplay("PropertyModel: Name={PropertyName}")]
+    public class PropertyModel : ParameterModelBase, ICommonModel, IBindingModel
     {
-        public PropertyModel(PropertyInfo info, IReadOnlyList<object> attributes)
+        /// <summary>
+        /// Creates a new instance of <see cref="PropertyModel"/>.
+        /// </summary>
+        /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for the underlying property.</param>
+        /// <param name="attributes">Any attributes which are annotated on the property.</param>
+        public PropertyModel(
+            PropertyInfo propertyInfo,
+            IReadOnlyList<object> attributes)
+            : base(propertyInfo?.PropertyType, attributes)
         {
-            Info = info ?? throw new ArgumentNullException(nameof(info));
-            Attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
+            PropertyInfo = propertyInfo ?? throw new ArgumentNullException(nameof(propertyInfo));
         }
 
         /// <summary>
-        /// Возвращает список аттрибутов свойста
+        /// Creates a new instance of <see cref="PropertyModel"/> from a given <see cref="PropertyModel"/>.
         /// </summary>
-        public IReadOnlyList<object> Attributes { get; }
+        /// <param name="other">The <see cref="PropertyModel"/> which needs to be copied.</param>
+        public PropertyModel(PropertyModel other)
+            : base(other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException(nameof(other));
+            }
+
+            Controller = other.Controller;
+            BindingInfo = BindingInfo == null ? null : new BindingInfo(other.BindingInfo);
+            PropertyInfo = other.PropertyInfo;
+        }
 
         /// <summary>
-        /// Задает или возвращает <see cref="ModelBinding.BindingInfo"/>.
-        /// </summary>
-        public BindingInfo BindingInfo { get; set; }
-
-        /// <summary>
-        /// Задает или возвращает <see cref="ControllerModel"/>
+        /// Gets or sets the <see cref="ControllerModel"/> this <see cref="PropertyModel"/> is associated with.
         /// </summary>
         public ControllerModel Controller { get; set; }
 
-        /// <summary>
-        /// Возвращает тип свойства
-        /// </summary>
-        public PropertyInfo Info { get; }
+        MemberInfo ICommonModel.MemberInfo => PropertyInfo;
 
-        /// <summary>
-        /// Задает или возвращает <see cref="IBinder"/>
-        /// </summary>
-        public IBinder ModelBinder { get; set; }
+        public new IDictionary<object, object> Properties => base.Properties;
 
-        /// <summary>
-        /// Задает или возвращает имя свойства
-        /// </summary>
-        public string Name { get; set; }
+        public new IReadOnlyList<object> Attributes => base.Attributes;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public IBindingModel Parent => Controller;
+        public PropertyInfo PropertyInfo { get; }
+
+        public string PropertyName
+        {
+            get => Name;
+            set => Name = value;
+        }
+
+        IBindingModel IBindingModel.Parent => Controller;
     }
 }

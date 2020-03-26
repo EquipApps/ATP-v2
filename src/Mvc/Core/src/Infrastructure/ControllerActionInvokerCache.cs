@@ -80,8 +80,8 @@ namespace EquipApps.Mvc.Infrastructure
                 Version = version;
             }
 
-            public ConcurrentDictionary<MethodModel, ControllerActionInvokerCacheEntry> Entries { get; } =
-                new ConcurrentDictionary<MethodModel, ControllerActionInvokerCacheEntry>();
+            public ConcurrentDictionary<ActionModel, ControllerActionInvokerCacheEntry> Entries { get; } =
+                new ConcurrentDictionary<ActionModel, ControllerActionInvokerCacheEntry>();
 
             public int Version { get; }
         }

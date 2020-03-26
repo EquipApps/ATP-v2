@@ -31,7 +31,7 @@ namespace EquipApps.Mvc.Internal
 
 
 
-        public void OnProvidersExecuting(ApplicationModelContext context)
+        public void OnProvidersExecuting(ApplicationModelProviderContext context)
         {
             if (context == null)
             {
@@ -64,7 +64,7 @@ namespace EquipApps.Mvc.Internal
                     if (propertyModel != null)
                     {
                         propertyModel.Controller = controllerModel;
-                        controllerModel.Properties.Add(propertyModel);
+                        controllerModel.ControllerProperties.Add(propertyModel);
                     }
                 }
 
@@ -85,7 +85,7 @@ namespace EquipApps.Mvc.Internal
 
                     //--
                     methodModel.Controller = controllerModel;
-                    controllerModel.Methods.Add(methodModel);
+                    controllerModel.Actions.Add(methodModel);
 
                     //-- ПАРАМЕТРЫ
                     foreach (var parameterInfo in methodModel.Info.GetParameters())
@@ -94,7 +94,7 @@ namespace EquipApps.Mvc.Internal
 
                         if (parameterModel != null)
                         {
-                            parameterModel.Method = methodModel;
+                            parameterModel.Action = methodModel;
                             methodModel.Parameters.Add(parameterModel);
                         }
                     }
@@ -102,7 +102,7 @@ namespace EquipApps.Mvc.Internal
             }
         }
 
-        public void OnProvidersExecuted(ApplicationModelContext context)
+        public void OnProvidersExecuted(ApplicationModelProviderContext context)
         {
             if (context == null)
             {
@@ -113,12 +113,12 @@ namespace EquipApps.Mvc.Internal
             {
                 BindingControllerModel(controllerModel);
 
-                foreach (var propertyModel in controllerModel.Properties)
+                foreach (var propertyModel in controllerModel.ControllerProperties)
                 {
                     BindingPropertyModel(propertyModel);
                 }
 
-                foreach (var actionModel in controllerModel.Methods)
+                foreach (var actionModel in controllerModel.Actions)
                 {
                     BindingActionModel(actionModel);
 
@@ -247,7 +247,7 @@ namespace EquipApps.Mvc.Internal
             }
         }
 
-        private void BindingActionModel(MethodModel actionModel)
+        private void BindingActionModel(ActionModel actionModel)
         {
             var bindingInfo = actionModel.BindingInfo;
             if (bindingInfo != null)
@@ -297,11 +297,11 @@ namespace EquipApps.Mvc.Internal
                     .AppendLine("Ошибка - Не возможно создать привязку!")
 
                     .Append("Controller: ")
-                    .AppendLine(parameterModel.Method.Controller.Name)
+                    .AppendLine(parameterModel.Action.Controller.Name)
                     .Append("Method: ")
-                    .AppendLine(parameterModel.Method.Name)
+                    .AppendLine(parameterModel.Action.Name)
                     .Append("Parameter: ")
-                    .AppendLine(parameterModel.Name)
+                    .AppendLine(parameterModel.ParameterName)
                     .ToString();
 
                 throw new InvalidOperationException(error);

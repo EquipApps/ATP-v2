@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace EquipApps.Mvc.ApplicationModels
 {
-    public class MethodModel : IBindingModel
+    public class ActionModel : IBindingModel
     {
-        public MethodModel(MethodInfo info, IReadOnlyList<object> attributes)
+        public ActionModel(MethodInfo info, IReadOnlyList<object> attributes)
         {
             Info = info ?? throw new ArgumentNullException(nameof(info));
             Attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));

@@ -18,7 +18,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
         private readonly IPropertyProvider _propertyProvider;
 
         public BindingFactory(
-            IOptions<MvcOption> option,
+            IOptions<MvcOptions> option,
             ILogger<BindingFactory> logger,
 
             IMetadataProvider metadataProvider,

@@ -91,13 +91,13 @@ namespace EquipApps.Mvc.Internal
             var propertyModel = new PropertyModel(propertyInfo, attributes);
 
             propertyModel.BindingInfo = bindingInfo;
-            propertyModel.Name = propertyInfo.Name;
+            propertyModel.PropertyName = propertyInfo.Name;
 
             return propertyModel;
         }
 
         //TODO: Написать юнит тесты
-        public static MethodModel CreateMethodModel(MethodInfo methodInfo)
+        public static ActionModel CreateMethodModel(MethodInfo methodInfo)
         {
             if (methodInfo == null)
             {
@@ -113,7 +113,7 @@ namespace EquipApps.Mvc.Internal
             var displayInfo = DisplayInfoBuilder.GetDisplayInfo(attributes);
 
             //--
-            var methodModel = new MethodModel(methodInfo, attributes);
+            var methodModel = new ActionModel(methodInfo, attributes);
 
             methodModel.BindingInfo = bindingInfo;
             methodModel.Name = methodInfo.Name;
@@ -162,7 +162,7 @@ namespace EquipApps.Mvc.Internal
             var parameterModel = new ParameterModel(parameterInfo, attributes);
             //--
             parameterModel.BindingInfo = bindingInfo;
-            parameterModel.Name = parameterInfo.Name;
+            parameterModel.ParameterName = parameterInfo.Name;
             //--
             return parameterModel;
         }

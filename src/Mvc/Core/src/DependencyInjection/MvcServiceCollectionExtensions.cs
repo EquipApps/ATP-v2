@@ -11,7 +11,6 @@ using EquipApps.Mvc.Runtime;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
-using NLib.AtpNetCore.Mvc.Internal;
 using NLib.AtpNetCore.Mvc.ModelBinding;
 using NLib.AtpNetCore.Mvc.ModelBinding.Metadata;
 using NLib.AtpNetCore.Mvc.ModelBinding.Properties;
@@ -237,7 +236,7 @@ namespace NLib.AtpNetCore.Testing
             // Application Model Service
             // Singleton
             // 
-            services.AddSingleton<IApplicationModelFactory, MvcApplicationModelFactory>();
+            services.AddSingleton<ApplicationModelFactory, ApplicationModelFactory>();
 
             //
             // Action Descriptor Provider
@@ -250,7 +249,7 @@ namespace NLib.AtpNetCore.Testing
             // ----------------------------------------------------------------------------------------
 
             services.TryAddEnumerable(
-               ServiceDescriptor.Transient<IConfigureOptions<MvcOption>, MvcOptionSetup>());
+               ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, MvcOptionsSetup>());
 
 
 

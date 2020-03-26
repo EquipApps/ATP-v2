@@ -1,12 +1,15 @@
-﻿namespace EquipApps.Mvc.ApplicationParts
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+namespace EquipApps.Mvc.ApplicationParts
 {
     /// <summary>
-    /// Часть приложения
+    /// A part of an MVC application.
     /// </summary>
     public abstract class ApplicationPart
     {
         /// <summary>
-        /// Возвращает Имя
+        /// Gets the <see cref="ApplicationPart"/> name.
         /// </summary>
         public abstract string Name { get; }
     }

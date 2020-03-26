@@ -78,7 +78,7 @@ namespace EquipApps.Mvc.Infrastructure
                 .ActionDescriptor
                 .TestCase
                 .ControllerModel
-                .Properties;
+                .ControllerProperties;
 
             var framworkElement = controllerContext
                .ActionDescriptor
@@ -93,7 +93,7 @@ namespace EquipApps.Mvc.Infrastructure
                         $"У свойства нет привязки. (Возможно ошибка модели приложения) " +
                         $"Область: {property.Controller.Area}; " +
                         $"Контроллер: {property.Controller.Name}; " +
-                        $"Свойство: {property.Name};");
+                        $"Свойство: {property.PropertyName};");
                     continue;
                 }
 
@@ -104,7 +104,7 @@ namespace EquipApps.Mvc.Infrastructure
                         $"Не получилось привязаться к данным " +
                         $"Область: {property.Controller.Area}; " +
                         $"Контроллер: {property.Controller.Name}; " +
-                        $"Свойство: {property.Name};");
+                        $"Свойство: {property.PropertyName};");
 
                     //TODO: Добавить информацию об ошибке модели!
 
@@ -117,12 +117,12 @@ namespace EquipApps.Mvc.Infrastructure
                     $"Модель привязки NULL. " +
                     $"Область: {property.Controller.Area}; " +
                     $"Контроллер: {property.Controller.Name}; " +
-                    $"Свойство: {property.Name};");
+                    $"Свойство: {property.PropertyName};");
                 }
 
                 try
                 {
-                    property.Info.SetValue(controller, resultBinding.Model);
+                    property.PropertyInfo.SetValue(controller, resultBinding.Model);
                 }
                 catch (Exception ex)
                 {
@@ -132,7 +132,7 @@ namespace EquipApps.Mvc.Infrastructure
                     $"Не получилось присвоить значение свойству. " +
                     $"Область: {property.Controller.Area}; " +
                     $"Контроллер: {property.Controller.Name}; " +
-                    $"Свойство: {property.Name};");
+                    $"Свойство: {property.PropertyName};");
 
                     throw ex;
                 }
@@ -163,10 +163,10 @@ namespace EquipApps.Mvc.Infrastructure
                 {
                     logger.LogWarning(
                         $"У свойства нет привязки. (Возможно ошибка модели приложения) " +
-                        $"Область: {parameter.Method.Controller.Area}; " +
-                        $"Контроллер: {parameter.Method.Controller.Name}; " +
-                        $"Метод: {parameter.Method.Name}" +
-                        $"Аргумент: {parameter.Name};");
+                        $"Область: {parameter.Action.Controller.Area}; " +
+                        $"Контроллер: {parameter.Action.Controller.Name}; " +
+                        $"Метод: {parameter.Action.Name}" +
+                        $"Аргумент: {parameter.ParameterName};");
 
                     continue;
                 }
@@ -176,10 +176,10 @@ namespace EquipApps.Mvc.Infrastructure
                 {
                     logger.LogError(
                         $"Не получилось привязаться к данным " +
-                        $"Область: {parameter.Method.Controller.Area}; " +
-                        $"Контроллер: {parameter.Method.Controller.Name}; " +
-                        $"Метод: {parameter.Method.Name}" +
-                        $"Аргумент: {parameter.Name};");
+                        $"Область: {parameter.Action.Controller.Area}; " +
+                        $"Контроллер: {parameter.Action.Controller.Name}; " +
+                        $"Метод: {parameter.Action.Name}" +
+                        $"Аргумент: {parameter.ParameterName};");
 
                     //TODO: Добавить информацию об ошибке модели!
 
@@ -190,14 +190,14 @@ namespace EquipApps.Mvc.Infrastructure
                 {
                     logger.LogWarning(
                         $"Модель привязки NULL. " +
-                        $"Область: {parameter.Method.Controller.Area}; " +
-                        $"Контроллер: {parameter.Method.Controller.Name}; " +
-                        $"Метод: {parameter.Method.Name}" +
-                        $"Аргумент: {parameter.Name};");
+                        $"Область: {parameter.Action.Controller.Area}; " +
+                        $"Контроллер: {parameter.Action.Controller.Name}; " +
+                        $"Метод: {parameter.Action.Name}" +
+                        $"Аргумент: {parameter.ParameterName};");
 
                 }
 
-                arguments[parameter.Name] = resultBinding.Model;
+                arguments[parameter.ParameterName] = resultBinding.Model;
             }
         }
         private void PrepareArguments(Dictionary<string, object> actionParameters, ObjectMethodExecutor objectMethodExecutor, out object[] arguments)

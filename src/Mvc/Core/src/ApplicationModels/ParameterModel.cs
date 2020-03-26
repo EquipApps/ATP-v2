@@ -1,52 +1,59 @@
 ﻿using EquipApps.Mvc.ModelBinding;
+using Microsoft.Extensions.Internal;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace EquipApps.Mvc.ApplicationModels
 {
-    public class ParameterModel : IBindingModel
+    [DebuggerDisplay("ParameterModel: Name={ParameterName}")]
+    public class ParameterModel : ParameterModelBase, ICommonModel, IBindingModel
     {
-        public ParameterModel(ParameterInfo info, IReadOnlyList<object> attributes)
+        public ParameterModel(ParameterInfo parameterInfo,
+                              IReadOnlyList<object> attributes)
+            : base(parameterInfo?.ParameterType, attributes)
         {
-            Attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
-            Info = info ?? throw new ArgumentNullException(nameof(info));
-
+            ParameterInfo = parameterInfo ?? throw new ArgumentNullException(nameof(parameterInfo));
         }
 
-        /// <summary>
-        /// Возвращает список аттрибутов
-        /// </summary>
-        public IReadOnlyList<object> Attributes { get; }
+        public ParameterModel(ParameterModel other)
+            : base(other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException(nameof(other));
+            }
 
-        /// <summary>
-        /// Задает или возвращает <see cref="ApplicationModels.BindingInfo"/>.
-        /// Может быть NULL.
-        /// </summary>
-        public BindingInfo BindingInfo { get; set; }
+            Action = other.Action;
+            ParameterInfo = other.ParameterInfo;
+        }
 
-        /// <summary>
-        /// Возвращает тип параметра
-        /// </summary>
-        public ParameterInfo Info { get; }
+        public ActionModel Action { get; set; }
 
-        /// <summary>
-        /// Задает или возвращает <see cref="MethodModel"/>
-        /// </summary>
-        public MethodModel Method { get; set; }
-        /// <summary>
-        /// Задает или возвращает <see cref="IBinder"/>
-        /// </summary>
-        public IBinder ModelBinder { get; set; }
+        public new IDictionary<object, object> Properties => base.Properties;
 
-        /// <summary>
-        /// Задает или возвращает имя параметра
-        /// </summary>
-        public string Name { get; set; }
+        public new IReadOnlyList<object> Attributes => base.Attributes;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public IBindingModel Parent => Method;
+        MemberInfo ICommonModel.MemberInfo => ParameterInfo.Member;
+
+        public ParameterInfo ParameterInfo { get; }
+
+        public string ParameterName
+        {
+            get => Name;
+            set => Name = value;
+        }
+
+        public string DisplayName
+        {
+            get
+            {
+                var parameterTypeName = TypeNameHelper.GetTypeDisplayName(ParameterInfo.ParameterType, fullName: false);
+                return $"{parameterTypeName} {ParameterName}";
+            }
+        }
+
+        IBindingModel IBindingModel.Parent => Action;
     }
 }

@@ -7,6 +7,16 @@ namespace EquipApps.Mvc.ModelBinding
     /// </summary>
     public class BindingInfo
     {
+        public BindingInfo()
+        {
+
+        }
+
+        public BindingInfo(BindingInfo bindingInfo)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Задает или возвращает источник привязки.
         /// </summary>

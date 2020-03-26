@@ -6,7 +6,7 @@ namespace EquipApps.Mvc.Controllers
 {
     public class ControllerTestStep : TestObject
     {
-        public ControllerTestStep(MethodModel actionModel, int index, int? indexSecond = null)
+        public ControllerTestStep(ActionModel actionModel, int index, int? indexSecond = null)
         {
             ActionModel = actionModel ?? throw new ArgumentNullException(nameof(actionModel));
             Index = index;
@@ -21,7 +21,7 @@ namespace EquipApps.Mvc.Controllers
         /// <summary>
         /// Возвращает <see cref="ControllerModel"/>
         /// </summary>
-        public MethodModel ActionModel { get; }
+        public ActionModel ActionModel { get; }
 
         /// <summary>
         /// Возвращает порядковый номер

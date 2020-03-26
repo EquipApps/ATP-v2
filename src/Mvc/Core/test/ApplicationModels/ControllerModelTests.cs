@@ -48,15 +48,15 @@ namespace NLib.AtpNetCore.Mvc.ApplicationModels.Tests
             Assert.IsNull(model.Index);
             Assert.AreEqual(typeInfo, model.Info);
 
-            Assert.IsNotNull(model.Methods);
-            Assert.AreEqual(0, model.Methods.Count);
+            Assert.IsNotNull(model.Actions);
+            Assert.AreEqual(0, model.Actions.Count);
 
             Assert.IsNull(model.ModelBinder);
             Assert.AreEqual(typeInfo.Name, model.Name);
             Assert.IsNull(model.Parent);
 
-            Assert.IsNotNull(model.Properties);
-            Assert.AreEqual(0, model.Properties.Count);
+            Assert.IsNotNull(model.ControllerProperties);
+            Assert.AreEqual(0, model.ControllerProperties.Count);
 
             Assert.IsNull(model.Title);
         }

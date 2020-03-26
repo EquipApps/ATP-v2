@@ -7,8 +7,8 @@
     {
         int Order { get; }
 
-        void OnProvidersExecuting(ApplicationModelContext context);
+        void OnProvidersExecuting(ApplicationModelProviderContext context);
 
-        void OnProvidersExecuted(ApplicationModelContext context);
+        void OnProvidersExecuted(ApplicationModelProviderContext context);
     }
 }
