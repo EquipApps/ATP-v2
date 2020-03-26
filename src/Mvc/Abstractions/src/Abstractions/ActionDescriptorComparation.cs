@@ -6,14 +6,7 @@ namespace EquipApps.Mvc.Abstractions
     {
         public static int Comparison(ActionDescriptor x, ActionDescriptor y)
         {
-            var result = x.TestCase.Number.CompareTo(y.TestCase.Number);
-
-            if (result == 0)
-            {
-                result = x.TestStep.Number.CompareTo(y.TestStep.Number);
-            }
-
-            return result;
+            return x.Number.CompareTo(y.Number);
         }
 
         public override int Compare(ActionDescriptor x, ActionDescriptor y)

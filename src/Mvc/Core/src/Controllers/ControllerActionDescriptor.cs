@@ -1,19 +1,23 @@
-﻿using EquipApps.Mvc;
-using EquipApps.Mvc.Objects;
+﻿using EquipApps.Mvc.Objects;
+using System;
+using System.Reflection;
 
-namespace NLib.AtpNetCore.Testing.Mvc.Controllers
+namespace EquipApps.Mvc.Controllers
 {
     public class ControllerActionDescriptor : ActionDescriptor
     {
         private TestNumber _number;
-       
+
 
         public ControllerActionDescriptor(ControllerTestCase testCase, ControllerTestStep testStep)
-            :base(testCase, testStep)
+            : base(testCase, testStep)
         {
             TestStep.ActionDescriptor = this;
 
-            _number = new TestNumberBuilder()             
+            MethodInfo         = testStep.ActionModel.Info;
+            ControllerTypeInfo = testCase.ControllerModel.Info;
+
+            _number = new TestNumberBuilder()
                 .Append(testCase.Number)
                 .Append(testStep.Number)
                 .Build();
@@ -29,10 +33,18 @@ namespace NLib.AtpNetCore.Testing.Mvc.Controllers
         }
 
 
+        public MethodInfo MethodInfo { get; set; }
+        public TypeInfo ControllerTypeInfo { get; set; }
+
+
+
+
+
+        [Obsolete("Use Route")]
         public override string Area => TestCase.ControllerModel.Area;
 
         public override TestNumber Number => _number;
 
-        public override string Title    => TestStep.Title;
+        public override string Title => TestStep.Title;
     }
 }

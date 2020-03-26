@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\..\Hardware\Core\src\EquipApps.Hardware.Core.csproj" />
     <ProjectReference Include="..\..\..\Mvc\Abstractions\src\EquipApps.Mvc.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\Mvc\Core\src\EquipApps.Mvc.Core.csproj" />
+    <ProjectReference Include="..\..\..\Mvc\ViewFeatures\src\EquipApps.Mvc.ViewFeatures.csproj" />
     <ProjectReference Include="..\..\..\Testing\Abstractions\src\EquipApps.Testing.Abstractions.csproj" />
   </ItemGroup>
 

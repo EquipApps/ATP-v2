@@ -1,10 +1,8 @@
-﻿using NLib.AtpNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace B.EK.Models
 {
-    [Case("<Name>")]
     public class Command
     {
         public Command(string name)

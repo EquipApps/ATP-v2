@@ -1,4 +1,5 @@
-﻿using EquipApps.Mvc.ModelBinding;
+﻿using EquipApps.Mvc;
+using EquipApps.Mvc.ModelBinding;
 using EquipApps.Mvc.ModelBinding.Metadata;
 using EquipApps.Mvc.ModelBinding.Property;
 using Microsoft.Extensions.Logging;

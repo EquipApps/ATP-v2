@@ -1,11 +1,11 @@
-﻿using EquipApps.Mvc.ApplicationParts;
-using NLib.AtpNetCore.Mvc;
+﻿using EquipApps.Mvc;
+using EquipApps.Mvc.ApplicationParts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace NLib.AtpNetCore.Testing.Mvc.Internal
+namespace EquipApps.Mvc.Controllers
 {
     /// <summary>
     /// Провайдер <see cref="ControllerFeature"/>

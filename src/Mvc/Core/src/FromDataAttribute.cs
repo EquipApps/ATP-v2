@@ -2,7 +2,7 @@
 using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
 using System;
 
-namespace NLib.AtpNetCore.Mvc
+namespace EquipApps.Mvc
 {
     // <summary>
     /// Настраивает привязку к свойству или параметру. 
@@ -20,7 +20,7 @@ namespace NLib.AtpNetCore.Mvc
 
         public FromDataAttribute(string modelName)
         {
-            if (modelName == string.Empty)
+            if (string.IsNullOrWhiteSpace(modelName))
             {
                 throw new ArgumentNullException(nameof(modelName));
             }
@@ -34,17 +34,17 @@ namespace NLib.AtpNetCore.Mvc
         public BindingSource BindingSource => BindingSource.DataContext;
 
         /// <summary>
-        /// Возвращает / Устанавливает свойство привязки.  Если "" - привязывается источник.
+        /// Возвращает / Устанавливает свойство привязки.  
+        /// Если "" - привязывается источник.
         /// </summary>
         /// 
         /// <remarks>
-        /// 
         /// Формат:      
-        /// Property
-        /// Property.Property
-        /// Property[0]
-        /// Property[0].Property
-        /// Property[0].Property[0]       
+        ///     Property
+        ///     Property.Property
+        ///     Property[0]
+        ///     Property[0].Property
+        ///     Property[0].Property[0]       
         /// </remarks>
         /// 
         public string ModelPath { get; set; }

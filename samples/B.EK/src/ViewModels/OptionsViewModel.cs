@@ -1,7 +1,10 @@
 ﻿using B.EK.Configure;
+using EquipApps.Mvc;
+using EquipApps.Mvc.Infrastructure;
 using EquipApps.Testing;
 using EquipApps.WorkBench.ViewModels;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Extensions;
@@ -9,25 +12,20 @@ using ReactiveUI.Validation.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
+using System.Threading;
 
 namespace B.EK.ViewModels
 {
     /// <summary>
     /// Модель представление ввода данных.  
     /// </summary>
-    public class OptionsViewModel : FlyoutSettingsViewModelBase
+    public class OptionsViewModel : FlyoutSettingsViewModelBase, IActionDescriptorChangeProvider
     {
-        private ActionsViewer _actionViewModel;
-
         /// <summary>
         /// Конструктор
         /// </summary>
-        public OptionsViewModel(
-            ActionsViewer actionViewModel,
-            IOptions<TestOptions> options) : base(options)
+        public OptionsViewModel(IOptions<TestOptions> options) : base(options)
         {
-            _actionViewModel = actionViewModel ?? throw new ArgumentNullException(nameof(actionViewModel));
-
             //--Создаем Правила
             UserNameRule = this.ValidationRule(vm => vm.UserName,   x => !string.IsNullOrWhiteSpace(x), "Поле не заполнено");
             NumberRule   = this.ValidationRule(vm => vm.Number,     x => !string.IsNullOrWhiteSpace(x), "Поле не заполнено");
@@ -96,7 +94,32 @@ namespace B.EK.ViewModels
         /// </summary>
         [Reactive] public string PowerMode { get; set; }
 
+        private IChangeToken _changeToken;
+        private CancellationTokenSource _cancellationTokenSource;
 
+        public IChangeToken GetChangeToken()
+        {
+            if (_changeToken == null)
+            {
+                _cancellationTokenSource = new CancellationTokenSource();
+                _changeToken = new CancellationChangeToken(_cancellationTokenSource.Token);
+            }
+            return _changeToken;
+        }
+
+        private void Cancel()
+        {
+            // Step 1.
+            var oldCancellationTokenSource = _cancellationTokenSource;
+
+            // Step 3.
+            _cancellationTokenSource = new CancellationTokenSource();
+            _changeToken = new CancellationChangeToken(_cancellationTokenSource.Token);
+
+            // Step 4 - might be null if it's the first time.
+            oldCancellationTokenSource?.Cancel();
+        }
+        
 
         protected override void LoadOptinos(TestOptions options)
         {
@@ -118,14 +141,16 @@ namespace B.EK.ViewModels
 
             if (WorkingMode == Settings.WorkingMode_NS)
             {
-                _actionViewModel.IsEnabledBreakPoint = true;
-                _actionViewModel.IsEnabledCheckPoint = true;
+                MessageBusEx.SendEnabledBreakPoint(true);
+                MessageBusEx.SendEnabledCheckPoint(true);
             }
             else
             {
-                _actionViewModel.IsEnabledBreakPoint = false;
-                _actionViewModel.IsEnabledCheckPoint = false;
+                MessageBusEx.SendEnabledBreakPoint(false);
+                MessageBusEx.SendEnabledCheckPoint(false);
             }
+
+            Cancel();
         }
     }
 }

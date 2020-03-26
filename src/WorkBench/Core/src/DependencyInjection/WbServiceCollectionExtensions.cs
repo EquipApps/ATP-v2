@@ -12,11 +12,11 @@ namespace Microsoft.Extensions.DependencyInjection
             // CORE()
             //
             // 
-            services.AddSingleton<IActionService,   ActionService>();
+           // services.AddSingleton<IActionService,   ActionService>();
             services.AddSingleton<ILogEntryService, LogEntryService>();
 
             
-            services.AddSingleton<ActionsViewer>();
+            
 
             services.AddTransient<ActionsByResultViewer>();
 
@@ -25,10 +25,10 @@ namespace Microsoft.Extensions.DependencyInjection
             // Action Descriptor Factory
             // Singleton
             // ( Переопределяет провайдер по умолчанию )
-            services.AddSingleton<IActionFactory>(serviceProvider =>
-            {
-                return serviceProvider.GetService<IActionService>() as ActionService;
-            });
+            //services.AddSingleton<IActionFactory>(serviceProvider =>
+            //{
+            //    return serviceProvider.GetService<IActionService>() as ActionService;
+            //});
         }
     }
 }

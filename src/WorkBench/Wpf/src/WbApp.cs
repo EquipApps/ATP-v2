@@ -34,8 +34,8 @@ namespace EquipApps.WorkBench
 
             //TODO: Перенеси как расширение в Core
             //-------------------------------------------------------------
-            
-            
+            serviceCollection.AddViewer();
+
 
             //-------------------------------------------------------------
             serviceCollection.AddTransient<LogViewerViewModel>();

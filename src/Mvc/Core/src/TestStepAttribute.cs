@@ -1,7 +1,7 @@
 ﻿using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
 using System;
 
-namespace NLib.AtpNetCore.Mvc
+namespace EquipApps.Mvc
 {
     /// <summary>
     /// Формерует TestSuit

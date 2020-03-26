@@ -1,5 +1,5 @@
-﻿using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
-using NLib.AtpNetCore.Testing.Mvc;
+﻿using EquipApps.Mvc;
+using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
 using System;
 
 namespace AtpNetCore.Mvc.Core.Tests.Mok

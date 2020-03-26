@@ -19,9 +19,8 @@ namespace EquipApps.Mvc
             }
         }
 
-        public ActionContext(
-            RuntimeContext runtimeContext,
-            ActionDescriptor actionDescriptor)
+        public ActionContext(RuntimeContext runtimeContext,
+                             ActionDescriptor actionDescriptor)
         {
             RuntimeContext   = runtimeContext   ?? throw new ArgumentNullException(nameof(runtimeContext));
             ActionDescriptor = actionDescriptor ?? throw new ArgumentNullException(nameof(actionDescriptor));

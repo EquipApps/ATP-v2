@@ -1,4 +1,5 @@
-﻿using EquipApps.WorkBench;
+﻿using EquipApps.Mvc;
+using EquipApps.WorkBench;
 using NLib.AtpNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace B.EK.Controllers
 {
-    [Suit(6, "Исходное состояние ААП")]
+    [Case(6, "Исходное состояние ААП")]
     public class Etap6Controller : Controller
     {
         public void Action()

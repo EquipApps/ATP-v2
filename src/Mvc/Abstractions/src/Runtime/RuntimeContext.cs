@@ -3,24 +3,18 @@ using System;
 
 namespace EquipApps.Mvc.Runtime
 {
-    public class RuntimeContext
+    /// <summary>
+    /// 
+    /// </summary>
+    public abstract class RuntimeContext
     {
-        public RuntimeContext(
-            TestContext testContext,
-            IRuntimeActionEnumerator       actionEnumerator,
-            IActionInvokerFactory   actionInvokerFactory,
-            IRuntimeStateEnumerator        stateEnumerator)
-        {
-            TestContext = testContext      ?? throw new ArgumentNullException(nameof(testContext));
-            Action  = actionEnumerator     ?? throw new ArgumentNullException(nameof(actionInvokerFactory));
-            Factory = actionInvokerFactory ?? throw new ArgumentNullException(nameof(actionEnumerator));
-            State   = stateEnumerator      ?? throw new ArgumentNullException(nameof(stateEnumerator));
-        }
-
         /// <summary>
-        /// Флаг завершения обработки
-        /// </summary>
-        public bool Handled { get; set; } = false;
+        /// Конструктор
+        /// </summary>      
+        public RuntimeContext(TestContext testContext)
+        {
+            TestContext = testContext ?? throw new ArgumentNullException(nameof(testContext));          
+        }
 
         /// <summary>
         /// Возвращает <see cref="Testing.TestContext"/>
@@ -28,18 +22,31 @@ namespace EquipApps.Mvc.Runtime
         public TestContext TestContext { get; }
 
         /// <summary>
-        /// Возвращает <see cref="IRuntimeActionEnumerator"/>
+        /// Переход на <see cref="ActionDescriptor"/>.
         /// </summary>
-        public IRuntimeActionEnumerator Action { get; }
+        /// 
+        /// <param name="actionDescriptor">
+        /// Действие на которое произойдет переход
+        /// </param>
+        /// 
+        /// <returns>
+        /// true    - переход возможен;
+        /// false   - переход не возможен;
+        /// </returns>        
+        public abstract bool JumpTo(ActionDescriptor actionDescriptor);
 
         /// <summary>
-        /// Возвращает <see cref="IActionInvokerFactory"/>
+        /// Переход на <see cref="RuntimeState"/>.
         /// </summary>
-        public IActionInvokerFactory Factory { get; }
-
-        /// <summary>
-        /// Возвращает <see cref="IRuntimeStateEnumerator"/>
-        /// </summary>
-        public IRuntimeStateEnumerator State { get; }
+        /// 
+        /// <param name="stateType">
+        /// Состояние вкоторое произойдет переход
+        /// </param>
+        /// 
+        /// <returns>
+        /// true    - переход возможен;
+        /// false   - переход не возможен;
+        /// </returns>       
+        public abstract bool JumpTo(RuntimeState runtimeState);
     }
 }

@@ -1,18 +1,18 @@
 ﻿using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
 using System;
 
-namespace NLib.AtpNetCore.Mvc
+namespace EquipApps.Mvc
 {
     /// <summary>
-    /// Формерует TestCase
+    /// Формерует Test Case 
     /// </summary>   
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
-    public class CaseAttribute : Attribute, IDisplayFormatTitleMetadata, IDisplayFormatNumberMetadata
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class CaseAttribute : Attribute, IDisplayFormatTitleMetadata, IDisplayIndexMetadata
     {
-        public CaseAttribute(string number, string name)
+        public CaseAttribute(int number, string title)
         {
-            NumberFormat = number;
-            TitleFormat = name;
+            Index = number;
+            TitleFormat = title;
         }
 
         public CaseAttribute(string title)
@@ -23,6 +23,7 @@ namespace NLib.AtpNetCore.Mvc
 
         public string TitleFormat { get; }
 
-        public string NumberFormat { get; }
+
+        public int? Index { get; }
     }
 }

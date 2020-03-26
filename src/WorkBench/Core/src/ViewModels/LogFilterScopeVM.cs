@@ -1,4 +1,5 @@
-﻿using EquipApps.WorkBench.Models;
+﻿using EquipApps.Mvc;
+using EquipApps.WorkBench.Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;

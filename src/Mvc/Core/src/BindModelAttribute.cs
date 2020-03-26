@@ -3,7 +3,7 @@ using NLib.AtpNetCore.Mvc.ModelBinding;
 using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
 using System;
 
-namespace NLib.AtpNetCore.Mvc
+namespace EquipApps.Mvc
 {
     /// <summary>
     /// Маркер привязки данных.

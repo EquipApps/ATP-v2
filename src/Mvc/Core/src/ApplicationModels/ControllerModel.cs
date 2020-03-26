@@ -39,12 +39,6 @@ namespace EquipApps.Mvc.ApplicationModels
         public IReadOnlyList<object> Attributes { get; }
 
         /// <summary>
-        /// Задает или возвращает <see cref="BackgroundModel"/>. 
-        /// Может быть NULL.
-        /// </summary>
-        public BackgroundModel Background { get; set; }
-
-        /// <summary>
         /// Задает или возвращает <see cref="ApplicationModels.BindingInfo"/>.
         /// Может быть NULL.
         /// </summary>

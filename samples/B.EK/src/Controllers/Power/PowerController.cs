@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace B.EK.Controllers.check_Power
 {
     [Area(Areas.Power)]
-    [Suit("10 Циклов подачи питания")]
+    [Case("10 Циклов подачи питания")]
     public class PowerController : Controller
     {
         private const int millisecondsDelay = 50;    //-- Задерка

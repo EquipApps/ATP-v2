@@ -7,9 +7,9 @@ namespace EquipApps.Mvc
     /// <summary>
     /// Модель действия
     /// </summary>
-    public class Action : IDisposable
+    public class Action22 : IDisposable
     {
-        public Action(long id, bool isCheckPoint, bool isBreak)
+        public Action22(long id, bool isCheckPoint, bool isBreak)
         {
             Id = id;
         }

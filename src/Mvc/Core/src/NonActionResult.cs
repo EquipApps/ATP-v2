@@ -1,6 +1,4 @@
-﻿using EquipApps.Mvc;
-
-namespace NLib.AtpNetCore.Mvc
+﻿namespace EquipApps.Mvc
 {
     public class NonActionResult : IActionResult
     {
@@ -13,7 +11,7 @@ namespace NLib.AtpNetCore.Mvc
 
         public void ExecuteResult(ActionContext context)
         {
-            
+
         }
     }
 }

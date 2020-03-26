@@ -1,19 +1,19 @@
 ﻿namespace EquipApps.Mvc.Abstractions
 {
-    public abstract class ActionDescripterFilterBase : IActionProvider
+    public abstract class ActionDescripterFilterBase : IActionDescriptorProvider
     {
-        int IActionProvider.Order => int.MaxValue;
+        int IActionDescriptorProvider.Order => int.MaxValue;
 
-        void IActionProvider.OnProvidersExecuted(ActionDescriptorContext context)
+        void IActionDescriptorProvider.OnProvidersExecuted(ActionDescriptorProviderContext context)
         {
             //-- 
             OnFilterExecuted(context);
         }
 
-        protected abstract void OnFilterExecuted(ActionDescriptorContext context);
+        protected abstract void OnFilterExecuted(ActionDescriptorProviderContext context);
 
 
-        void IActionProvider.OnProvidersExecuting(ActionDescriptorContext context)
+        void IActionDescriptorProvider.OnProvidersExecuting(ActionDescriptorProviderContext context)
         {
             //-- Ничего не делаем
         }

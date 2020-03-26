@@ -1,7 +1,6 @@
-﻿using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
-using System;
+﻿using System;
 
-namespace NLib.AtpNetCore.Mvc
+namespace EquipApps.Mvc
 {
     /// <summary>
     /// Указывает, что данный класс является контроллером.

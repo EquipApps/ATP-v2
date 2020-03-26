@@ -1,5 +1,4 @@
-﻿using NLib.AtpNetCore.Testing.Mvc.Runtime;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,9 +7,6 @@ namespace EquipApps.WorkBench.ViewModels
     public partial class WorkViewerViewModel
     {
         private volatile CancellationTokenSource cts;
-        private IRuntimeStatePause      runtimeStatePause;
-        private IRuntimeStateRepeatOnce runtimeStateRepeatOnce;
-        private IRuntimeStateRepeat     runtimeStateRepeat;
 
         private async Task TestStartAsync()
         {

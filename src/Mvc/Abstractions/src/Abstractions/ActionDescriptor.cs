@@ -123,18 +123,7 @@ namespace EquipApps.Mvc
 
         public IDictionary<object, object> Properties { get; } = new Dictionary<object, object>();
 
-        public void Update()
-        {
-            var updaeteEvent = UpdateEvent;
-            if (updaeteEvent != null)
-            {
-                updaeteEvent(this);
-            }
-        }
-
-
-
-        public event ActionDescriptorUpdate UpdateEvent;
+      
 
 
         ~ActionDescriptor()
@@ -147,6 +136,19 @@ namespace EquipApps.Mvc
 
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public void Dispose()
         {

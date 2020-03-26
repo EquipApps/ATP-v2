@@ -1,4 +1,5 @@
 ﻿using EquipApps.Hardware;
+using EquipApps.Mvc;
 using EquipApps.Testing;
 using EquipApps.WorkBench;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using System;
 
 namespace B.EK.Controllers
 {
-    [Suit(2, "Подключение источников питания ")]
+    [Case(2, "Подключение источников питания ")]
     public class Etap2Controller : Controller, IEnableContext
     {
         double U3_3 = 3.3;

@@ -15,7 +15,7 @@ namespace EquipApps.WorkBench.ViewModels
                 //-- 
                 test?.Dispose();
 
-                await testService.CleanAsync();
+                
                 await logsService.CleanAsync();
             }
             finally

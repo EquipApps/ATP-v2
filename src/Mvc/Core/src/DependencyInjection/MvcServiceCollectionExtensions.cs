@@ -2,20 +2,19 @@
 using EquipApps.Mvc.Abstractions;
 using EquipApps.Mvc.ApplicationModels;
 using EquipApps.Mvc.ApplicationParts;
+using EquipApps.Mvc.Controllers;
+using EquipApps.Mvc.Infrastructure;
 using EquipApps.Mvc.Internal;
 using EquipApps.Mvc.ModelBinding.Metadata;
 using EquipApps.Mvc.ModelBinding.Property;
-using EquipApps.Testing.Features;
+using EquipApps.Mvc.Runtime;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
-using NLib.AtpNetCore.Mvc;
 using NLib.AtpNetCore.Mvc.Internal;
 using NLib.AtpNetCore.Mvc.ModelBinding;
 using NLib.AtpNetCore.Mvc.ModelBinding.Metadata;
 using NLib.AtpNetCore.Mvc.ModelBinding.Properties;
-using NLib.AtpNetCore.Testing.Mvc;
-using NLib.AtpNetCore.Testing.Mvc.Controllers;
 using NLib.AtpNetCore.Testing.Mvc.Infrastructure;
 using NLib.AtpNetCore.Testing.Mvc.Internal;
 using System;
@@ -66,15 +65,15 @@ namespace NLib.AtpNetCore.Testing
         }
 
         //-- AddActionDescriptorProvider
-        public static void AddActionDescriptorProvider<TProvider>(this IServiceCollection serviceDescriptors)
-            where TProvider : class, IActionProvider
+        public static void AddTransientActionDescriptorProvider<TProvider>(this IServiceCollection serviceDescriptors)
+            where TProvider : class, IActionDescriptorProvider
         {
             //
             // Action Descriptor Provider
             // Transient
             // 
             serviceDescriptors.TryAddEnumerable(
-                ServiceDescriptor.Transient<IActionProvider, TProvider>());
+                ServiceDescriptor.Transient<IActionDescriptorProvider, TProvider>());
         }
 
 
@@ -129,9 +128,9 @@ namespace NLib.AtpNetCore.Testing
         /// Transient
         /// </summary>       
         public static IMvcBuilder AddActionDescriptorProvider<TProvider>(this IMvcBuilder builder)
-            where TProvider : class, IActionProvider
+            where TProvider : class, IActionDescriptorProvider
         {
-            builder.Services.AddActionDescriptorProvider<TProvider>();
+            builder.Services.AddTransientActionDescriptorProvider<TProvider>();
            
 
             return builder;
@@ -186,25 +185,51 @@ namespace NLib.AtpNetCore.Testing
         private static void ConfigureDefaultServices(IServiceCollection services)
         {
             // ----------------------------------------------------------------------------------------
-            // CORE()
-            //
+            // IFeatureProvider
+            //      MvcFeatureProvider
+            //      Action Descriptor Provider
             // 
-            services.AddSingleton<MvcMiddleware>();
-
-
-
+            // 
+            services.AddTransientFeatureProvider<MvcFeatureProvider>();
+            services.AddSingleton<IActionDescriptorCollectionProvider, DefaultActionDescriptorCollectionProvider>();
+            services.AddTransientActionDescriptorProvider<ControllerActionDescriptorProvider>();
+            
             // ----------------------------------------------------------------------------------------
-            // Action Descriptor Factory
-            // Singleton
-            // 
-            services.AddSingleton<IActionFactory, MvcActionDescriptorFactory>();
-
+            // Middleware
             //
-            // Action Descriptor Provider
-            // Transient
             // 
-            services.TryAddEnumerable(
-                ServiceDescriptor.Transient<IActionProvider, MvcActionDescriptorProvider>());
+            //
+            services.AddSingleton<MvcMiddleware>();
+            services.AddSingleton<DefaultRuntimeSynchService>();
+            services.AddSingleton<IRuntimeService>(x => x.GetService<DefaultRuntimeSynchService>());
+            
+            // ----------------------------------------------------------------------------------------
+            // IActionInvokerProvider
+            //      ControllerActionInvokerProvider
+            // 
+            //            
+            services.AddTransient<IActionInvokerProvider, ControllerActionInvokerProvider>();
+
+            services.AddSingleton<ControllerActionInvokerCache>();
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -212,70 +237,21 @@ namespace NLib.AtpNetCore.Testing
             // Application Model Service
             // Singleton
             // 
-            services.AddSingleton<IApplicationModelService, MvcApplicationModelService>();
+            services.AddSingleton<IApplicationModelFactory, MvcApplicationModelFactory>();
 
             //
             // Action Descriptor Provider
             //
             services.TryAddEnumerable(
-              ServiceDescriptor.Transient<IApplicationModelProvider, MvcApplicationModelProvider>());
+              ServiceDescriptor.Transient<IApplicationModelProvider, DefaultApplicationModelProvider>());
 
 
             
             // ----------------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            services.TryAddEnumerable(
-                ServiceDescriptor.Singleton<IFeatureProvider, MvcFeatureProvider>());
-
             services.TryAddEnumerable(
                ServiceDescriptor.Transient<IConfigureOptions<MvcOption>, MvcOptionSetup>());
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //
-            // Action Descriptor Provider
-            //
-            // 
-
-            services.AddSingleton<IActionInvokerProvider, ControllerActionInvokerProvider>();
-
-            //
-            // Infrastructure
-            //
-            // 
-
-
-
-            services.AddSingleton<IControllerFactory, ControllerFactory>();
 
 
             services.AddSingleton<IPropertyProvider, PropertyProvider>();

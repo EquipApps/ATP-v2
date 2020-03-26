@@ -26,7 +26,16 @@ namespace EquipApps.Testing.Wpf
             _startup        = startup               ?? throw new ArgumentNullException(nameof(startup));
             _options        = options?.Value        ?? throw new ArgumentNullException(nameof(options));
             _loggerFactory  = loggerFactory         ?? throw new ArgumentNullException(nameof(loggerFactory));
-            _providers      = providers?.ToArray()  ?? throw new ArgumentNullException(nameof(providers));
+
+
+            if (providers == null)
+            {
+                throw new ArgumentNullException(nameof(providers));
+            }
+
+            _providers = providers
+                .OrderBy(x => x.Order)
+                .ToArray();
         }
 
         public Task<ITest> CreateTestAsync()

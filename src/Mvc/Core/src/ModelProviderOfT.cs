@@ -1,7 +1,7 @@
 ﻿using NLib.AtpNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 
-namespace NLib.AtpNetCore.Mvc
+namespace EquipApps.Mvc
 {
     public abstract class ModelProvider<T> : IModelProvider<T>, IModelProvider where T : class
     {

@@ -29,7 +29,7 @@ namespace EquipApps.WorkBench.Views
 
 
                 //-- Привязка поллекции
-                this.OneWayBind(this.ViewModel, x => x.Action.Items, x => x.dataGrid.ItemsSource)
+                this.OneWayBind(this.ViewModel, x => x.Action.Data, x => x.dataGrid.ItemsSource)
                     .DisposeWith(disposable);
 
                 //-- Привязка выбранного элемента

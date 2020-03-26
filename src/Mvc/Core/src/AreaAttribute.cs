@@ -1,10 +1,10 @@
 ﻿using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
 using System;
 
-namespace NLib.AtpNetCore.Mvc
+namespace EquipApps.Mvc
 {
     /// <summary>
-    /// Формерует заголовок для TestSuit, TestCase, TestStep 
+    /// Формерует область (обединяет TestCase в TestSuit)
     /// </summary>   
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class AreaAttribute : Attribute, IDisplayAreaMetadata

@@ -1,4 +1,4 @@
-﻿using EquipApps.Mvc.Internal;
+﻿using EquipApps.Mvc.Infrastructure;
 using EquipApps.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using System;

@@ -1,4 +1,5 @@
-﻿using EquipApps.WorkBench.Services;
+﻿using EquipApps.Mvc.Viewers;
+using EquipApps.WorkBench.Services;
 using System;
 
 namespace EquipApps.WorkBench.ViewModels

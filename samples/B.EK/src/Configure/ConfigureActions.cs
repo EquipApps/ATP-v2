@@ -18,7 +18,7 @@ namespace B.EK.Configure
             this.options = options?.Value ?? throw new ArgumentNullException(nameof(options));
         }
 
-        protected override void OnFilterExecuted(ActionDescriptorContext context)
+        protected override void OnFilterExecuted(ActionDescriptorProviderContext context)
         {
             var executingMode = options.GetExecutingMode<string>();
 

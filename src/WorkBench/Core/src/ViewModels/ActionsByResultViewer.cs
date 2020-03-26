@@ -1,6 +1,6 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
-using EquipApps.WorkBench.Services;
+using EquipApps.Mvc.Services;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;

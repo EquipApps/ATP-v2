@@ -1,4 +1,5 @@
 ﻿using EquipApps.Hardware;
+using EquipApps.Mvc;
 using EquipApps.Testing;
 using EquipApps.WorkBench;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using System.Collections.Generic;
 
 namespace B.EK.Controllers
 {
-    [Suit(3, "Контроль стыковки")]
+    [Case(3, "Контроль стыковки")]
     public class Etap3Controller : Controller, IEnableContext
     {
         public void Action()

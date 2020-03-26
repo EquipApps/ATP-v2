@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NLib.AtpNetCore.Mvc
+namespace EquipApps.Mvc
 {
     /// <summary>
     /// Маркер. Указывает, что метод не является действием

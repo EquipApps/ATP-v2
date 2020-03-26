@@ -1,14 +1,10 @@
 ﻿using EquipApps.Testing;
+using EquipApps.Mvc.Runtime;
 using EquipApps.WorkBench.Services;
-using Microsoft.Extensions.Options;
-using NLib.AtpNetCore.Mvc;
-using NLib.AtpNetCore.Testing.Mvc.Runtime;
 using ReactiveUI;
 using System;
-using System.Linq;
 using System.Reactive.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using EquipApps.Mvc.Services;
 
 namespace EquipApps.WorkBench.ViewModels
 {
@@ -21,43 +17,30 @@ namespace EquipApps.WorkBench.ViewModels
         private IActionService testService;
         private ILogEntryService logsService;
 
-       
-        
+
+        private IRuntimeService runtimeService;
 
 
         public static volatile int Countter = 0;
 
         private void ctor(
+            IRuntimeService runtimeService,
             ITestFactory testFactory,
             IActionService actionDescripterService,
-            ILogEntryService logEntryService,
-            IOptions<MvcOption> options)
+            ILogEntryService logEntryService)
         {
             this.testFactory = testFactory        ?? throw new ArgumentNullException(nameof(testFactory));
             testService = actionDescripterService ?? throw new ArgumentNullException(nameof(actionDescripterService));
             logsService = logEntryService         ?? throw new ArgumentNullException(nameof(logEntryService));
+            this.runtimeService = runtimeService  ?? throw new ArgumentNullException(nameof(runtimeService));
 
-            var mvcOption = options?.Value        ?? throw new ArgumentNullException(nameof(options));
 
-            this.runtimeStatePause = mvcOption.RuntimeStates
-                .Where  (x => x.Value is IRuntimeStatePause)
-                .Select (x => x.Value as IRuntimeStatePause)
-                .FirstOrDefault();
 
-            this.runtimeStateRepeatOnce = mvcOption.RuntimeStates
-                .Where  (x => x.Value is IRuntimeStateRepeatOnce)
-                .Select (x => x.Value as IRuntimeStateRepeatOnce)
-                .FirstOrDefault();
-
-            this.runtimeStateRepeat = mvcOption.RuntimeStates
-                .Where  (x => x.Value is IRuntimeStateRepeat)
-                .Select (x => x.Value as IRuntimeStateRepeat)
-                .FirstOrDefault();
 
             //-- ПОДПИСЫВАЕМСЯ
-            var pausedRefresher = runtimeStatePause.IsPausedObservable
+            var pausedRefresher = runtimeService.ObservablePause
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(_ => IsPausing = runtimeStatePause.IsPaused);
+                .Subscribe(isPaued => IsPausing = isPaued);
 
 
             #region build TestBuild ReactiveCommand
@@ -135,17 +118,17 @@ namespace EquipApps.WorkBench.ViewModels
 
         private void OnTestRepeatOnceTask()
         {
-            runtimeStateRepeatOnce.IsEnabled = IsRepeatOnceEnabled;
+            runtimeService.IsEnabledRepeatOnce = IsRepeatOnceEnabled;
         }
 
         private void OnTestRepeatTask()
         {
-            runtimeStateRepeat.IsEnabled = IsRepeatEnabled;
+            runtimeService.IsEnabledRepeat = IsRepeatEnabled;
         }
 
         private void OnTestPauseTask()
         {
-            runtimeStatePause.IsEnabled = IsPauseEnabled;
+            runtimeService.IsEnabledPause = IsPauseEnabled;
         }
 
 
@@ -165,17 +148,17 @@ namespace EquipApps.WorkBench.ViewModels
 
         private void OnTestNextTask()
         {
-            runtimeStatePause.Next();
+            runtimeService.Next();
         }
 
         private void OnTestReplayTask()
         {
-            runtimeStatePause.Replay();
+            runtimeService.Replay();
         }
 
         private void OnTestPreviousTask()
         {
-            runtimeStatePause.Previous();
+            runtimeService.Previous();
         }
     }
 }

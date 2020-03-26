@@ -1,4 +1,5 @@
 ﻿using EquipApps.Hardware;
+using EquipApps.Mvc;
 using EquipApps.Testing;
 using EquipApps.WorkBench;
 using NLib.AtpNetCore.Mvc;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace B.EK.Controllers
 {
-    [Suit(5, "Отключение всех ИП")]
+    [Case(5, "Отключение всех ИП")]
     public class Etap5Controller : Controller, IEnableContext
     {
         public void Action()

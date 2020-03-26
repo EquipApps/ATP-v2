@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace EquipApps.Testing.Wpf.Internal
 {
@@ -85,13 +86,19 @@ namespace EquipApps.Testing.Wpf.Internal
                     //dispose managed state (managed objects).
                     foreach (var item in _features)
                     {
+                        var feature = item.Value;
+                        if (feature == null)
+                            continue;
+
                         try
                         {
-                            (item.Value as IDisposable)?.Dispose();
+                            (feature as IDisposable)?.Dispose();
                         }
-                        catch
+                        catch (Exception ex)
                         {
-                            //-- Пропускаем все ошики!
+                            Debug.WriteLine("-------------------------------------------------");
+                            Debug.WriteLine($"Feature {feature.GetType().Name} - Dispose Error");
+                            Debug.WriteLine(ex);
                         }
                     }
                 }

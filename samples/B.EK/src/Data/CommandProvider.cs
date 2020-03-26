@@ -1,5 +1,5 @@
 ﻿using B.EK.Models;
-using NLib.AtpNetCore.Mvc;
+using EquipApps.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;

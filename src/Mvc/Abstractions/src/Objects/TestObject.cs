@@ -12,7 +12,7 @@ namespace EquipApps.Mvc.Objects
 
         public TestObject()
         {
-            _lzTitle = new Lazy<string>(GetTitle);
+            _lzTitle  = new Lazy<string>    (GetTitle);
             _lzNumber = new Lazy<TestNumber>(GetNumber);
         }
 

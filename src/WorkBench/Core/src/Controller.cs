@@ -1,10 +1,10 @@
 ﻿using EquipApps.Hardware;
+using EquipApps.Mvc;
 using EquipApps.Mvc.Abstractions;
 using EquipApps.Testing;
 using Microsoft.Extensions.Logging;
 using NLib.AtpNetCore.Mvc;
 using NLib.AtpNetCore.Mvc.ModelBinding;
-using NLib.AtpNetCore.Testing.Mvc;
 using System;
 using System.Collections.Generic;
 

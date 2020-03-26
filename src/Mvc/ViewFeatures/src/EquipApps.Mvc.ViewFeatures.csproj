@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>EquipApps.Mvc</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Builder\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ReactiveUI" Version="11.2.3" />
+    <PackageReference Include="ReactiveUI.Fody" Version="11.2.3" />
+    <PackageReference Include="ReactiveUI.Validation" Version="1.4.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Testing\Abstractions\src\EquipApps.Testing.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Abstractions\src\EquipApps.Mvc.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Core\src\EquipApps.Mvc.Core.csproj" />
+  </ItemGroup>
+
+</Project>

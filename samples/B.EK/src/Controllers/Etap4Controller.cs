@@ -1,6 +1,7 @@
 ﻿using B.EK.Models;
 using EquipApps.Hardware;
 using EquipApps.Hardware.Extensions;
+using EquipApps.Mvc;
 using EquipApps.Testing;
 using EquipApps.WorkBench;
 using Microsoft.Extensions.Logging;
@@ -15,7 +16,7 @@ using System.Transactions;
 
 namespace B.EK.Controllers
 {
-    [Suit(4, "Проверка <Name>")]
+    [Case(4, "Проверка <Name>")]
     public class Etap4Controller : Controller<Command>, IEnableContext
     {
         double U30_P = 27;

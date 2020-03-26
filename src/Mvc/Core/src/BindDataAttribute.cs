@@ -8,9 +8,7 @@ namespace NLib.AtpNetCore.Mvc
     /// Маркер привязки данных.
     /// Данные извлекаются из DataContext.
     /// </summary>    
-    [AttributeUsage(
-        AttributeTargets.Method | AttributeTargets.Property,
-        AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class BindDataAttribute : Attribute, IModelTypeMetadata, IModelPathMetadata, IBindingSourceMetadata
     {
         /// <summary>
@@ -27,7 +25,7 @@ namespace NLib.AtpNetCore.Mvc
         /// 
         /// <remarks>
         /// Фича: Если указать путь к коллекции, а тип как элемент коллекции,
-        /// то данные будут извлекаться из коллекции!       
+        ///       то данные будут извлекаться из коллекции!       
         /// </remarks>
         public BindDataAttribute(Type modelType, string modelPath)
         {
@@ -36,7 +34,7 @@ namespace NLib.AtpNetCore.Mvc
         }
 
         /// <summary>
-        /// Конструктор не явоно привязки
+        /// Конструктор не явной привязки
         /// </summary>
         /// 
         /// <param name="modelName">
@@ -44,11 +42,12 @@ namespace NLib.AtpNetCore.Mvc
         /// </param>
         /// 
         /// <remarks>
-        /// Провайдер привязки должен сам определить тип модели и корректировать модель приложения
+        /// Провайдер привязки должен сам определить тип модели
         /// </remarks>
         public BindDataAttribute(string modelName)
         {
             ModelPath = modelName ?? throw new ArgumentNullException(nameof(modelName));
+            ModelType = null;
         }
 
         /// <summary>

@@ -7,8 +7,6 @@ namespace EquipApps.Mvc.ApplicationModels
 {
     public class ParameterModel : IBindingModel
     {
-        //---------------------------------------------------------------
-
         public ParameterModel(ParameterInfo info, IReadOnlyList<object> attributes)
         {
             Attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));

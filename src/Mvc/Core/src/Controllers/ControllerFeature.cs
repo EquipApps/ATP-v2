@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 
-namespace NLib.AtpNetCore.Testing.Mvc.Internal
+namespace EquipApps.Mvc.Controllers
 {
     /// <summary>
     /// Функция приложения, Возвращает список типов контроллеров приложения

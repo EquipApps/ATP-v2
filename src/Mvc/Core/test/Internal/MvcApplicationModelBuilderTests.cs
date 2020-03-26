@@ -1,4 +1,5 @@
 ﻿using AtpNetCore.Mvc.Core.Tests.Mok;
+using EquipApps.Mvc.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Reflection;
@@ -12,7 +13,7 @@ namespace NLib.AtpNetCore.Mvc.Internal.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void CreateControllerModelTest_ArgumentNullException()
         {
-            MvcApplicationModelBuilder.CreateControllerModel(null);
+            ApplicationModelBuilder.CreateControllerModel(null);
         }
 
         [TestMethod()]
@@ -23,7 +24,7 @@ namespace NLib.AtpNetCore.Mvc.Internal.Tests
 
             //---------------------------------------------------------------------------------
             var controllerType = typeof(Mok1Controller).GetTypeInfo();
-            var controllerModel = MvcApplicationModelBuilder.CreateControllerModel(controllerType);
+            var controllerModel = ApplicationModelBuilder.CreateControllerModel(controllerType);
 
             Assert.IsNotNull(controllerModel);
             Assert.IsNull(controllerModel.BindingInfo);
@@ -31,7 +32,7 @@ namespace NLib.AtpNetCore.Mvc.Internal.Tests
 
             //---------------------------------------------------------------------------------
             controllerType = typeof(Mok2Controller).GetTypeInfo();
-            controllerModel = MvcApplicationModelBuilder.CreateControllerModel(controllerType);
+            controllerModel = ApplicationModelBuilder.CreateControllerModel(controllerType);
 
             Assert.IsNotNull(controllerModel);
             Assert.IsNull(controllerModel.BindingInfo);
@@ -39,7 +40,7 @@ namespace NLib.AtpNetCore.Mvc.Internal.Tests
 
             //---------------------------------------------------------------------------------
             controllerType = typeof(Mok2Controller).GetTypeInfo();
-            controllerModel = MvcApplicationModelBuilder.CreateControllerModel(controllerType);
+            controllerModel = ApplicationModelBuilder.CreateControllerModel(controllerType);
 
             Assert.IsNotNull(controllerModel);
             Assert.IsNull(controllerModel.BindingInfo);
@@ -60,7 +61,7 @@ namespace NLib.AtpNetCore.Mvc.Internal.Tests
         public void CreateControllerModelTest_Index()
         {
             var controllerType = typeof(IndexController).GetTypeInfo();
-            var controllerModel = MvcApplicationModelBuilder.CreateControllerModel(controllerType);
+            var controllerModel = ApplicationModelBuilder.CreateControllerModel(controllerType);
 
             Assert.AreEqual(controllerModel.Name, "Index");
 
@@ -77,7 +78,7 @@ namespace NLib.AtpNetCore.Mvc.Internal.Tests
         public void CreateControllerModelTest_Index1()
         {
             var controllerType = typeof(Index1Controller).GetTypeInfo();
-            var controllerModel = MvcApplicationModelBuilder.CreateControllerModel(controllerType);
+            var controllerModel = ApplicationModelBuilder.CreateControllerModel(controllerType);
 
             Assert.AreEqual(controllerModel.Name, "Index1");
 
@@ -93,7 +94,7 @@ namespace NLib.AtpNetCore.Mvc.Internal.Tests
         public void CreateControllerModelTest_Index2()
         {
             var controllerType = typeof(Index2Controller).GetTypeInfo();
-            var controllerModel = MvcApplicationModelBuilder.CreateControllerModel(controllerType);
+            var controllerModel = ApplicationModelBuilder.CreateControllerModel(controllerType);
 
             Assert.AreEqual(controllerModel.Name, "Index2");
 

@@ -7,7 +7,8 @@
     {
         int Order { get; }
 
-        void OnProvideExecuted(ActionInvokerProviderContext context);
+        void OnProvidersExecuting(ActionInvokerProviderContext context);
+        void OnProvidersExecuted(ActionInvokerProviderContext context);
         void OnDisposeExecuted();
     }
 }
