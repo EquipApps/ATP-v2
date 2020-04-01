@@ -5,7 +5,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
 {
     public static class BindingFactoryEx
     {
-        public static IBinder Create(this IBindingFactory factory, IBindingModel bindingModel)
+        public static IModelBinder Create(this IBindingFactory factory, IBindingModel bindingModel)
         {
             if (factory == null)
             {
@@ -24,7 +24,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
 
             return factory.Create(bindingModel, bindingModel.BindingInfo);
         }
-        public static IBinder Create(this IBindingFactory factory, IBindingModel bindingModel, string format)
+        public static IModelBinder Create(this IBindingFactory factory, IBindingModel bindingModel, string format)
         {
             if (factory == null)
             {
@@ -44,7 +44,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
             var bindingInfo = new BindingInfo()
             {
                 BindingSource = BindingSource.DataText,
-                ModelPath = format
+                BinderModelName = format
             };
 
             return factory.Create(bindingModel, bindingInfo);

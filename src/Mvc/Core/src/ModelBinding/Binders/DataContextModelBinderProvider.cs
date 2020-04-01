@@ -10,9 +10,9 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
     public class DataContextModelBinderProvider : IBinderProvider
     {
         /// <summary>
-        /// Возвращает <see cref="IBinder"/> в случае прохождения валидации <paramref name="context"/>
+        /// Возвращает <see cref="IModelBinder"/> в случае прохождения валидации <paramref name="context"/>
         /// </summary>        
-        public IBinder GetBinder(BinderProviderContext context)
+        public IModelBinder GetBinder(BinderProviderContext context)
         {
             if (context == null)
             {
@@ -23,7 +23,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
                 context.BindingInfo.BindingSource.CanAcceptDataFrom(BindingSource.DataContext))
             {
                 var expectedBindingType = context.BindingInfo.ModelType;
-                var expectedBindingPath = context.BindingInfo.ModelPath;
+                var expectedBindingPath = context.BindingInfo.BinderModelName;
                 var parent = context.BindingModel;
                 var index = 0;
 

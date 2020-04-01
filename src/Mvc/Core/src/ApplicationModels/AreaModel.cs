@@ -11,7 +11,7 @@ namespace EquipApps.Mvc.ApplicationModels
         public AreaModel(int index, string name)
         {
             Index = index;
-            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Name  = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         /// <summary>

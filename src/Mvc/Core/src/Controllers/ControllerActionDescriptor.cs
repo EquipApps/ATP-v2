@@ -14,8 +14,8 @@ namespace EquipApps.Mvc.Controllers
         {
             TestStep.ActionDescriptor = this;
 
-            MethodInfo         = testStep.ActionModel.Info;
-            ControllerTypeInfo = testCase.ControllerModel.Info;
+            MethodInfo         = testStep.ActionModel.ActionMethod;
+            ControllerTypeInfo = testCase.ControllerModel.ControllerType;
 
             _number = new TestNumberBuilder()
                 .Append(testCase.Number)
@@ -37,11 +37,6 @@ namespace EquipApps.Mvc.Controllers
         public TypeInfo ControllerTypeInfo { get; set; }
 
 
-
-
-
-        [Obsolete("Use Route")]
-        public override string Area => TestCase.ControllerModel.Area;
 
         public override TestNumber Number => _number;
 

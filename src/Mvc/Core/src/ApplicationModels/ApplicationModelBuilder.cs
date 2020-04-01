@@ -1,13 +1,12 @@
-﻿using EquipApps.Mvc.ApplicationModels;
+﻿using EquipApps.Mvc.Internal;
 using EquipApps.Mvc.ModelBinding;
 using NLib.AtpNetCore.Mvc.ModelBinding;
 using System;
 using System.Linq;
 using System.Reflection;
 
-namespace EquipApps.Mvc.Internal
+namespace EquipApps.Mvc.ApplicationModels
 {
-
     public static class ApplicationModelBuilder
     {
         public static ControllerModel CreateControllerModel(TypeInfo controllerType)
@@ -47,8 +46,8 @@ namespace EquipApps.Mvc.Internal
             var controllerModel = new ControllerModel(controllerType, attributes);
             controllerModel.Area = displayInfo?.Area;
             controllerModel.BindingInfo = bindingInfo;
-            controllerModel.Name = name;
-            controllerModel.Index = displayInfo?.Index ?? controllerModel.Name.ToIntFromEnd();
+            controllerModel.ControllerName = name;
+            controllerModel.Index = displayInfo?.Index ?? controllerModel.ControllerName.ToIntFromEnd();
             controllerModel.Title = displayInfo?.Title;                                           //TODO: add unti test
 
             return controllerModel;
@@ -80,7 +79,7 @@ namespace EquipApps.Mvc.Internal
                  * Если Тип модели NULL      => Привязка по типу свойства
                  * Если Источник модели NULL => Привязка из DataContext
                  */
-                if (bindingInfo.ModelPath == null) bindingInfo.ModelPath = propertyName;
+                if (bindingInfo.BinderModelName == null) bindingInfo.BinderModelName = propertyName;
                 if (bindingInfo.ModelType == null) bindingInfo.ModelType = propertyInfo.PropertyType;
                 if (bindingInfo.BindingSource == null) bindingInfo.BindingSource = BindingSource.DataContext;
             }
@@ -116,7 +115,7 @@ namespace EquipApps.Mvc.Internal
             var methodModel = new ActionModel(methodInfo, attributes);
 
             methodModel.BindingInfo = bindingInfo;
-            methodModel.Name = methodInfo.Name;
+            methodModel.ActionName = methodInfo.Name;
             methodModel.Number = displayInfo?.Number;
             methodModel.Title = displayInfo?.Title;
 
@@ -146,14 +145,14 @@ namespace EquipApps.Mvc.Internal
                 * Если Тип модели NULL      => Привязка по типу параметра
                 * Если Источник модели NULL => Привязка из DataContext
                 */
-                if (bindingInfo.ModelPath == null) bindingInfo.ModelPath = parameterName;
+                if (bindingInfo.BinderModelName == null) bindingInfo.BinderModelName = parameterName;
                 if (bindingInfo.ModelType == null) bindingInfo.ModelType = parameterInfo.ParameterType;
                 if (bindingInfo.BindingSource == null) bindingInfo.BindingSource = BindingSource.DataContext;
             }
             else
             {
                 bindingInfo = new BindingInfo();
-                bindingInfo.ModelPath = parameterInfo.Name;
+                bindingInfo.BinderModelName = parameterInfo.Name;
                 bindingInfo.ModelType = parameterInfo.ParameterType;
                 bindingInfo.BindingSource = BindingSource.DataContext;
             }

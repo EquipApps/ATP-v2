@@ -92,7 +92,7 @@ namespace EquipApps.Mvc.Infrastructure
                     logger.LogWarning(
                         $"У свойства нет привязки. (Возможно ошибка модели приложения) " +
                         $"Область: {property.Controller.Area}; " +
-                        $"Контроллер: {property.Controller.Name}; " +
+                        $"Контроллер: {property.Controller.ControllerName}; " +
                         $"Свойство: {property.PropertyName};");
                     continue;
                 }
@@ -103,7 +103,7 @@ namespace EquipApps.Mvc.Infrastructure
                     logger.LogError(
                         $"Не получилось привязаться к данным " +
                         $"Область: {property.Controller.Area}; " +
-                        $"Контроллер: {property.Controller.Name}; " +
+                        $"Контроллер: {property.Controller.ControllerName}; " +
                         $"Свойство: {property.PropertyName};");
 
                     //TODO: Добавить информацию об ошибке модели!
@@ -116,7 +116,7 @@ namespace EquipApps.Mvc.Infrastructure
                     logger.LogWarning(
                     $"Модель привязки NULL. " +
                     $"Область: {property.Controller.Area}; " +
-                    $"Контроллер: {property.Controller.Name}; " +
+                    $"Контроллер: {property.Controller.ControllerName}; " +
                     $"Свойство: {property.PropertyName};");
                 }
 
@@ -131,7 +131,7 @@ namespace EquipApps.Mvc.Infrastructure
                     logger.LogError(ex,
                     $"Не получилось присвоить значение свойству. " +
                     $"Область: {property.Controller.Area}; " +
-                    $"Контроллер: {property.Controller.Name}; " +
+                    $"Контроллер: {property.Controller.ControllerName}; " +
                     $"Свойство: {property.PropertyName};");
 
                     throw ex;
@@ -164,8 +164,8 @@ namespace EquipApps.Mvc.Infrastructure
                     logger.LogWarning(
                         $"У свойства нет привязки. (Возможно ошибка модели приложения) " +
                         $"Область: {parameter.Action.Controller.Area}; " +
-                        $"Контроллер: {parameter.Action.Controller.Name}; " +
-                        $"Метод: {parameter.Action.Name}" +
+                        $"Контроллер: {parameter.Action.Controller.ControllerName}; " +
+                        $"Метод: {parameter.Action.ActionName}" +
                         $"Аргумент: {parameter.ParameterName};");
 
                     continue;
@@ -177,8 +177,8 @@ namespace EquipApps.Mvc.Infrastructure
                     logger.LogError(
                         $"Не получилось привязаться к данным " +
                         $"Область: {parameter.Action.Controller.Area}; " +
-                        $"Контроллер: {parameter.Action.Controller.Name}; " +
-                        $"Метод: {parameter.Action.Name}" +
+                        $"Контроллер: {parameter.Action.Controller.ControllerName}; " +
+                        $"Метод: {parameter.Action.ActionName}" +
                         $"Аргумент: {parameter.ParameterName};");
 
                     //TODO: Добавить информацию об ошибке модели!
@@ -191,8 +191,8 @@ namespace EquipApps.Mvc.Infrastructure
                     logger.LogWarning(
                         $"Модель привязки NULL. " +
                         $"Область: {parameter.Action.Controller.Area}; " +
-                        $"Контроллер: {parameter.Action.Controller.Name}; " +
-                        $"Метод: {parameter.Action.Name}" +
+                        $"Контроллер: {parameter.Action.Controller.ControllerName}; " +
+                        $"Метод: {parameter.Action.ActionName}" +
                         $"Аргумент: {parameter.ParameterName};");
 
                 }

@@ -8,7 +8,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
     /// <summary>
     /// Привязывает модель используя <see cref="IModelProvider"/> как источник
     /// </summary>   
-    public class ModelProviderModelBinder : IBinder
+    public class ModelProviderModelBinder : IModelBinder
     {
         private ModelProviderFactoryDelagate _modelProviderFactory;
 

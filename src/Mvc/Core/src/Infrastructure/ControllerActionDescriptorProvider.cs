@@ -93,7 +93,7 @@ namespace EquipApps.Mvc.Internal
                 {
                     logger.LogError(
                        $"Ошибка. В одной области не могут содержать контроллеры с одинаковыми индексами! " +
-                       $"Область: {controller.Area}; Контроллер: {controller.Name}; Индекс: {controller.Index}; " +
+                       $"Область: {controller.Area}; Контроллер: {controller.ControllerName}; Индекс: {controller.Index}; " +
                        $"будет пропущен пропущен");
                 }
                 else
@@ -135,7 +135,7 @@ namespace EquipApps.Mvc.Internal
                     logger.LogError(
                         resultBinding.Exception,
                         $"Не получилось привязаться к данным. " +
-                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.Name};");
+                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName};");
                     continue;
                 }
 
@@ -144,7 +144,7 @@ namespace EquipApps.Mvc.Internal
                 {
                     logger.LogWarning(
                         $"Модель привязки NULL. " +
-                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.Name};");
+                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName};");
                     continue;
                 }
 
@@ -165,7 +165,7 @@ namespace EquipApps.Mvc.Internal
                 if (bindingResults.Length == 0)
                     logger.LogWarning(
                         $"Привязка к пустой коллекции. " +
-                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.Name};");
+                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName};");
 
                 for (int i = 0, index = startIndex; i < bindingResults.Length; i++, index++)
                 {
@@ -180,7 +180,7 @@ namespace EquipApps.Mvc.Internal
                         logger.LogError(
                         resultBinding.Exception,
                         $"Не получилось привязаться к данным. " +
-                        $"Index:{i}; Область: {controllerModel.Area}; Контроллер: {controllerModel.Name};");
+                        $"Index:{i}; Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName};");
 
                         continue;
                     }
@@ -189,7 +189,7 @@ namespace EquipApps.Mvc.Internal
                     {
                         logger.LogWarning(
                         $"Модель привязки NULL. " +
-                        $"Index:{i}; Область: {controllerModel.Area}; Контроллер: {controllerModel.Name};");
+                        $"Index:{i}; Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName};");
 
                         continue;
                     }
@@ -237,7 +237,7 @@ namespace EquipApps.Mvc.Internal
                     logger.LogError(
                         resultBinding.Exception,
                         $"Не получилось привязаться к данным. " +
-                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.Name}; Метод: {method.Name};");
+                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName}; Метод: {method.ActionName};");
 
                     continue;
                 }
@@ -247,7 +247,7 @@ namespace EquipApps.Mvc.Internal
                 {
                     logger.LogWarning(
                         $"Модель привязки NULL. " +
-                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.Name}; ; Метод: {method.Name};");
+                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName}; ; Метод: {method.ActionName};");
 
                     continue;
                 }
@@ -266,7 +266,7 @@ namespace EquipApps.Mvc.Internal
                 if (bindingResults.Length == 0)
                     logger.LogWarning(
                         $"Привязка к пустой коллекции. " +
-                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.Name}; Метод: {method.Name};");
+                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName}; Метод: {method.ActionName};");
 
 
                 for (int i = 0; i < bindingResults.Length; i++)
@@ -282,7 +282,7 @@ namespace EquipApps.Mvc.Internal
                         logger.LogError(
                             bindingResult.Exception,
                             $"Не получилось привязаться к данным. Index:{i}; " +
-                            $"Область: {controllerModel.Area}; Контроллер: {controllerModel.Name}; Метод: {method.Name};");
+                            $"Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName}; Метод: {method.ActionName};");
 
                         continue;
                     }
@@ -291,7 +291,7 @@ namespace EquipApps.Mvc.Internal
                     {
                         logger.LogWarning(
                             $"Модель привязки NULL. " +
-                            $"Index:{i}; Область: {controllerModel.Area}; Контроллер: {controllerModel.Name}; Метод: {method.Name};");
+                            $"Index:{i}; Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName}; Метод: {method.ActionName};");
 
                         continue;
                     }

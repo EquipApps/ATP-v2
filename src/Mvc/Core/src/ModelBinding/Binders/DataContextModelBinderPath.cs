@@ -5,7 +5,7 @@ using System;
 
 namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
 {
-    public class DataContextModelBinderPath : IBinder
+    public class DataContextModelBinderPath : IModelBinder
     {
         private PropertyExtractor function;
         private int sourceIndex;

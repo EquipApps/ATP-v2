@@ -4,7 +4,7 @@ using System;
 
 namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
 {
-    public class DataContextModelBinder : IBinder
+    public class DataContextModelBinder : IModelBinder
     {
         private int sourceIndex;
 

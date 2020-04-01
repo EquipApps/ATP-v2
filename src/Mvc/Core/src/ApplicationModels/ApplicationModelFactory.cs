@@ -13,9 +13,6 @@ namespace EquipApps.Mvc.ApplicationModels
         private readonly IApplicationModelProvider[] _applicationModelProviders;
         private readonly IList<IApplicationModelConvention> _conventions;
 
-        ApplicationModel applicationModel;
-
-
         public ApplicationModelFactory(
             IEnumerable<IApplicationModelProvider> applicationModelProviders,
             IOptions<MvcOptions> options)

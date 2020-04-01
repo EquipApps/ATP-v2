@@ -5,7 +5,7 @@ namespace EquipApps.Mvc.ModelBinding
     /// <summary>
     /// Инфроструктура связующей сущноти
     /// </summary>
-    public interface IBinder
+    public interface IModelBinder
     {
         /// <summary>
         /// Привязать модель.

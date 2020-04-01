@@ -1,5 +1,5 @@
 ﻿using AtpNetCore.Mvc.Core.Tests.Mok;
-using EquipApps.Mvc.Internal;
+using EquipApps.Mvc.ApplicationModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Reflection;
@@ -63,7 +63,7 @@ namespace NLib.AtpNetCore.Mvc.Internal.Tests
             var controllerType = typeof(IndexController).GetTypeInfo();
             var controllerModel = ApplicationModelBuilder.CreateControllerModel(controllerType);
 
-            Assert.AreEqual(controllerModel.Name, "Index");
+            Assert.AreEqual(controllerModel.ControllerName, "Index");
 
             Assert.IsNull(controllerModel.Application);
             Assert.IsNull(controllerModel.Index);
@@ -80,7 +80,7 @@ namespace NLib.AtpNetCore.Mvc.Internal.Tests
             var controllerType = typeof(Index1Controller).GetTypeInfo();
             var controllerModel = ApplicationModelBuilder.CreateControllerModel(controllerType);
 
-            Assert.AreEqual(controllerModel.Name, "Index1");
+            Assert.AreEqual(controllerModel.ControllerName, "Index1");
 
             Assert.IsNull(controllerModel.Application);
             Assert.IsNotNull(controllerModel.Index);
@@ -96,7 +96,7 @@ namespace NLib.AtpNetCore.Mvc.Internal.Tests
             var controllerType = typeof(Index2Controller).GetTypeInfo();
             var controllerModel = ApplicationModelBuilder.CreateControllerModel(controllerType);
 
-            Assert.AreEqual(controllerModel.Name, "Index2");
+            Assert.AreEqual(controllerModel.ControllerName, "Index2");
 
             Assert.IsNull(controllerModel.Application);
             Assert.IsNotNull(controllerModel.Index);

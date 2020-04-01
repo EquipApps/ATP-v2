@@ -3,14 +3,14 @@
 namespace NLib.AtpNetCore.Mvc.ModelBinding
 {
     /// <summary>
-    /// Инфроструктура фабрики <see cref="IBinder"/>.
+    /// Инфроструктура фабрики <see cref="IModelBinder"/>.
     /// Singleton
     /// </summary>
     public interface IBindingFactory
     {
         /// <summary>
-        /// Создает <see cref="IBinder"/>
+        /// Создает <see cref="IModelBinder"/>
         /// </summary>
-        IBinder Create(IBindingModel bindingModel, BindingInfo bindingInfo);
+        IModelBinder Create(IBindingModel bindingModel, BindingInfo bindingInfo);
     }
 }

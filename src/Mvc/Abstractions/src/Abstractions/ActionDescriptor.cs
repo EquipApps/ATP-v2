@@ -35,8 +35,32 @@ namespace EquipApps.Mvc
             Count++;
             Exception = null;
             Result = Result.NotExecuted;
-            State = State.Empy;
+            State  = State.Empy;
+
+
+            Id = Guid.NewGuid().ToString();
+            Properties = new Dictionary<object, object>();
+            RouteValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
+
+        /// <summary>
+        /// Gets an id which uniquely identifies the action.
+        /// </summary>
+        public string Id { get; }
+
+        /// <summary>
+        /// Gets or sets the collection of route values that must be provided by routing
+        /// for the action to be selected.
+        /// </summary>
+        public IDictionary<string, string> RouteValues { get; set; }
+        
+        /// <summary>
+        /// Stores arbitrary metadata properties associated with the <see cref="ActionDescriptor"/>.
+        /// </summary>
+        public IDictionary<object, object> Properties { get; }
+
+
+
 
         //-------------------------------
 
@@ -52,7 +76,17 @@ namespace EquipApps.Mvc
 
         //-------------------------------
 
-        public abstract string Area { get; }
+        [Obsolete("User RouteValues")]
+        public string Area
+        {
+            get
+            {
+                if (RouteValues.TryGetValue("Area", out string value))
+                    return value;
+                else
+                    return null;
+            }
+        }
         public abstract TestNumber Number { get; }
         public abstract string Title { get; }
 
@@ -121,7 +155,7 @@ namespace EquipApps.Mvc
 
         #endregion
 
-        public IDictionary<object, object> Properties { get; } = new Dictionary<object, object>();
+        
 
       
 

@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Options;
+﻿using EquipApps.Mvc.ModelBinding.Metadata;
+using Microsoft.Extensions.Options;
 using NLib.AtpNetCore.Mvc.ModelBinding.Binders;
 using System;
+using System.Collections.Generic;
 
 namespace EquipApps.Mvc
 {
@@ -16,8 +18,16 @@ namespace EquipApps.Mvc
         public void Configure(MvcOptions options)
         {
             ConfigureBindingProviders(options);
+
+            // Set up metadata providers
+            ConfigureAdditionalModelMetadataDetailsProviders(options.ModelMetadataDetailsProviders);
         }
 
+        internal static void ConfigureAdditionalModelMetadataDetailsProviders(IList<IMetadataDetailsProvider> modelMetadataDetailsProviders)
+        {
+            modelMetadataDetailsProviders.Add(new DefaultBindingMetadataProvider());
+            modelMetadataDetailsProviders.Add(new DefaultValidationMetadataProvider());
+        }
 
         private void ConfigureBindingProviders(MvcOptions options)
         {

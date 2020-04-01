@@ -57,10 +57,19 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AtpNetCore.Testing.Shared",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EquipApps.Mvc.ViewFeatures", "src\Mvc\ViewFeatures\src\EquipApps.Mvc.ViewFeatures.csproj", "{BEE154A7-86E1-477D-B2C7-B33B88981F83}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{26B50B69-6DB4-44BE-93C3-9BFB170343A3}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "EquipApps.Shared", "src\Shared\src\EquipApps.Shared\EquipApps.Shared.shproj", "{D2614BB7-1EA9-4084-9F6F-B2520B7D7E5D}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Shared\src\EquipApps.Shared\EquipApps.Shared.projitems*{34c9b411-6946-4a89-b76a-eeaf231e8126}*SharedItemsImports = 5
 		samples\fordelete\AtpNetCore.Testing.Shared\AtpNetCore.Testing.Shared.projitems*{49afa899-8310-4b08-9b4c-b4930229b739}*SharedItemsImports = 13
+		src\Shared\src\EquipApps.Shared\EquipApps.Shared.projitems*{74e4814a-8da1-4185-a998-49584594ad02}*SharedItemsImports = 5
+		samples\fordelete\AtpNetCore.Testing.Shared\AtpNetCore.Testing.Shared.projitems*{9c4d834d-31b9-4cfe-9357-381c5be1b384}*SharedItemsImports = 5
 		src\WorkBench\Shared\src\EquipApps.WorkBench.Shared.projitems*{a1a2ad04-237d-46f4-96ac-c66b07b54414}*SharedItemsImports = 13
+		src\Shared\src\EquipApps.Shared\EquipApps.Shared.projitems*{d2614bb7-1ea9-4084-9f6f-b2520b7d7e5d}*SharedItemsImports = 13
+		src\WorkBench\Shared\src\EquipApps.WorkBench.Shared.projitems*{fe3ef98a-7867-40f0-b2cf-d2fda60185c2}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -161,6 +170,8 @@ Global
 		{9C4D834D-31B9-4CFE-9357-381C5BE1B384} = {029C56BB-B94F-4264-9F5F-355BDDF36A18}
 		{49AFA899-8310-4B08-9B4C-B4930229B739} = {029C56BB-B94F-4264-9F5F-355BDDF36A18}
 		{BEE154A7-86E1-477D-B2C7-B33B88981F83} = {135838B4-4F28-4B6E-B8BF-EAD73B1DC0C2}
+		{26B50B69-6DB4-44BE-93C3-9BFB170343A3} = {3E1A9720-FB34-43D1-9BBA-E7E36138CBB0}
+		{D2614BB7-1EA9-4084-9F6F-B2520B7D7E5D} = {26B50B69-6DB4-44BE-93C3-9BFB170343A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5541298D-733B-43FF-81EF-6CC5EDD40E71}

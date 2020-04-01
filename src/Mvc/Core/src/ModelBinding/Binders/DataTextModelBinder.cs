@@ -5,7 +5,7 @@ using System;
 
 namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
 {
-    public class DataTextModelBinder : IBinder
+    public class DataTextModelBinder : IModelBinder
     {
         private string format;
         private Tuple<int, PropertyExtractor>[] tuples;

@@ -1,9 +1,29 @@
-﻿using System;
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System;
+using System.Reflection;
+using Microsoft.Extensions.Internal;
 
 namespace EquipApps.Mvc.ModelBinding.Metadata
 {
-    public struct ModelMetadataIdentity : IEquatable<ModelMetadataIdentity>
+    /// <summary>
+    /// A key type which identifies a <see cref="ModelMetadata"/>.
+    /// </summary>
+    public readonly struct ModelMetadataIdentity : IEquatable<ModelMetadataIdentity>
     {
+        private ModelMetadataIdentity(
+            Type modelType,
+            string name = null,
+            Type containerType = null,
+            object fieldInfo = null)
+        {
+            ModelType = modelType;
+            Name = name;
+            ContainerType = containerType;
+            FieldInfo = fieldInfo;
+        }
+
         /// <summary>
         /// Creates a <see cref="ModelMetadataIdentity"/> for the provided model <see cref="Type"/>.
         /// </summary>
@@ -16,10 +36,7 @@ namespace EquipApps.Mvc.ModelBinding.Metadata
                 throw new ArgumentNullException(nameof(modelType));
             }
 
-            return new ModelMetadataIdentity()
-            {
-                ModelType = modelType,
-            };
+            return new ModelMetadataIdentity(modelType);
         }
 
         /// <summary>
@@ -29,6 +46,7 @@ namespace EquipApps.Mvc.ModelBinding.Metadata
         /// <param name="name">The name of the property.</param>
         /// <param name="containerType">The container type of the model property.</param>
         /// <returns>A <see cref="ModelMetadataIdentity"/>.</returns>
+        [Obsolete("This API is obsolete and may be removed in a future release.")]
         public static ModelMetadataIdentity ForProperty(
             Type modelType,
             string name,
@@ -46,27 +64,82 @@ namespace EquipApps.Mvc.ModelBinding.Metadata
 
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentException(nameof(name));
+                throw new ArgumentException(Resources.ArgumentCannotBeNullOrEmpty, nameof(name));
             }
 
-            return new ModelMetadataIdentity()
-            {
-                ModelType = modelType,
-                Name = name,
-                ContainerType = containerType,
-            };
+            return new ModelMetadataIdentity(modelType, name, containerType);
         }
 
         /// <summary>
-        /// Gets the <see cref="Type"/> defining the model property respresented by the current
+        /// Creates a <see cref="ModelMetadataIdentity"/> for the provided property.
+        /// </summary>
+        /// <param name="modelType">The model type.</param>
+        /// <param name="propertyInfo">The property.</param>
+        /// <param name="containerType">The container type of the model property.</param>
+        /// <returns>A <see cref="ModelMetadataIdentity"/>.</returns>
+        public static ModelMetadataIdentity ForProperty(
+            PropertyInfo propertyInfo,
+            Type modelType,
+            Type containerType)
+        {
+            if (propertyInfo == null)
+            {
+                throw new ArgumentNullException(nameof(propertyInfo));
+            }
+
+            if (modelType == null)
+            {
+                throw new ArgumentNullException(nameof(modelType));
+            }
+
+            if (containerType == null)
+            {
+                throw new ArgumentNullException(nameof(containerType));
+            }
+
+            return new ModelMetadataIdentity(modelType, propertyInfo.Name, containerType, fieldInfo: propertyInfo);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="ModelMetadataIdentity"/> for the provided parameter.
+        /// </summary>
+        /// <param name="parameter">The <see cref="ParameterInfo" />.</param>
+        /// <returns>A <see cref="ModelMetadataIdentity"/>.</returns>
+        public static ModelMetadataIdentity ForParameter(ParameterInfo parameter)
+            => ForParameter(parameter, parameter?.ParameterType);
+
+        /// <summary>
+        /// Creates a <see cref="ModelMetadataIdentity"/> for the provided parameter with the specified
+        /// model type.
+        /// </summary>
+        /// <param name="parameter">The <see cref="ParameterInfo" />.</param>
+        /// <param name="modelType">The model type.</param>
+        /// <returns>A <see cref="ModelMetadataIdentity"/>.</returns>
+        public static ModelMetadataIdentity ForParameter(ParameterInfo parameter, Type modelType)
+        {
+            if (parameter == null)
+            {
+                throw new ArgumentNullException(nameof(parameter));
+            }
+
+            if (modelType == null)
+            {
+                throw new ArgumentNullException(nameof(modelType));
+            }
+
+            return new ModelMetadataIdentity(modelType, parameter.Name, fieldInfo: parameter);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Type"/> defining the model property represented by the current
         /// instance, or <c>null</c> if the current instance does not represent a property.
         /// </summary>
-        public Type ContainerType { get; private set; }
+        public Type ContainerType { get; }
 
         /// <summary>
         /// Gets the <see cref="Type"/> represented by the current instance.
         /// </summary>
-        public Type ModelType { get; private set; }
+        public Type ModelType { get; }
 
         /// <summary>
         /// Gets a value indicating the kind of metadata represented by the current instance.
@@ -75,7 +148,11 @@ namespace EquipApps.Mvc.ModelBinding.Metadata
         {
             get
             {
-                if (ContainerType != null && Name != null)
+                if (ParameterInfo != null)
+                {
+                    return ModelMetadataKind.Parameter;
+                }
+                else if (ContainerType != null && Name != null)
                 {
                     return ModelMetadataKind.Property;
                 }
@@ -90,7 +167,21 @@ namespace EquipApps.Mvc.ModelBinding.Metadata
         /// Gets the name of the current instance if it represents a parameter or property, or <c>null</c> if
         /// the current instance represents a type.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
+
+        private object FieldInfo { get; }
+
+        /// <summary>
+        /// Gets a descriptor for the parameter, or <c>null</c> if this instance
+        /// does not represent a parameter.
+        /// </summary>
+        public ParameterInfo ParameterInfo => FieldInfo as ParameterInfo;
+
+        /// <summary>
+        /// Gets a descriptor for the property, or <c>null</c> if this instance
+        /// does not represent a property.
+        /// </summary>
+        public PropertyInfo PropertyInfo => FieldInfo as PropertyInfo;
 
         /// <inheritdoc />
         public bool Equals(ModelMetadataIdentity other)
@@ -98,7 +189,9 @@ namespace EquipApps.Mvc.ModelBinding.Metadata
             return
                 ContainerType == other.ContainerType &&
                 ModelType == other.ModelType &&
-                Name == other.Name;
+                Name == other.Name &&
+                ParameterInfo == other.ParameterInfo &&
+                PropertyInfo == other.PropertyInfo;
         }
 
         /// <inheritdoc />
@@ -111,19 +204,12 @@ namespace EquipApps.Mvc.ModelBinding.Metadata
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            var hash = 17;
-            hash = hash * 23 + ModelType.GetHashCode();
-
-            if (ContainerType != null)
-            {
-                hash = hash * 23 + ContainerType.GetHashCode();
-            }
-
-            if (Name != null)
-            {
-                hash = hash * 23 + Name.GetHashCode();
-            }
-
+            var hash = new HashCodeCombiner();
+            hash.Add(ContainerType);
+            hash.Add(ModelType);
+            hash.Add(Name, StringComparer.Ordinal);
+            hash.Add(ParameterInfo);
+            hash.Add(PropertyInfo);
             return hash;
         }
     }

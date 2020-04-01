@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
 {
-    public class DataContextModelBinderCollection : IBinder
+    public class DataContextModelBinderCollection : IModelBinder
     {
         private PropertyExtractor function;
         private int sourceIndex;

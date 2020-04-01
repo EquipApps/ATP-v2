@@ -16,13 +16,13 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
         }
 
         /// <summary>
-        /// Возвращает <see cref="IBinder"/> в случае прохождения валидации <paramref name="context"/>
+        /// Возвращает <see cref="IModelBinder"/> в случае прохождения валидации <paramref name="context"/>
         /// </summary>
         /// 
         /// <param name="context">
         /// Контекст привязки.
         /// Уловие прохождения валидации на обработку запроса:
-        /// 1) Cвойство <see cref="BindingInfo.ModelPath"/>     не равно null
+        /// 1) Cвойство <see cref="BindingInfo.BinderModelName"/>     не равно null
         /// 2) Cвойство <see cref="BindingInfo.BindingSource"/> не равно null
         /// 3) Cвойство <see cref="BindingInfo.BindingSource"/> возвращает <see cref="BindingSource.DataText"/>
         /// </param>
@@ -33,26 +33,26 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
         /// 
         /// <remarks>
         /// Логика работы:
-        /// 1) Разбор <see cref="BindingInfo.ModelPath"/>
+        /// 1) Разбор <see cref="BindingInfo.BinderModelName"/>
         ///     
-        /// 2) Если значение свойства <see cref="BindingInfo.ModelPath"/> равно нулю или пустой строке, то объектом привязки является <see cref="DataContext"/>.
+        /// 2) Если значение свойства <see cref="BindingInfo.BinderModelName"/> равно нулю или пустой строке, то объектом привязки является <see cref="DataContext"/>.
         ///     Смотри функцию <see cref="GetBinderForEmptyName"/>
         /// 
-        /// 3) Если значение свойства <see cref="BindingInfo.ModelPath"/> НЕ равно нулю и пустой строке, то объект привязки извлекается из <see cref="DataContext"/>
+        /// 3) Если значение свойства <see cref="BindingInfo.BinderModelName"/> НЕ равно нулю и пустой строке, то объект привязки извлекается из <see cref="DataContext"/>
         ///     Смотри функцию <see cref="GetBinderForProprName"/>
         /// </remarks>
-        public IBinder GetBinder(BinderProviderContext context)
+        public IModelBinder GetBinder(BinderProviderContext context)
         {
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (context.BindingInfo.ModelPath != null &&
+            if (context.BindingInfo.BinderModelName != null &&
                 context.BindingInfo.BindingSource != null &&
                 context.BindingInfo.BindingSource.CanAcceptDataFrom(BindingSource.DataText))
             {
-                var text = context.BindingInfo.ModelPath;     //-- Извлекаем текст.
+                var text = context.BindingInfo.BinderModelName;     //-- Извлекаем текст.
                 var textModel = TextModelParser.ParseText(text);   //-- Парсим.
 
                 if (textModel.Inserts == null)                      //-- Нету вставок. выходим

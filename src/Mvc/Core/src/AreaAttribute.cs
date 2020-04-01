@@ -1,22 +1,28 @@
-﻿using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
 using System;
+using EquipApps.Mvc.Routing;
 
 namespace EquipApps.Mvc
 {
     /// <summary>
-    /// Формерует область (обединяет TestCase в TestSuit)
-    /// </summary>   
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class AreaAttribute : Attribute, IDisplayAreaMetadata
+    /// Specifies the area containing a controller or action.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    public class AreaAttribute : RouteValueAttribute
     {
-        public AreaAttribute(string area)
-        {
-            Area = area;
-        }
-
         /// <summary>
-        /// Возвращает область
+        /// Initializes a new <see cref="AreaAttribute"/> instance.
         /// </summary>
-        public string Area { get; }
+        /// <param name="areaName">The area containing the controller or action.</param>
+        public AreaAttribute(string areaName)
+            : base("area", areaName)
+        {
+            if (string.IsNullOrEmpty(areaName))
+            {
+                throw new ArgumentException(Resources.ArgumentCannotBeNullOrEmpty, nameof(areaName));
+            }
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        public IBinder GetBinder(BinderProviderContext context)
+        public IModelBinder GetBinder(BinderProviderContext context)
         {
             if (context == null)
             {

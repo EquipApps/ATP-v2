@@ -20,7 +20,7 @@ namespace EquipApps.Mvc
                 var actionDescriptor = controllerContext
                     .ActionDescriptor
                     .TestCase
-                    .TestSteps.FirstOrDefault(x => x.ActionModel.Name == _actionName)?.ActionDescriptor;
+                    .TestSteps.FirstOrDefault(x => x.ActionModel.ActionName == _actionName)?.ActionDescriptor;
 
                 if (actionDescriptor == null)
                 {

@@ -1,4 +1,4 @@
-﻿using EquipApps.Mvc.ModelBinding.Metadata;
+﻿using EquipApps.Mvc.ModelBinding;
 using EquipApps.Mvc.ModelBinding.Property;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,12 +18,12 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Properties
         private readonly ConcurrentDictionary<PropertyIdentity, PropertyEntery> _propertyCache
             = new ConcurrentDictionary<PropertyIdentity, PropertyEntery>(PropertyIdentityComparer.Instance);
 
-        private readonly IMetadataProvider _metadataProvider;
+        private readonly IModelMetadataProvider _metadataProvider;
         private readonly ILogger<PropertyProvider> _logger;
 
 
 
-        public PropertyProvider(IMetadataProvider metadataProvider, ILogger<PropertyProvider> logger)
+        public PropertyProvider(IModelMetadataProvider metadataProvider, ILogger<PropertyProvider> logger)
         {
             _metadataProvider = metadataProvider ?? throw new ArgumentNullException(nameof(metadataProvider));
 

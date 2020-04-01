@@ -1,5 +1,4 @@
-﻿using EquipApps.Mvc.ModelBinding.Metadata;
-using EquipApps.Mvc.ModelBinding.Property;
+﻿using EquipApps.Mvc.ModelBinding.Property;
 
 namespace EquipApps.Mvc.ModelBinding
 {
@@ -9,9 +8,9 @@ namespace EquipApps.Mvc.ModelBinding
     public abstract class BinderProviderContext
     {
         /// <summary>
-        /// Возвращает <see cref="IMetadataProvider"/>
+        /// Возвращает <see cref="IModelMetadataProvider"/>
         /// </summary>
-        public abstract IMetadataProvider MetadataProvider { get; }
+        public abstract IModelMetadataProvider MetadataProvider { get; }
 
         /// <summary>
         /// Возвращает <see cref="IPropertyProvider"/>
@@ -29,9 +28,9 @@ namespace EquipApps.Mvc.ModelBinding
         public abstract BindingInfo BindingInfo { get; }
 
         /// <summary>
-        /// Создает <see cref="IBinder"/>
+        /// Создает <see cref="IModelBinder"/>
         /// </summary>
-        public abstract IBinder CreateBinder(ModelMetadata property);
+        public abstract IModelBinder CreateBinder(ModelMetadata property);
 
     }
 }

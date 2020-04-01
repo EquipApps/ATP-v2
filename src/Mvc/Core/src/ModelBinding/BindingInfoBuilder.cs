@@ -1,5 +1,6 @@
 ﻿using EquipApps.Mvc.ModelBinding;
 using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,6 +22,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
         /// <returns>
         /// Возвращает <see cref="BindingInfo"/> если есть привязка, или NULL если привязки нет!
         /// </returns>
+        [Obsolete]
         public static BindingInfo GetBindingInfo(IEnumerable<object> attributes)
         {
             var bindingInfo = new BindingInfo();
@@ -54,7 +56,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
                 isBindingInfoPresent = true;
                 if (binderModelNameAttribute?.ModelPath != null)
                 {
-                    bindingInfo.ModelPath = binderModelNameAttribute.ModelPath;
+                    bindingInfo.BinderModelName = binderModelNameAttribute.ModelPath;
                     break;
                 }
             }

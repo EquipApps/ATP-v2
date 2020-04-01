@@ -109,15 +109,25 @@ namespace B.EK.ViewModels
 
         private void Cancel()
         {
-            // Step 1.
-            var oldCancellationTokenSource = _cancellationTokenSource;
+            try
+            {
+                // Step 1.
+                var oldCancellationTokenSource = _cancellationTokenSource;
 
-            // Step 3.
-            _cancellationTokenSource = new CancellationTokenSource();
-            _changeToken = new CancellationChangeToken(_cancellationTokenSource.Token);
+                // Step 3.
+                _cancellationTokenSource = new CancellationTokenSource();
+                _changeToken = new CancellationChangeToken(_cancellationTokenSource.Token);
 
-            // Step 4 - might be null if it's the first time.
-            oldCancellationTokenSource?.Cancel();
+                // Step 4 - might be null if it's the first time.
+                oldCancellationTokenSource?.Cancel();
+            }
+            catch (Exception ex)
+            {
+
+                
+            }
+
+            
         }
         
 

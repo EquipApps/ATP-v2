@@ -5,14 +5,15 @@ using EquipApps.Mvc.ApplicationParts;
 using EquipApps.Mvc.Controllers;
 using EquipApps.Mvc.Infrastructure;
 using EquipApps.Mvc.Internal;
+using EquipApps.Mvc.ModelBinding;
 using EquipApps.Mvc.ModelBinding.Metadata;
 using EquipApps.Mvc.ModelBinding.Property;
 using EquipApps.Mvc.Runtime;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using NLib.AtpNetCore.Mvc.ModelBinding;
-using NLib.AtpNetCore.Mvc.ModelBinding.Metadata;
 using NLib.AtpNetCore.Mvc.ModelBinding.Properties;
 using NLib.AtpNetCore.Testing.Mvc.Infrastructure;
 using NLib.AtpNetCore.Testing.Mvc.Internal;
@@ -191,7 +192,7 @@ namespace NLib.AtpNetCore.Testing
             // 
             services.AddTransientFeatureProvider<MvcFeatureProvider>();
             services.AddSingleton<IActionDescriptorCollectionProvider, DefaultActionDescriptorCollectionProvider>();
-            services.AddTransientActionDescriptorProvider<ControllerActionDescriptorProvider>();
+            services.AddTransientActionDescriptorProvider<ControllerActionDescriptorProvider2>();
             
             // ----------------------------------------------------------------------------------------
             // Middleware
@@ -210,7 +211,6 @@ namespace NLib.AtpNetCore.Testing
             services.AddTransient<IActionInvokerProvider, ControllerActionInvokerProvider>();
 
             services.AddSingleton<ControllerActionInvokerCache>();
-            
 
 
 
@@ -218,7 +218,16 @@ namespace NLib.AtpNetCore.Testing
 
 
 
-
+            //
+            // ModelBinding, Validation
+            //
+            // The DefaultModelMetadataProvider does significant caching and should be a singleton.
+            services.AddSingleton<IModelMetadataProvider, DefaultModelMetadataProvider>();
+            services.TryAdd(ServiceDescriptor.Transient<ICompositeMetadataDetailsProvider>(s =>
+            {
+                var options = s.GetRequiredService<IOptions<MvcOptions>>().Value;
+                return new DefaultCompositeMetadataDetailsProvider(options.ModelMetadataDetailsProviders);
+            }));
 
 
 
@@ -236,7 +245,7 @@ namespace NLib.AtpNetCore.Testing
             // Application Model Service
             // Singleton
             // 
-            services.AddSingleton<ApplicationModelFactory, ApplicationModelFactory>();
+            services.AddSingleton<ApplicationModelFactory>();
 
             //
             // Action Descriptor Provider
@@ -254,7 +263,14 @@ namespace NLib.AtpNetCore.Testing
 
 
             services.AddSingleton<IPropertyProvider, PropertyProvider>();
-            services.AddSingleton<IMetadataProvider, MetadataProvider>();
+            
+
+
+
+
+
+
+
             services.AddSingleton<IBindingFactory, BindingFactory>();
 
         }

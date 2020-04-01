@@ -1,6 +1,5 @@
 ﻿using EquipApps.Mvc;
 using EquipApps.Mvc.ModelBinding;
-using EquipApps.Mvc.ModelBinding.Metadata;
 using EquipApps.Mvc.ModelBinding.Property;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -14,14 +13,14 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
         private readonly IReadOnlyList<IBinderProvider> _providers;
         private readonly ILogger<BindingFactory> _logger;
 
-        private readonly IMetadataProvider _metadataProvider;
+        private readonly IModelMetadataProvider _metadataProvider;
         private readonly IPropertyProvider _propertyProvider;
 
         public BindingFactory(
             IOptions<MvcOptions> option,
             ILogger<BindingFactory> logger,
 
-            IMetadataProvider metadataProvider,
+            IModelMetadataProvider metadataProvider,
             IPropertyProvider propertyProvide)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -38,7 +37,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
             logger.LogTrace("ctr");
         }
 
-        public IBinder Create(IBindingModel bindingModel, BindingInfo bindingInfo)
+        public IModelBinder Create(IBindingModel bindingModel, BindingInfo bindingInfo)
         {
             if (bindingModel == null)
             {
@@ -56,7 +55,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
                 bindingInfo);
 
 
-            IBinder result = null;
+            IModelBinder result = null;
 
             for (var i = 0; i < _providers.Count; i++)
             {
@@ -101,10 +100,10 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
             public override IPropertyProvider PropertyProvider => _factory._propertyProvider;
 
             //---
-            public override IMetadataProvider MetadataProvider => _factory._metadataProvider;
+            public override IModelMetadataProvider MetadataProvider => _factory._metadataProvider;
 
             //---
-            public override IBinder CreateBinder(ModelMetadata property)
+            public override IModelBinder CreateBinder(ModelMetadata property)
             {
                 //TODO: До делать когданибудь
                 throw new NotImplementedException();

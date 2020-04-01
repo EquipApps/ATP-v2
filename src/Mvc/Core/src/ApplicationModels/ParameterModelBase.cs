@@ -55,9 +55,9 @@ namespace EquipApps.Mvc.ApplicationModels
         public BindingInfo BindingInfo { get; set; }
 
         /// <summary>
-        /// Задает или возвращает <see cref="IBinder"/>
+        /// Задает или возвращает <see cref="IModelBinder"/>
         /// Может быть NULL.
         /// </summary>
-        public IBinder ModelBinder { get; set; }
+        public IModelBinder ModelBinder { get; set; }
     }
 }

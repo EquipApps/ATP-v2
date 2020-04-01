@@ -9,4 +9,6 @@
     <ProjectReference Include="..\..\Abstractions\src\EquipApps.Mvc.Abstractions.csproj" />
   </ItemGroup>
 
+  <Import Project="..\..\..\Shared\src\EquipApps.Shared\EquipApps.Shared.projitems" Label="Shared" />
+
 </Project>

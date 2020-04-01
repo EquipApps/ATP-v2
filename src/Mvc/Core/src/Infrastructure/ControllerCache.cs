@@ -48,7 +48,7 @@ namespace EquipApps.Mvc.Infrastructure
                 weak_lastTestCase.SetTarget(rootTestCase);
 
 
-            return _typeEntriesCache.GetOrAdd(rootTestCase.ControllerModel.Info, CreateController);
+            return _typeEntriesCache.GetOrAdd(rootTestCase.ControllerModel.ControllerType, CreateController);
         }
 
         private object CreateController(Type controllerType)

@@ -62,7 +62,7 @@ namespace EquipApps.Mvc.Controllers
                     return "Ошибка привязки";
             }
 
-            return ActionModel.Title ?? ActionModel.Name ?? ActionModel.Info.Name;
+            return ActionModel.Title ?? ActionModel.ActionName ?? ActionModel.ActionMethod.Name;
         }
 
         protected override TestNumber GetNumber()

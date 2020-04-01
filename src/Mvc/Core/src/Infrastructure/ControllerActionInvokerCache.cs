@@ -49,8 +49,8 @@ namespace EquipApps.Mvc.Infrastructure
 
                 if (!cache.Entries.TryGetValue(actionModel, out var cacheEntry))
                 {
-                    var methodInfo = actionModel.Info;
-                    var targetInfo = actionModel.Controller.Info;
+                    var methodInfo = actionModel.ActionMethod;
+                    var targetInfo = actionModel.Controller.ControllerType;
 
                     //-- Создаем параметры по умолчаению!
                     var parameterDefaultValues = ParameterDefaultValues.GetParameterDefaultValues(methodInfo);

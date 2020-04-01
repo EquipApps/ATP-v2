@@ -1,7 +1,7 @@
 ﻿namespace EquipApps.Mvc.ModelBinding
 {
     /// <summary>
-    /// Интерфейс провайдера <see cref="IBinder"/>.
+    /// Интерфейс провайдера <see cref="IModelBinder"/>.
     /// Используется для создания кастомной привязки.
     /// </summary>
     public interface IBinderProvider
@@ -13,6 +13,6 @@
         /// <param name="context">
         /// Контекст привязки
         /// </param>     
-        IBinder GetBinder(BinderProviderContext context);
+        IModelBinder GetBinder(BinderProviderContext context);
     }
 }
