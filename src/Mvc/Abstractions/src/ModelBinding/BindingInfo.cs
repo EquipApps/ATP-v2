@@ -33,7 +33,7 @@ namespace EquipApps.Mvc.ModelBinding
             }
 
             BindingSource = other.BindingSource;
-            BinderModelName = other.BinderModelName;
+            BindingModelName = other.BindingModelName;
             BinderType = other.BinderType;
             PropertyFilterProvider = other.PropertyFilterProvider;
             RequestPredicate = other.RequestPredicate;
@@ -45,9 +45,14 @@ namespace EquipApps.Mvc.ModelBinding
         public BindingSource BindingSource { get; set; }
 
         /// <summary>
+        /// Задает или возвращает тип привязанной модели.
+        /// </summary>
+        public Type BindingModelType { get; set; }
+
+        /// <summary>
         /// Gets or sets the binder model name.
         /// </summary>
-        public string BinderModelName { get; set; }
+        public string BindingModelName { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Type"/> of the <see cref="IModelBinder"/> implementation used to bind the
@@ -85,7 +90,7 @@ namespace EquipApps.Mvc.ModelBinding
         /// from the current request.
         /// </summary>
         public Func<ActionContext, bool> RequestPredicate { get; set; }
-        public Type ModelType { get; set; }
+        
 
         /// <summary>
         /// Constructs a new instance of <see cref="BindingInfo"/> from the given <paramref name="attributes"/>.
@@ -109,7 +114,7 @@ namespace EquipApps.Mvc.ModelBinding
                 isBindingInfoPresent = true;
                 if (binderModelNameAttribute?.Name != null)
                 {
-                    bindingInfo.BinderModelName = binderModelNameAttribute.Name;
+                    bindingInfo.BindingModelName = binderModelNameAttribute.Name;
                     break;
                 }
             }
@@ -211,10 +216,10 @@ namespace EquipApps.Mvc.ModelBinding
             }
 
             var isBindingInfoPresent = false;
-            if (BinderModelName == null && modelMetadata.BinderModelName != null)
+            if (BindingModelName == null && modelMetadata.BinderModelName != null)
             {
                 isBindingInfoPresent = true;
-                BinderModelName = modelMetadata.BinderModelName;
+                BindingModelName = modelMetadata.BinderModelName;
             }
 
             if (BinderType == null && modelMetadata.BinderType != null)

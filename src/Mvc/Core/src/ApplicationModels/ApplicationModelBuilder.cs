@@ -30,7 +30,7 @@ namespace EquipApps.Mvc.ApplicationModels
                 if (modelExpectedType != null)
                 {
                     bindingInfo = new BindingInfo();
-                    bindingInfo.ModelType = modelExpectedType.GenericTypeArguments.FirstOrDefault();
+                    bindingInfo.BindingModelType = modelExpectedType.GenericTypeArguments.FirstOrDefault();
                     bindingInfo.BindingSource = BindingSource.ModelProvider;
                 }
             }
@@ -44,56 +44,16 @@ namespace EquipApps.Mvc.ApplicationModels
 
             //--
             var controllerModel = new ControllerModel(controllerType, attributes);
-            controllerModel.Area = displayInfo?.Area;
+            //controllerModel.Area = displayInfo?.Area;
             controllerModel.BindingInfo = bindingInfo;
             controllerModel.ControllerName = name;
-            controllerModel.Index = displayInfo?.Index ?? controllerModel.ControllerName.ToIntFromEnd();
+            //controllerModel.Index = displayInfo?.Index ?? controllerModel.ControllerName.ToIntFromEnd();
             controllerModel.Title = displayInfo?.Title;                                           //TODO: add unti test
 
             return controllerModel;
         }
 
-        //TODO: Написать юнит тесты
-        public static PropertyModel CreatePropertyModel(PropertyInfo propertyInfo)
-        {
-            if (propertyInfo == null)
-            {
-                throw new ArgumentNullException(nameof(propertyInfo));
-            }
-
-            //--
-            var attributes = propertyInfo.GetCustomAttributes(inherit: true).ToArray();
-            //--
-            var propertyName = propertyInfo.Name;
-
-            /* 
-             * Ищем привязку 
-             * Выбираем только те свойства
-             * для который установленна привязка! 
-             */
-            var bindingInfo = BindingInfoBuilder.GetBindingInfo(attributes);
-            if (bindingInfo != null)
-            {
-                /*
-                 * Если Имя модели NULL      => Привязка по имени свойства
-                 * Если Тип модели NULL      => Привязка по типу свойства
-                 * Если Источник модели NULL => Привязка из DataContext
-                 */
-                if (bindingInfo.BinderModelName == null) bindingInfo.BinderModelName = propertyName;
-                if (bindingInfo.ModelType == null) bindingInfo.ModelType = propertyInfo.PropertyType;
-                if (bindingInfo.BindingSource == null) bindingInfo.BindingSource = BindingSource.DataContext;
-            }
-            else
-                return null;
-
-            //--
-            var propertyModel = new PropertyModel(propertyInfo, attributes);
-
-            propertyModel.BindingInfo = bindingInfo;
-            propertyModel.PropertyName = propertyInfo.Name;
-
-            return propertyModel;
-        }
+        
 
         //TODO: Написать юнит тесты
         public static ActionModel CreateMethodModel(MethodInfo methodInfo)
@@ -122,48 +82,6 @@ namespace EquipApps.Mvc.ApplicationModels
             return methodModel;
         }
 
-        //TODO: Написать юнит тесты
-        public static ParameterModel CreateParameterModel(ParameterInfo parameterInfo)
-        {
-            if (parameterInfo == null)
-            {
-                throw new ArgumentNullException(nameof(parameterInfo));
-            }
-
-            //--
-            var attributes = parameterInfo.GetCustomAttributes(inherit: true).ToArray();
-
-            //-- ParameterName
-            var parameterName = parameterInfo.Name;
-
-            //--- Тут можно добавить логику обработки атрибутов !! 
-            var bindingInfo = BindingInfoBuilder.GetBindingInfo(attributes);
-            if (bindingInfo != null)
-            {
-                /*
-                * Если Имя модели NULL      => Привязка по имени параметра
-                * Если Тип модели NULL      => Привязка по типу параметра
-                * Если Источник модели NULL => Привязка из DataContext
-                */
-                if (bindingInfo.BinderModelName == null) bindingInfo.BinderModelName = parameterName;
-                if (bindingInfo.ModelType == null) bindingInfo.ModelType = parameterInfo.ParameterType;
-                if (bindingInfo.BindingSource == null) bindingInfo.BindingSource = BindingSource.DataContext;
-            }
-            else
-            {
-                bindingInfo = new BindingInfo();
-                bindingInfo.BinderModelName = parameterInfo.Name;
-                bindingInfo.ModelType = parameterInfo.ParameterType;
-                bindingInfo.BindingSource = BindingSource.DataContext;
-            }
-
-            //--
-            var parameterModel = new ParameterModel(parameterInfo, attributes);
-            //--
-            parameterModel.BindingInfo = bindingInfo;
-            parameterModel.ParameterName = parameterInfo.Name;
-            //--
-            return parameterModel;
-        }
+       
     }
 }

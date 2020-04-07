@@ -56,7 +56,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
                 isBindingInfoPresent = true;
                 if (binderModelNameAttribute?.ModelPath != null)
                 {
-                    bindingInfo.BinderModelName = binderModelNameAttribute.ModelPath;
+                    bindingInfo.BindingModelName = binderModelNameAttribute.ModelPath;
                     break;
                 }
             }
@@ -67,7 +67,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
                 isBindingInfoPresent = true;
                 if (binderModelTypeAttribute?.ModelType != null)
                 {
-                    bindingInfo.ModelType = binderModelTypeAttribute.ModelType;
+                    bindingInfo.BindingModelType = binderModelTypeAttribute.ModelType;
                     break;
                 }
             }

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,11 +28,6 @@ namespace EquipApps.Mvc.ApplicationModels
 
             _applicationModelProviders = applicationModelProviders.OrderBy(p => p.Order).ToArray();
             _conventions = options.Value.Conventions;
-        }
-
-        public ApplicationModel GetApplicationModel()
-        {
-            return CreateApplicationModel(new TypeInfo[0]);
         }
 
         public ApplicationModel CreateApplicationModel(IEnumerable<TypeInfo> controllerTypes)

@@ -22,8 +22,8 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
             if (context.BindingInfo.BindingSource != null &&
                 context.BindingInfo.BindingSource.CanAcceptDataFrom(BindingSource.DataContext))
             {
-                var expectedBindingType = context.BindingInfo.ModelType;
-                var expectedBindingPath = context.BindingInfo.BinderModelName;
+                var expectedBindingType = context.BindingInfo.BindingModelType;
+                var expectedBindingPath = context.BindingInfo.BindingModelName;
                 var parent = context.BindingModel;
                 var index = 0;
 
@@ -40,7 +40,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
                     for (; parent != null; index++, parent = parent.Parent)
                     {
                         //-- Пропускаем нулевые значения
-                        var parentBindingType = parent.BindingInfo?.ModelType;
+                        var parentBindingType = parent.BindingInfo?.BindingModelType;
                         if (parentBindingType == null)
                             continue;
 
@@ -54,7 +54,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
                     for (; parent != null; index++, parent = parent.Parent)
                     {
                         //-- Пропускаем нулевые значения
-                        var parentBindingType = parent.BindingInfo?.ModelType;
+                        var parentBindingType = parent.BindingInfo?.BindingModelType;
                         if (parentBindingType == null)
                             continue;
 
@@ -71,7 +71,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
                     for (; parent != null; index++, parent = parent.Parent)
                     {
                         //-- Пропускаем нулевые значения
-                        var parentBindingType = parent.BindingInfo?.ModelType;
+                        var parentBindingType = parent.BindingInfo?.BindingModelType;
                         if (parentBindingType == null)
                             continue;
 
@@ -82,7 +82,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
                          * то модель нужно обновить!
                          * НЕОБХОДИМО ДЛЯ ФОРМИРОВАНИЯ ИНФОРМАЦИИ О ПРИВЯЗКЕ!
                          */
-                        context.BindingModel.BindingInfo.ModelType = property.Type;
+                        context.BindingModel.BindingInfo.BindingModelType = property.Type;
 
                         return new DataContextModelBinderPath(property.Extractor, index);
                     }
@@ -94,7 +94,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
                     for (; parent != null; index++, parent = parent.Parent)
                     {
                         //-- Пропускаем нулевые значения
-                        var parentBindingType = parent.BindingInfo?.ModelType;
+                        var parentBindingType = parent.BindingInfo?.BindingModelType;
                         if (parentBindingType == null)
                             continue;
 

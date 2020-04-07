@@ -12,7 +12,7 @@ namespace EquipApps.Mvc
     /// <summary>
     /// Дескриптер действия
     /// </summary>
-    public abstract class ActionDescriptor : IDisposable
+    public abstract partial class ActionDescriptor : IDisposable
     {
         private readonly ISubject<bool> _checkChangedSubject = new ReplaySubject<bool>();
         private readonly ISubject<bool> _breakChangedSubject = new ReplaySubject<bool>();
@@ -27,7 +27,7 @@ namespace EquipApps.Mvc
 
         private static int Count = 0;
 
-        public ActionDescriptor(TestObject testCase, TestObject testStep)
+        public ActionDescriptor(TestObject testCase, TestObject testStep):this()
         {
             TestCase = testCase ?? throw new ArgumentNullException(nameof(testCase));
             TestStep = testStep ?? throw new ArgumentNullException(nameof(testStep));
@@ -36,28 +36,11 @@ namespace EquipApps.Mvc
             Exception = null;
             Result = Result.NotExecuted;
             State  = State.Empy;
-
-
-            Id = Guid.NewGuid().ToString();
-            Properties = new Dictionary<object, object>();
-            RouteValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
 
-        /// <summary>
-        /// Gets an id which uniquely identifies the action.
-        /// </summary>
-        public string Id { get; }
+      
 
-        /// <summary>
-        /// Gets or sets the collection of route values that must be provided by routing
-        /// for the action to be selected.
-        /// </summary>
-        public IDictionary<string, string> RouteValues { get; set; }
         
-        /// <summary>
-        /// Stores arbitrary metadata properties associated with the <see cref="ActionDescriptor"/>.
-        /// </summary>
-        public IDictionary<object, object> Properties { get; }
 
 
 

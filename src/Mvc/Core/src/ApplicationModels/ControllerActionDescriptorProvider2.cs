@@ -1,8 +1,10 @@
 ﻿using EquipApps.Mvc.Abstractions;
 using EquipApps.Mvc.ApplicationParts;
 using EquipApps.Mvc.Controllers;
+using NLib.AtpNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace EquipApps.Mvc.ApplicationModels
@@ -11,6 +13,7 @@ namespace EquipApps.Mvc.ApplicationModels
     {
         private ApplicationPartManager _partManager;
         private ApplicationModelFactory _applicationModelFactory;
+        private readonly IBindingFactory _modelBinderFactory;
 
         public ControllerActionDescriptorProvider2(ApplicationPartManager partManager,
                                                    ApplicationModelFactory applicationModelFactory)
@@ -58,11 +61,28 @@ namespace EquipApps.Mvc.ApplicationModels
         internal IEnumerable<ControllerActionDescriptor> GetDescriptors()
         {
             var controllerTypes = GetControllerTypes();
-            var application = _applicationModelFactory.CreateApplicationModel(controllerTypes);
-            var controllerTestSuits = GetControllerTestSuits(application);
+            var application     = _applicationModelFactory.CreateApplicationModel(controllerTypes);
+
+            //------------------
+
+            foreach (var controller in application.Controllers)
+            {
+
+            }
+
+            //------------------
+
+            
 
             return null;
         }
+
+
+
+
+
+
+
 
         private IEnumerable<TypeInfo> GetControllerTypes()
         {
@@ -71,12 +91,7 @@ namespace EquipApps.Mvc.ApplicationModels
             return feature.Controllers;
         }
 
-
-        private IEnumerable<ControllerTestSuit> GetControllerTestSuits(ApplicationModel applicationModel)
-        {
-            //TODO: Привязка данных через отдельный интерфейс!
-            throw new NotImplementedException();
-        }
+        
 
 
     }

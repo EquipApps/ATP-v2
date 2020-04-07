@@ -56,7 +56,7 @@ namespace EquipApps.Mvc.Controllers
                     return "Ошибка привязки";
             }
 
-            return ControllerModel.Title ?? string.Empty;
+            return ControllerModel.Title ?? ControllerModel.ControllerName;
 
         }
 

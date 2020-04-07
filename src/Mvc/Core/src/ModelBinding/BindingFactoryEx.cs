@@ -44,7 +44,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
             var bindingInfo = new BindingInfo()
             {
                 BindingSource = BindingSource.DataText,
-                BinderModelName = format
+                BindingModelName = format
             };
 
             return factory.Create(bindingModel, bindingInfo);

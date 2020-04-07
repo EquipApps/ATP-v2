@@ -1,27 +1,46 @@
 ﻿using EquipApps.Mvc.Abstractions;
 using EquipApps.Mvc.ApplicationModels;
+using EquipApps.Mvc.ApplicationParts;
 using EquipApps.Mvc.Controllers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace EquipApps.Mvc.Internal
 {
     public class ControllerActionDescriptorProvider : IActionDescriptorProvider
     {
-        private ApplicationModelFactory appModelFactory;
+        
         private ILogger<ControllerActionDescriptorProvider> logger;
         private MvcOptions options;
 
+        private ApplicationPartManager _partManager;
+        private ApplicationModelFactory _applicationModelFactory;
+
         private int startIndex = 0;
 
-        public ControllerActionDescriptorProvider(ApplicationModelFactory appModelFactory,
+        public ControllerActionDescriptorProvider(ApplicationPartManager partManager,
+                                                   ApplicationModelFactory applicationModelFactory,
                                                   ILoggerFactory loggerFactory,
                                                   IOptions<MvcOptions> options)
         {
-            this.appModelFactory = appModelFactory ?? throw new ArgumentNullException(nameof(appModelFactory));
+            if (partManager == null)
+            {
+                throw new ArgumentNullException(nameof(partManager));
+            }
+
+            if (applicationModelFactory == null)
+            {
+                throw new ArgumentNullException(nameof(applicationModelFactory));
+            }
+
+            _partManager = partManager;
+            _applicationModelFactory = applicationModelFactory;
+
+           
             this.options         = options?.Value  ?? throw new ArgumentNullException(nameof(options));
 
             if (loggerFactory == null)
@@ -39,7 +58,9 @@ namespace EquipApps.Mvc.Internal
         public void OnProvidersExecuting(ActionDescriptorProviderContext context)
         {
             //-- Создаем модель приложения.
-            var application = appModelFactory.GetApplicationModel();
+            var controllerTypes = GetControllerTypes();
+            var application = _applicationModelFactory.CreateApplicationModel(controllerTypes);
+           
 
             if (application == null)
             {
@@ -55,7 +76,7 @@ namespace EquipApps.Mvc.Internal
 
             //-- Создаем тестовые наборы
             var result = application.Controllers
-                .GroupBy(x => x.Area)
+                .GroupBy(x => x.GetRouteValueArea())
                 .OrderBy(x => x.Key)                //TODO: Cортировака по ApplicationModel.Areas.Index
                 .SelectMany(ToTestSuitOrderByNumber)
                 .SelectMany(ToActionDescriptor)
@@ -93,8 +114,7 @@ namespace EquipApps.Mvc.Internal
                 {
                     logger.LogError(
                        $"Ошибка. В одной области не могут содержать контроллеры с одинаковыми индексами! " +
-                       $"Область: {controller.Area}; Контроллер: {controller.ControllerName}; Индекс: {controller.Index}; " +
-                       $"будет пропущен пропущен");
+                       $"Контроллер: {controller.DisplayName}; будет пропущен пропущен");
                 }
                 else
                     controllers.Add(controller.Index.Value, controller);
@@ -135,7 +155,7 @@ namespace EquipApps.Mvc.Internal
                     logger.LogError(
                         resultBinding.Exception,
                         $"Не получилось привязаться к данным. " +
-                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName};");
+                        $"Контроллер: {controllerModel.DisplayName};");
                     continue;
                 }
 
@@ -144,7 +164,7 @@ namespace EquipApps.Mvc.Internal
                 {
                     logger.LogWarning(
                         $"Модель привязки NULL. " +
-                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName};");
+                        $"Контроллер: {controllerModel.DisplayName};");
                     continue;
                 }
 
@@ -165,7 +185,7 @@ namespace EquipApps.Mvc.Internal
                 if (bindingResults.Length == 0)
                     logger.LogWarning(
                         $"Привязка к пустой коллекции. " +
-                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName};");
+                        $"Контроллер: {controllerModel.DisplayName};");
 
                 for (int i = 0, index = startIndex; i < bindingResults.Length; i++, index++)
                 {
@@ -180,7 +200,7 @@ namespace EquipApps.Mvc.Internal
                         logger.LogError(
                         resultBinding.Exception,
                         $"Не получилось привязаться к данным. " +
-                        $"Index:{i}; Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName};");
+                        $"Index:{i}; Контроллер: {controllerModel.DisplayName};");
 
                         continue;
                     }
@@ -189,7 +209,7 @@ namespace EquipApps.Mvc.Internal
                     {
                         logger.LogWarning(
                         $"Модель привязки NULL. " +
-                        $"Index:{i}; Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName};");
+                        $"Index:{i}; Контроллер: {controllerModel.DisplayName};");
 
                         continue;
                     }
@@ -237,7 +257,7 @@ namespace EquipApps.Mvc.Internal
                     logger.LogError(
                         resultBinding.Exception,
                         $"Не получилось привязаться к данным. " +
-                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName}; Метод: {method.ActionName};");
+                        $"Метод: {method.DisplayName};");
 
                     continue;
                 }
@@ -247,7 +267,7 @@ namespace EquipApps.Mvc.Internal
                 {
                     logger.LogWarning(
                         $"Модель привязки NULL. " +
-                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName}; ; Метод: {method.ActionName};");
+                        $"Метод: {method.DisplayName};");
 
                     continue;
                 }
@@ -266,7 +286,7 @@ namespace EquipApps.Mvc.Internal
                 if (bindingResults.Length == 0)
                     logger.LogWarning(
                         $"Привязка к пустой коллекции. " +
-                        $"Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName}; Метод: {method.ActionName};");
+                        $"Метод: {method.DisplayName};");
 
 
                 for (int i = 0; i < bindingResults.Length; i++)
@@ -282,7 +302,7 @@ namespace EquipApps.Mvc.Internal
                         logger.LogError(
                             bindingResult.Exception,
                             $"Не получилось привязаться к данным. Index:{i}; " +
-                            $"Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName}; Метод: {method.ActionName};");
+                            $"Метод: {method.DisplayName};");
 
                         continue;
                     }
@@ -291,7 +311,7 @@ namespace EquipApps.Mvc.Internal
                     {
                         logger.LogWarning(
                             $"Модель привязки NULL. " +
-                            $"Index:{i}; Область: {controllerModel.Area}; Контроллер: {controllerModel.ControllerName}; Метод: {method.ActionName};");
+                            $"Index:{i}; Метод: {method.DisplayName};");
 
                         continue;
                     }
@@ -303,6 +323,13 @@ namespace EquipApps.Mvc.Internal
                     yield return testStep;
                 }
             }
+        }
+
+        private IEnumerable<TypeInfo> GetControllerTypes()
+        {
+            var feature = new ControllerFeature();
+            _partManager.PopulateFeature(feature);
+            return feature.Controllers;
         }
 
     }

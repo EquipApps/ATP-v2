@@ -192,7 +192,7 @@ namespace NLib.AtpNetCore.Testing
             // 
             services.AddTransientFeatureProvider<MvcFeatureProvider>();
             services.AddSingleton<IActionDescriptorCollectionProvider, DefaultActionDescriptorCollectionProvider>();
-            services.AddTransientActionDescriptorProvider<ControllerActionDescriptorProvider2>();
+            services.AddTransientActionDescriptorProvider<ControllerActionDescriptorProvider>();
             
             // ----------------------------------------------------------------------------------------
             // Middleware
@@ -252,9 +252,10 @@ namespace NLib.AtpNetCore.Testing
             //
             services.TryAddEnumerable(
               ServiceDescriptor.Transient<IApplicationModelProvider, DefaultApplicationModelProvider>());
+            services.TryAddEnumerable(
+              ServiceDescriptor.Transient<IApplicationModelProvider, BindingInfoApplicationModelProvider>());
 
 
-            
             // ----------------------------------------------------------------------------------------
 
             services.TryAddEnumerable(

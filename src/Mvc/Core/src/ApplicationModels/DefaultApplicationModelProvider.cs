@@ -186,28 +186,8 @@ namespace EquipApps.Mvc.Internal
 
             attributes = filteredAttributes.ToArray();
 
+            var controllerModel = new ControllerModel(typeInfo, attributes);
 
-            //-- Создание BindingInfo черех атрибуты
-            var bindingInfo = BindingInfo.GetBindingInfo(attributes);
-
-            if (bindingInfo == null)
-            {
-                //-- Создание BindingInfo через атрибут IModelExpected<>
-                var modelExpectedType = typeInfo.ImplementedInterfaces
-                    .FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IModelExpected<>));
-
-                if (modelExpectedType != null)
-                {
-                    bindingInfo               = new BindingInfo();
-                    bindingInfo.ModelType     = modelExpectedType.GenericTypeArguments.FirstOrDefault();
-                    bindingInfo.BindingSource = BindingSource.ModelProvider;
-                }
-            }
-
-            var controllerModel = new ControllerModel(typeInfo, attributes)
-            {
-                BindingInfo = bindingInfo
-            };
 
             //AddRange(controllerModel.Selectors, CreateSelectors(attributes));
 
@@ -221,6 +201,11 @@ namespace EquipApps.Mvc.Internal
             foreach (var routeValueProvider in attributes.OfType<IRouteValueProvider>())
             {
                 controllerModel.RouteValues.Add(routeValueProvider.RouteKey, routeValueProvider.RouteValue);
+            }
+
+            foreach (var orderValueProvider in attributes.OfType<IOrderValueProvider>())
+            {
+                controllerModel.OrderValues.Add(orderValueProvider.OrderKey, orderValueProvider.OrderValue);
             }
 
             //var apiVisibility = attributes.OfType<IApiDescriptionVisibilityProvider>().FirstOrDefault();
@@ -267,31 +252,9 @@ namespace EquipApps.Mvc.Internal
 
             var attributes = propertyInfo.GetCustomAttributes(inherit: true);
 
-            // BindingInfo for properties can be either specified by decorating the property with binding specific attributes.
-            // ModelMetadata also adds information from the property's type and any configured IBindingMetadataProvider.
-            var modelMetadata = _modelMetadataProvider.GetMetadataForProperty(propertyInfo.DeclaringType, propertyInfo.Name);
-            var bindingInfo = BindingInfo.GetBindingInfo(attributes, modelMetadata);
-
-            if (bindingInfo == null)
-            {
-                // Look for BindPropertiesAttribute on the handler type if no BindingInfo was inferred for the property.
-                // This allows a user to enable model binding on properties by decorating the controller type with BindPropertiesAttribute.
-                var declaringType = propertyInfo.DeclaringType;
-                var bindPropertiesAttribute = declaringType.GetCustomAttribute<BindPropertiesAttribute>(inherit: true);
-                if (bindPropertiesAttribute != null)
-                {
-                    var requestPredicate = bindPropertiesAttribute.SupportsGet ? _supportsAllRequests : _supportsNonGetRequests;
-                    bindingInfo = new BindingInfo
-                    {
-                        RequestPredicate = requestPredicate,
-                    };
-                }
-            }
-
             var propertyModel = new PropertyModel(propertyInfo, attributes)
             {
                 PropertyName = propertyInfo.Name,
-                BindingInfo = bindingInfo,
             };
 
             return propertyModel;
@@ -510,22 +473,9 @@ namespace EquipApps.Mvc.Internal
 
             var attributes = parameterInfo.GetCustomAttributes(inherit: true);
 
-            BindingInfo bindingInfo;
-            if (_modelMetadataProvider is ModelMetadataProvider modelMetadataProviderBase)
-            {
-                var modelMetadata = modelMetadataProviderBase.GetMetadataForParameter(parameterInfo);
-                bindingInfo = BindingInfo.GetBindingInfo(attributes, modelMetadata);
-            }
-            else
-            {
-                // GetMetadataForParameter should only be used if the user has opted in to the 2.1 behavior.
-                bindingInfo = BindingInfo.GetBindingInfo(attributes);
-            }
-
             var parameterModel = new ParameterModel(parameterInfo, attributes)
             {
                 ParameterName = parameterInfo.Name,
-                BindingInfo = bindingInfo,
             };
 
             return parameterModel;
@@ -567,9 +517,6 @@ namespace EquipApps.Mvc.Internal
                 controllerModel.NumberBinder = _modelBinderFactory.Create(controllerModel, controllerModel.Number);
             }
         }
-
-       
-
 
         private void BindingPropertyModel(PropertyModel propertyModel)
         {

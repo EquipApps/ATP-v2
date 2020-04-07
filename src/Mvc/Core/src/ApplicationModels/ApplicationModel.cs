@@ -18,7 +18,6 @@ namespace EquipApps.Mvc.ApplicationModels
 
         /// <summary>
         /// Возвращает список <see cref="AreaModel"/>.
-        /// 
         /// </summary>
         public IList<AreaModel> Areas { get; }
 

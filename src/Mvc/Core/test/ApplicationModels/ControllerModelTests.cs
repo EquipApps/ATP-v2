@@ -41,9 +41,9 @@ namespace NLib.AtpNetCore.Mvc.ApplicationModels.Tests
 
 
             Assert.IsNull(model.Application);
-            Assert.IsNull(model.Area);
+          
             Assert.AreEqual(attr, model.Attributes);
-            Assert.IsNull(model.Background);
+          
             Assert.IsNull(model.BindingInfo);
             Assert.IsNull(model.Index);
             Assert.AreEqual(typeInfo, model.ControllerType);

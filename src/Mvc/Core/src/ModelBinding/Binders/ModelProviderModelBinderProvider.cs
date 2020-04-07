@@ -31,9 +31,9 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
 
             if (context.BindingInfo.BindingSource != null &&
                 context.BindingInfo.BindingSource.CanAcceptDataFrom(BindingSource.ModelProvider) &&
-                context.BindingInfo.ModelType != null)
+                context.BindingInfo.BindingModelType != null)
             {
-                var modelType = context.BindingInfo.ModelType;
+                var modelType = context.BindingInfo.BindingModelType;
                 var modelProviderFactory = modelProviderFactoryCache.GetOrAdd(modelType, CreateFactory);
                 return new ModelProviderModelBinder(modelProviderFactory);
             }

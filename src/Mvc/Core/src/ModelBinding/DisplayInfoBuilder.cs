@@ -13,15 +13,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
             var isdisplayInfoPresent = false;
 
             // Area
-            foreach (var displayTitleAttribute in attributes.OfType<IDisplayAreaMetadata>())
-            {
-                isdisplayInfoPresent = true;
-                if (displayTitleAttribute?.Area != null)
-                {
-                    displayInfo.Area = displayTitleAttribute.Area;
-                    break;
-                }
-            }
+            
 
             // Index
             foreach (var displayIndexAttribute in attributes.OfType<IDisplayIndexMetadata>())

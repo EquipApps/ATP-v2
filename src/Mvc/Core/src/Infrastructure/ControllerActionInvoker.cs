@@ -91,8 +91,7 @@ namespace EquipApps.Mvc.Infrastructure
                 {
                     logger.LogWarning(
                         $"У свойства нет привязки. (Возможно ошибка модели приложения) " +
-                        $"Область: {property.Controller.Area}; " +
-                        $"Контроллер: {property.Controller.ControllerName}; " +
+                        $"Контроллер: {property.Controller.DisplayName}; " +
                         $"Свойство: {property.PropertyName};");
                     continue;
                 }
@@ -102,8 +101,7 @@ namespace EquipApps.Mvc.Infrastructure
                 {
                     logger.LogError(
                         $"Не получилось привязаться к данным " +
-                        $"Область: {property.Controller.Area}; " +
-                        $"Контроллер: {property.Controller.ControllerName}; " +
+                        $"Контроллер: {property.Controller.DisplayName}; " +
                         $"Свойство: {property.PropertyName};");
 
                     //TODO: Добавить информацию об ошибке модели!
@@ -114,9 +112,8 @@ namespace EquipApps.Mvc.Infrastructure
                 if (resultBinding.IsModelNull)
                 {
                     logger.LogWarning(
-                    $"Модель привязки NULL. " +
-                    $"Область: {property.Controller.Area}; " +
-                    $"Контроллер: {property.Controller.ControllerName}; " +
+                    $"Модель привязки NULL. " + 
+                    $"Контроллер: {property.Controller.DisplayName}; " +
                     $"Свойство: {property.PropertyName};");
                 }
 
@@ -129,9 +126,8 @@ namespace EquipApps.Mvc.Infrastructure
                     //TODO: Добавить информацию об ошибке модели!
 
                     logger.LogError(ex,
-                    $"Не получилось присвоить значение свойству. " +
-                    $"Область: {property.Controller.Area}; " +
-                    $"Контроллер: {property.Controller.ControllerName}; " +
+                    $"Не получилось присвоить значение свойству. " +                  
+                    $"Контроллер: {property.Controller.DisplayName}; " +
                     $"Свойство: {property.PropertyName};");
 
                     throw ex;
@@ -162,11 +158,10 @@ namespace EquipApps.Mvc.Infrastructure
                 if (parameter.ModelBinder == null)
                 {
                     logger.LogWarning(
-                        $"У свойства нет привязки. (Возможно ошибка модели приложения) " +
-                        $"Область: {parameter.Action.Controller.Area}; " +
-                        $"Контроллер: {parameter.Action.Controller.ControllerName}; " +
+                        $"У свойства нет привязки. (Возможно ошибка модели приложения) " +                    
+                        $"Контроллер: {parameter.Action.Controller.DisplayName}; " +
                         $"Метод: {parameter.Action.ActionName}" +
-                        $"Аргумент: {parameter.ParameterName};");
+                        $"Аргумент: {parameter.DisplayName};");
 
                     continue;
                 }
@@ -175,11 +170,10 @@ namespace EquipApps.Mvc.Infrastructure
                 if (!resultBinding.IsModelSet)
                 {
                     logger.LogError(
-                        $"Не получилось привязаться к данным " +
-                        $"Область: {parameter.Action.Controller.Area}; " +
-                        $"Контроллер: {parameter.Action.Controller.ControllerName}; " +
-                        $"Метод: {parameter.Action.ActionName}" +
-                        $"Аргумент: {parameter.ParameterName};");
+                        $"Не получилось привязаться к данным " +                     
+                        $"Контроллер: {parameter.Action.Controller.DisplayName}; " +
+                        $"Метод: {parameter.Action.DisplayName}" +
+                        $"Аргумент: {parameter.DisplayName};");
 
                     //TODO: Добавить информацию об ошибке модели!
 
@@ -189,11 +183,10 @@ namespace EquipApps.Mvc.Infrastructure
                 if (resultBinding.IsModelNull)
                 {
                     logger.LogWarning(
-                        $"Модель привязки NULL. " +
-                        $"Область: {parameter.Action.Controller.Area}; " +
-                        $"Контроллер: {parameter.Action.Controller.ControllerName}; " +
-                        $"Метод: {parameter.Action.ActionName}" +
-                        $"Аргумент: {parameter.ParameterName};");
+                        $"Модель привязки NULL. " +                       
+                        $"Контроллер: {parameter.Action.Controller.DisplayName}; " +
+                        $"Метод: {parameter.Action.DisplayName}" +
+                        $"Аргумент: {parameter.DisplayName};");
 
                 }
 

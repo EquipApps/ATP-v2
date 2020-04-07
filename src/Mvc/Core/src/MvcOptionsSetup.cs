@@ -25,8 +25,15 @@ namespace EquipApps.Mvc
 
         internal static void ConfigureAdditionalModelMetadataDetailsProviders(IList<IMetadataDetailsProvider> modelMetadataDetailsProviders)
         {
+            // Don't bind the Type class by default as it's expensive. A user can override this behavior
+            // by altering the collection of providers.
+            modelMetadataDetailsProviders.Add(new ExcludeBindingMetadataProvider(typeof(Type)));
+
             modelMetadataDetailsProviders.Add(new DefaultBindingMetadataProvider());
             modelMetadataDetailsProviders.Add(new DefaultValidationMetadataProvider());
+
+            // TODO: Создават привязк если есть интерфейс! IModelExpected<>
+            //modelMetadataDetailsProviders.Add(new BindingSourceMetadataProvider(typeof(CancellationToken), BindingSource.Special));
         }
 
         private void ConfigureBindingProviders(MvcOptions options)
