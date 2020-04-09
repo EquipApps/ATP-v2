@@ -1,4 +1,5 @@
-﻿using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
+﻿using EquipApps.Mvc.ModelBinding;
+using EquipApps.Mvc.Routing;
 using System;
 
 namespace EquipApps.Mvc
@@ -7,17 +8,19 @@ namespace EquipApps.Mvc
     /// Формерует TestSuit
     /// </summary>   
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class StepAttribute : Attribute, IDisplayFormatTitleMetadata, IDisplayFormatNumberMetadata
+    public class StepAttribute : OrderValueAttribute, IDisplayFormatTitleMetadata, IDisplayFormatNumberMetadata
     {
         public StepAttribute(int number, string title)
+            : base("action", number.ToString())
         {
             NumberFormat = number.ToString();
             TitleFormat = title;
         }
 
-        public StepAttribute(string number, string title)
+        public StepAttribute(string order, string title)
+            : base("action", order)
         {
-            NumberFormat = number;
+            NumberFormat = order;
             TitleFormat = title;
         }
 

@@ -1,4 +1,5 @@
-﻿using EquipApps.Mvc.Routing;
+﻿using EquipApps.Mvc.ModelBinding;
+using EquipApps.Mvc.Routing;
 using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
 using System;
 

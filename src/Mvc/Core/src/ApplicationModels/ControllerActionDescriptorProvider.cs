@@ -1,31 +1,23 @@
 ﻿using EquipApps.Mvc.Abstractions;
-using EquipApps.Mvc.ApplicationModels;
 using EquipApps.Mvc.ApplicationParts;
 using EquipApps.Mvc.Controllers;
+using EquipApps.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
-namespace EquipApps.Mvc.Internal
+namespace EquipApps.Mvc.ApplicationModels
 {
     public class ControllerActionDescriptorProvider : IActionDescriptorProvider
     {
-        
-        private ILogger<ControllerActionDescriptorProvider> logger;
-        private MvcOptions options;
-
         private ApplicationPartManager _partManager;
         private ApplicationModelFactory _applicationModelFactory;
 
-        private int startIndex = 0;
-
         public ControllerActionDescriptorProvider(ApplicationPartManager partManager,
                                                    ApplicationModelFactory applicationModelFactory,
-                                                  ILoggerFactory loggerFactory,
-                                                  IOptions<MvcOptions> options)
+                                                   IModelBindingFactory modelBinderFactory,
+                                                   ILoggerFactory loggerFactory)
         {
             if (partManager == null)
             {
@@ -39,290 +31,87 @@ namespace EquipApps.Mvc.Internal
 
             _partManager = partManager;
             _applicationModelFactory = applicationModelFactory;
-
-           
-            this.options         = options?.Value  ?? throw new ArgumentNullException(nameof(options));
-
-            if (loggerFactory == null)
-            {
-                throw new ArgumentNullException(nameof(loggerFactory));
-            }
-
-            logger = loggerFactory.CreateLogger<ControllerActionDescriptorProvider>();
-
-            startIndex = this.options.StartIndex;
         }
 
         public int Order => -1000;
 
+        /// <inheritdoc />
         public void OnProvidersExecuting(ActionDescriptorProviderContext context)
         {
-            //-- Создаем модель приложения.
-            var controllerTypes = GetControllerTypes();
-            var application = _applicationModelFactory.CreateApplicationModel(controllerTypes);
-           
-
-            if (application == null)
+            if (context == null)
             {
-                logger.LogError("Не удалось создать модель приложения!");
-                throw new NullReferenceException(nameof(application));
+                throw new ArgumentNullException(nameof(context));
             }
 
-            //-- Проверка.
-            if (application.Controllers.Count == 0)
+            foreach (var descriptor in GetDescriptors())
             {
-                logger.LogError("Модель приложения не содержит контроллеров!");
+                context.Results.Add(descriptor);
             }
-
-            //-- Создаем тестовые наборы
-            var result = application.Controllers
-                .GroupBy(x => x.GetRouteValueArea())
-                .OrderBy(x => x.Key)                //TODO: Cортировака по ApplicationModel.Areas.Index
-                .SelectMany(ToTestSuitOrderByNumber)
-                .SelectMany(ToActionDescriptor)
-
-                .OrderBy(x => x.Number)
-                .OrderBy(x => x.Area);
-
-
-            context.Results.AddRange(result);
         }
 
+        /// <inheritdoc />
         public void OnProvidersExecuted(ActionDescriptorProviderContext context)
         {
-            //-- Ничего не делаем!
-        }
-
-        //TODO: Юнит тест проверка порядка!
-        private IEnumerable<ControllerTestCase> ToTestSuitOrderByNumber(IEnumerable<ControllerModel> controllerModels)
-        {
-            var controllers = new SortedList<int, ControllerModel>();
-
-            var controllerHasNumber = controllerModels
-                .Where(x => x.Index.HasValue)
-                .ToArray();
-
-            var controllerNulNumber = controllerModels
-                .Where(x => !x.Index.HasValue)
-                .ToArray();
-
-            //-- 1) Сначало записвываем в список контроллеры с номерами
-
-            foreach (var controller in controllerHasNumber)
+            // After all of the providers have run, we need to provide a 'null' for each all of route values that
+            // participate in action selection.
+            //
+            // This is important for scenarios like Razor Pages, that use the 'page' route value. An action that
+            // uses 'page' shouldn't match when 'action' is set, and an action that uses 'action' shouldn't match when
+            // 'page is specified.
+            //
+            // Or for another example, consider areas. A controller that's not in an area needs a 'null' value for
+            // area so it can't match when the route produces an 'area' value.
+            var keys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            for (var i = 0; i < context.Results.Count; i++)
             {
-                if (controllers.ContainsKey(controller.Index.Value))
+                var action = context.Results[i];
+                foreach (var key in action.RouteValues.Keys)
                 {
-                    logger.LogError(
-                       $"Ошибка. В одной области не могут содержать контроллеры с одинаковыми индексами! " +
-                       $"Контроллер: {controller.DisplayName}; будет пропущен пропущен");
+                    keys.Add(key);
                 }
-                else
-                    controllers.Add(controller.Index.Value, controller);
+            }
+            for (var i = 0; i < context.Results.Count; i++)
+            {
+                var action = context.Results[i];
+                foreach (var key in keys)
+                {
+                    if (!action.RouteValues.ContainsKey(key))
+                    {
+                        action.RouteValues.Add(key, null);
+                    }
+                }
             }
 
 
-            //-- 2) Затем контроллеры без номеров вставляем в список
-            for (int i = 0, index = startIndex; i < controllerNulNumber.Length; i++, index++)
+            keys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            for (var i = 0; i < context.Results.Count; i++)
             {
-                var controller = controllerNulNumber[i];
-
-                //-- Увеличивем счетчик пока не найдем свободный
-                while (controllers.ContainsKey(index))
-                    index++;
-
-                controllers.Add(index, controller);
+                var action = context.Results[i];
+                foreach (var key in action.OrderValues.Keys)
+                {
+                    keys.Add(key);
+                }
             }
-
-            //-- 3) Преобразовываем
-
-            foreach (var controllerPair in controllers)
+            for (var i = 0; i < context.Results.Count; i++)
             {
-                var controllerModelIndex = controllerPair.Key;
-                var controllerModel = controllerPair.Value;
-                var modelBinder = controllerModel.ModelBinder;
-
-                //-- 1) Нету привязки? создаем одиночный TestCase
-                if (modelBinder == null)
+                var action = context.Results[i];
+                foreach (var key in keys)
                 {
-                    yield return new ControllerTestCase(controllerModel, controllerModelIndex);
-                    continue;
-                }
-
-                //-- 2) Не получилось привязаться к данным? пропускаем.
-                var resultBinding = modelBinder.Bind(null, 1);
-                if (!resultBinding.IsModelSet)
-                {
-                    logger.LogError(
-                        resultBinding.Exception,
-                        $"Не получилось привязаться к данным. " +
-                        $"Контроллер: {controllerModel.DisplayName};");
-                    continue;
-                }
-
-                //-- 3) привязка вернула null данным? пропускаем.
-                if (resultBinding.IsModelNull)
-                {
-                    logger.LogWarning(
-                        $"Модель привязки NULL. " +
-                        $"Контроллер: {controllerModel.DisplayName};");
-                    continue;
-                }
-
-                //-- 4) Количество данных равно единице? возвращаем один TestCase
-                if (!resultBinding.IsMany)
-                {
-                    // TODO: Проверить в юнит тесте. Background всегда ли отлична от нуля когда есть привязка?
-                    // TODO: Если один тест кейс, может не использовать индекс?
-                    var testCase = new ControllerTestCase(controllerModel, controllerModelIndex);
-                    testCase.DataContext = resultBinding.Model;
-
-                    yield return testCase;
-                    continue;
-                }
-
-                //-- 5) Массив
-                var bindingResults = resultBinding.GetResults();
-                if (bindingResults.Length == 0)
-                    logger.LogWarning(
-                        $"Привязка к пустой коллекции. " +
-                        $"Контроллер: {controllerModel.DisplayName};");
-
-                for (int i = 0, index = startIndex; i < bindingResults.Length; i++, index++)
-                {
-                    /*  
-                     *  Если результат не удалось получить, то пропускаем данный пункт проверки! (НО ИНДЕКС УВЕЛИЧИВАЕТСЯ)
-                     *  Нужно для маскирования ПУСТЫХ СТРОК в базе данных!
-                     */
-                    var bindingResult = bindingResults[i];
-
-                    if (!bindingResult.IsModelSet)
+                    if (!action.OrderValues.ContainsKey(key))
                     {
-                        logger.LogError(
-                        resultBinding.Exception,
-                        $"Не получилось привязаться к данным. " +
-                        $"Index:{i}; Контроллер: {controllerModel.DisplayName};");
-
-                        continue;
+                        action.OrderValues.Add(key, null);
                     }
-
-                    if (bindingResult.IsModelNull)
-                    {
-                        logger.LogWarning(
-                        $"Модель привязки NULL. " +
-                        $"Index:{i}; Контроллер: {controllerModel.DisplayName};");
-
-                        continue;
-                    }
-
-                    var testCase = new ControllerTestCase(controllerModel, controllerModelIndex, index);
-                    testCase.DataContext = bindingResult.Model;
-
-                    yield return testCase;
                 }
             }
         }
 
-        private IEnumerable<ControllerActionDescriptor> ToActionDescriptor(ControllerTestCase testCase)
+
+        internal IEnumerable<ControllerActionDescriptor> GetDescriptors()
         {
-            foreach (var testStep in ToTestSteps(testCase))
-            {
-                testStep.Parent = testCase;
-                testCase.TestSteps.Add(testStep);
+            var controllerTypes = GetControllerTypes();
+            var application = _applicationModelFactory.CreateApplicationModel(controllerTypes);
+            return _applicationModelFactory.Builder(application);
 
-                yield return new ControllerActionDescriptor(testCase, testStep);
-            }
-        }
-
-        private IEnumerable<ControllerTestStep> ToTestSteps(ControllerTestCase testCase)
-        {
-            var controllerModel = testCase.ControllerModel;
-            var methods = controllerModel.Actions;
-
-            for (int actionModelIndex = 0; actionModelIndex < methods.Count; actionModelIndex++)
-            {
-                var method = methods[actionModelIndex];
-                var methodModelBinder = method.ModelBinder;
-
-                //-- 1) Нету привязки? создаем одиночный TestStep
-                if (methodModelBinder == null)
-                {
-                    yield return new ControllerTestStep(method, actionModelIndex);
-                    continue;
-                }
-
-                //-- 2) Не получилось привязаться к данным? пропускаем.
-                var resultBinding = methodModelBinder.Bind(testCase, 1);
-                if (!resultBinding.IsModelSet)
-                {
-                    logger.LogError(
-                        resultBinding.Exception,
-                        $"Не получилось привязаться к данным. " +
-                        $"Метод: {method.DisplayName};");
-
-                    continue;
-                }
-
-                //-- 3) привязка вернула null данным? пропускаем.
-                if (resultBinding.IsModelNull)
-                {
-                    logger.LogWarning(
-                        $"Модель привязки NULL. " +
-                        $"Метод: {method.DisplayName};");
-
-                    continue;
-                }
-
-                //-- 4) Количество данных равно единице? возвращаем один TestStep
-                if (!resultBinding.IsMany)
-                {
-                    var testStep = new ControllerTestStep(method, actionModelIndex);
-                    testStep.DataContext = resultBinding.Model;
-                    yield return testStep;
-                    continue;
-                }
-
-                //-- 5) Массив
-                var bindingResults = resultBinding.GetResults();
-                if (bindingResults.Length == 0)
-                    logger.LogWarning(
-                        $"Привязка к пустой коллекции. " +
-                        $"Метод: {method.DisplayName};");
-
-
-                for (int i = 0; i < bindingResults.Length; i++)
-                {
-                    var bindingResult = bindingResults[i];
-
-                    /*
-                     * Если результат неудалось получить, то пропускаем данный пункт проверки! (НО ИНДЕКС УВЕЛИЧИВАЕТСЯ)
-                     * Нужно для маскирования ПУСТЫХ СТРОК в базе данных!
-                     */
-                    if (!bindingResult.IsModelSet)
-                    {
-                        logger.LogError(
-                            bindingResult.Exception,
-                            $"Не получилось привязаться к данным. Index:{i}; " +
-                            $"Метод: {method.DisplayName};");
-
-                        continue;
-                    }
-
-                    if (bindingResult.IsModelNull)
-                    {
-                        logger.LogWarning(
-                            $"Модель привязки NULL. " +
-                            $"Index:{i}; Метод: {method.DisplayName};");
-
-                        continue;
-                    }
-
-
-                    var testStep = new ControllerTestStep(method, actionModelIndex, i);
-                    testStep.DataContext = bindingResult.Model;
-
-                    yield return testStep;
-                }
-            }
         }
 
         private IEnumerable<TypeInfo> GetControllerTypes()
@@ -331,6 +120,5 @@ namespace EquipApps.Mvc.Internal
             _partManager.PopulateFeature(feature);
             return feature.Controllers;
         }
-
     }
 }

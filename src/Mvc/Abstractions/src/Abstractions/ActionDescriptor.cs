@@ -1,5 +1,4 @@
 ﻿using EquipApps.Mvc.Abstractions;
-using EquipApps.Mvc.Objects;
 using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
@@ -27,7 +26,8 @@ namespace EquipApps.Mvc
 
         private static int Count = 0;
 
-        public ActionDescriptor(TestObject testCase, TestObject testStep):this()
+        public ActionDescriptor(ActionDescriptorObject testCase, ActionDescriptorObject testStep)
+            :this()
         {
             TestCase = testCase ?? throw new ArgumentNullException(nameof(testCase));
             TestStep = testStep ?? throw new ArgumentNullException(nameof(testStep));
@@ -48,14 +48,14 @@ namespace EquipApps.Mvc
         //-------------------------------
 
         /// <summary>
-        /// Возвращает <see cref="TestObject"/> для Тесторого случая
+        /// Возвращает <see cref="ActionDescriptorObject"/> для Тесторого случая
         /// </summary>
-        public virtual TestObject TestCase { get; }
+        public virtual ActionDescriptorObject TestCase { get; }
 
         /// <summary>
-        /// Возвращает <see cref="TestObject"/> для Тесторого шага
+        /// Возвращает <see cref="ActionDescriptorObject"/> для Тесторого шага
         /// </summary>
-        public virtual TestObject TestStep { get; }
+        public virtual ActionDescriptorObject TestStep { get; }
 
         //-------------------------------
 
@@ -70,8 +70,8 @@ namespace EquipApps.Mvc
                     return null;
             }
         }
-        public abstract TestNumber Number { get; }
-        public abstract string Title { get; }
+        public virtual Number Number { get; set; }
+       
 
         #region Property
 

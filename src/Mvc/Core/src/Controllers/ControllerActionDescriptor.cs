@@ -1,26 +1,44 @@
 ﻿using EquipApps.Mvc.Objects;
+using Microsoft.Extensions.Internal;
 using System;
+using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 
 namespace EquipApps.Mvc.Controllers
 {
+    [DebuggerDisplay("{DisplayName}")]
     public class ControllerActionDescriptor : ActionDescriptor
     {
-        private TestNumber _number;
+        public string ControllerName { get; set; }
+
+        public virtual string ActionName { get; set; }
+
+        public MethodInfo MethodInfo { get; set; }
+
+        public TypeInfo ControllerTypeInfo { get; set; }
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
 
 
         public ControllerActionDescriptor(ControllerTestCase testCase, ControllerTestStep testStep)
             : base(testCase, testStep)
         {
             TestStep.ActionDescriptor = this;
-
-            MethodInfo         = testStep.ActionModel.ActionMethod;
-            ControllerTypeInfo = testCase.ControllerModel.ControllerType;
-
-            _number = new TestNumberBuilder()
-                .Append(testCase.Number)
-                .Append(testStep.Number)
-                .Build();
         }
 
         public new ControllerTestCase TestCase
@@ -31,15 +49,32 @@ namespace EquipApps.Mvc.Controllers
         {
             get => (ControllerTestStep)base.TestStep;
         }
+        public override string DisplayName
+        {
+            get
+            {
+                if (base.DisplayName == null && ControllerTypeInfo != null && MethodInfo != null)
+                {
+                    base.DisplayName = string.Format(
+                        CultureInfo.InvariantCulture,
+                        "{0}.{1} ({2})",
+                        TypeNameHelper.GetTypeDisplayName(ControllerTypeInfo),
+                        MethodInfo.Name,
+                        ControllerTypeInfo.Assembly.GetName().Name);
+                }
 
+                return base.DisplayName;
+            }
 
-        public MethodInfo MethodInfo { get; set; }
-        public TypeInfo ControllerTypeInfo { get; set; }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value));
+                }
 
-
-
-        public override TestNumber Number => _number;
-
-        public override string Title => TestStep.Title;
+                base.DisplayName = value;
+            }
+        }
     }
 }

@@ -1,16 +1,17 @@
-﻿using EquipApps.Mvc.ApplicationModels;
-using EquipApps.Mvc.Objects;
+﻿using EquipApps.Mvc.Abstractions;
+using EquipApps.Mvc.ApplicationModels;
 using System;
 
 namespace EquipApps.Mvc.Controllers
 {
-    public class ControllerTestStep : TestObject
+    public class ControllerTestStep : ActionDescriptorObject
     {
-        public ControllerTestStep(ActionModel actionModel, int index, int? indexSecond = null)
+        public int? BindIndex { get; }
+
+        public ControllerTestStep(ActionModel actionModel, int? bindIndex = null)
         {
             ActionModel = actionModel ?? throw new ArgumentNullException(nameof(actionModel));
-            Index = index;
-            IndexSecond = indexSecond;
+            BindIndex = bindIndex;
         }
 
         /// <summary>
@@ -36,48 +37,19 @@ namespace EquipApps.Mvc.Controllers
         /// <summary>
         /// Возвращает <see cref="TestCase"/>
         /// </summary>
-        public new ControllerTestCase Parent
+        public override IHierarhicalDataObject  Parent
         {
-            get => (ControllerTestCase)base.Parent;
-            set => base.Parent = value;
+            get;
+            set; 
         }
 
         #region TestObject
 
         public override int ChildrenCount => 0;
 
-        public override TreeObject GetChild(int index)
+        public override IHierarhicalDataObject GetChild(int index)
         {
             throw new InvalidOperationException("TestStep (Тестовый шаг) - Не содержит дочерних элементов");
-        }
-
-        protected override string GetTitle()
-        {
-            if (ActionModel.TitleBinder != null)
-            {
-                var bindingResult = ActionModel.TitleBinder.Bind(this);
-                if (bindingResult.IsModelSet)
-                    return bindingResult.Model.ToString();
-                else
-                    return "Ошибка привязки";
-            }
-
-            return ActionModel.Title ?? ActionModel.ActionName ?? ActionModel.ActionMethod.Name;
-        }
-
-        protected override TestNumber GetNumber()
-        {
-            if (ActionModel.NumberBinder != null)
-            {
-                var bindingResult = ActionModel.NumberBinder.Bind(this);
-                if (bindingResult.IsModelSet)
-                    return bindingResult.Model.ToString();
-                else
-                    return "Ошибка привязки";
-            }
-
-            return ActionModel.Number
-                ?? (IndexSecond.HasValue ? string.Format("{0}.{1}", Index, IndexSecond.Value) : Index.ToString());
         }
 
         #endregion

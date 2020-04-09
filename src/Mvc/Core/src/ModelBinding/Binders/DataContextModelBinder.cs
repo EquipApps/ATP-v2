@@ -1,5 +1,5 @@
-﻿using EquipApps.Mvc.ModelBinding;
-using EquipApps.Mvc.Objects;
+﻿using EquipApps.Mvc.Abstractions;
+using EquipApps.Mvc.ModelBinding;
 using System;
 
 namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
@@ -13,7 +13,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
             this.sourceIndex = sourceIndex;
         }
 
-        public BindingResult Bind(TestObject framworkElement, int offset = 0)
+        public BindingResult Bind(ActionDescriptorObject framworkElement, int offset = 0)
         {
             if (framworkElement == null)
             {

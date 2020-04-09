@@ -1,5 +1,4 @@
 ﻿using DynamicData;
-using EquipApps.Mvc.Objects;
 using System.Collections.Generic;
 
 namespace EquipApps.Mvc.Services
@@ -12,7 +11,7 @@ namespace EquipApps.Mvc.Services
         /// <summary>
         /// 
         /// </summary>
-        IObservableCache<ActionDescriptor, TestNumber> Observable { get; }
+        IObservableCache<ActionDescriptor, Number> Observable { get; }
 
         /// <summary>
         /// 

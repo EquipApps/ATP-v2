@@ -1,33 +1,27 @@
-﻿using EquipApps.Mvc.ApplicationModels;
-using EquipApps.Mvc.Objects;
+﻿using EquipApps.Mvc.Abstractions;
+using EquipApps.Mvc.ApplicationModels;
+using System;
 using System.Collections.Generic;
 
 namespace EquipApps.Mvc.Controllers
 {
-    public class ControllerTestCase : TestObject
+    public class ControllerTestCase : ActionDescriptorObject
     {
-        public ControllerTestCase(ControllerModel controllerModel, int index, int? indexSecond = null)
+        public int? BindIndex { get; }
+
+        public ControllerTestCase(ControllerModel controllerModel, int? bindIndex = null)
         {
             ControllerModel = controllerModel;
-            Index = index;
-            IndexSecond = indexSecond;
-            TestSteps = new List<ControllerTestStep>();
+            BindIndex       = bindIndex;
+            TestSteps       = new List<ControllerTestStep>();
         }
+
+        
 
         /// <summary>
         /// Возвращает <see cref="ControllerModel"/>
         /// </summary>
         public ControllerModel ControllerModel { get; }
-
-        /// <summary>
-        /// Возвращает порядковый номер
-        /// </summary>
-        public int Index { get; }
-
-        /// <summary>
-        /// Возвращает порядковый номер
-        /// </summary>
-        public int? IndexSecond { get; }
 
 
         /// <summary>
@@ -38,67 +32,21 @@ namespace EquipApps.Mvc.Controllers
 
         #region TestObject
 
+        /// <summary>
+        /// Возвращает <see cref="TestCase"/>
+        /// </summary>
+        public override IHierarhicalDataObject Parent
+        {
+            get;
+            set;
+        }
+
         public override int ChildrenCount => TestSteps.Count;
 
-        public override TreeObject GetChild(int index)
+        public override IHierarhicalDataObject GetChild(int index)
         {
             return TestSteps[index];
         }
-
-        protected override string GetTitle()
-        {
-            if (ControllerModel.TitleBinder != null)
-            {
-                var bindingResult = ControllerModel.TitleBinder.Bind(this);
-                if (bindingResult.IsModelSet)
-                    return bindingResult.Model.ToString();
-                else
-                    return "Ошибка привязки";
-            }
-
-            return ControllerModel.Title ?? ControllerModel.ControllerName;
-
-        }
-
-       
-        protected override TestNumber GetNumber()
-        {
-            /* Последовательность инициализации индексов
-             * 
-             * 1) 
-             * 
-             */
-
-            TestNumberBuilder numberBuilder = new TestNumberBuilder();
-
-            if (ControllerModel.Index.HasValue)
-                numberBuilder.Append(ControllerModel.Index.ToString());  //TODO TestNumber должен создаваться из INT!?
-            else
-                numberBuilder.Append(Index.ToString());
-
-
-            if (ControllerModel.NumberBinder != null)
-            {
-                var bindingResult = ControllerModel.NumberBinder.Bind(this);
-                if (bindingResult.IsModelSet)
-                    numberBuilder.Append(bindingResult.Model.ToString());
-                else
-                    numberBuilder.Append("Ошибка привязки");
-
-            }
-            else
-            {
-                if (IndexSecond.HasValue)
-                {
-                    numberBuilder.Append(IndexSecond.Value.ToString());
-                }
-            }
-
-
-            return numberBuilder.Build();
-
-        }
-
 
         #endregion
     }

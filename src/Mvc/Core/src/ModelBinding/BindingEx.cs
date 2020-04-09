@@ -1,5 +1,5 @@
-﻿using EquipApps.Mvc.ModelBinding;
-using EquipApps.Mvc.Objects;
+﻿using EquipApps.Mvc.Abstractions;
+using EquipApps.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 
@@ -9,7 +9,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
     {
 
         //TODO: Юнит тест. 
-        public static object GetDataContext(this TreeObject framworkElement, int index)
+        public static object GetDataContext(this IHierarhicalDataObject framworkElement, int index)
         {
             if (framworkElement == null)
             {

@@ -1,20 +1,19 @@
 ﻿using DynamicData;
-using EquipApps.Mvc.Objects;
 using System.Collections.Generic;
 
 namespace EquipApps.Mvc.Services
 {
     public class ActionService : IActionService
     {
-        private readonly SourceCache<ActionDescriptor, TestNumber> sourceCache;
+        private readonly SourceCache<ActionDescriptor, Number> sourceCache;
 
         public ActionService()
         {
-            sourceCache = new SourceCache<ActionDescriptor, TestNumber>(x => x.Number);
+            sourceCache = new SourceCache<ActionDescriptor, Number>(x => x.Id);
             Observable = sourceCache.AsObservableCache();
         }
 
-        public IObservableCache<ActionDescriptor, TestNumber> Observable { get; }
+        public IObservableCache<ActionDescriptor, Number> Observable { get; }
 
         public void Update(IEnumerable<ActionDescriptor> actions)
         {

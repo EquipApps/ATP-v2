@@ -1,12 +1,10 @@
-﻿using EquipApps.Mvc.ModelBinding;
-
-namespace NLib.AtpNetCore.Mvc.ModelBinding
+﻿namespace EquipApps.Mvc.ModelBinding
 {
     /// <summary>
     /// Инфроструктура фабрики <see cref="IModelBinder"/>.
     /// Singleton
     /// </summary>
-    public interface IBindingFactory
+    public interface IModelBindingFactory
     {
         /// <summary>
         /// Создает <see cref="IModelBinder"/>

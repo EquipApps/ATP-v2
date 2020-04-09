@@ -86,8 +86,8 @@ namespace EquipApps.Mvc
         protected virtual void InitializeComponent_LogTestStepInformation()
         {
             Logger.LogInformation("{Number} - {Title}",
-                                  ControllerContext.ActionDescriptor.Number,
-                                  ControllerContext.ActionDescriptor.Title);
+                                  ControllerContext.ActionDescriptor.TestStep.Number,
+                                  ControllerContext.ActionDescriptor.TestStep.Title);
         }
 
         /// <summary>
@@ -95,6 +95,7 @@ namespace EquipApps.Mvc
         /// </summary>
         protected virtual void InitializeComponent_LogTestCaseInformation()
         {
+            
             Logger.LogInformation("{Number} - {Title}",
                                   ControllerContext.ActionDescriptor.TestCase.Number,
                                   ControllerContext.ActionDescriptor.TestCase.Title);

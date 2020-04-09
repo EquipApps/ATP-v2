@@ -1,6 +1,4 @@
 ﻿using EquipApps.Mvc.ApplicationModels;
-using EquipApps.Mvc.ApplicationParts;
-using EquipApps.Mvc.Controllers;
 using EquipApps.Mvc.ModelBinding;
 using EquipApps.Mvc.Routing;
 using Microsoft.Extensions.Internal;
@@ -20,16 +18,13 @@ namespace EquipApps.Mvc.Internal
     public class DefaultApplicationModelProvider : IApplicationModelProvider
     {
         private readonly MvcOptions _mvcOptions;
-        private readonly IModelMetadataProvider _modelMetadataProvider;
-        private readonly Func<ActionContext, bool> _supportsAllRequests;
-        private readonly Func<ActionContext, bool> _supportsNonGetRequests;
-
-        private readonly IBindingFactory _modelBinderFactory;
+        private readonly IModelMetadataProvider _modelMetadataProvider;      
+        private readonly IModelBindingFactory _modelBinderFactory;
 
         public DefaultApplicationModelProvider(
             IOptions<MvcOptions> mvcOptionsAccessor,
             IModelMetadataProvider modelMetadataProvider,
-            IBindingFactory modelBinderFactory)
+            IModelBindingFactory modelBinderFactory)
         {
             _mvcOptions            = mvcOptionsAccessor.Value;
             _modelMetadataProvider = modelMetadataProvider;
@@ -44,11 +39,6 @@ namespace EquipApps.Mvc.Internal
             {
                 throw new ArgumentNullException(nameof(context));
             }
-
-            //foreach (var filter in _mvcOptions.Filters)
-            //{
-            //    context.Result.Filters.Add(filter);
-            //}
 
             foreach (var controllerType in context.ControllerTypes)
             {
@@ -98,38 +88,14 @@ namespace EquipApps.Mvc.Internal
 
         public void OnProvidersExecuted(ApplicationModelProviderContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            foreach (var controllerModel in context.Result.Controllers)
-            {
-                BindingControllerModel(controllerModel);
-
-                foreach (var propertyModel in controllerModel.ControllerProperties)
-                {
-                    BindingPropertyModel(propertyModel);
-                }
-
-                foreach (var actionModel in controllerModel.Actions)
-                {
-                    BindingActionModel(actionModel);
-
-                    foreach (var parameterModel in actionModel.Parameters)
-                    {
-                        BindingParameterModel(parameterModel);
-                    }
-                }
-            }
+            //--
         }
 
+        
 
         /// <summary>
         /// Creates a <see cref="ControllerModel"/> for the given <see cref="TypeInfo"/>.
         /// </summary>
-        /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
-        /// <returns>A <see cref="ControllerModel"/> for the given <see cref="TypeInfo"/>.</returns>
         internal ControllerModel CreateControllerModel(TypeInfo typeInfo)
         {
             if (typeInfo == null)
@@ -137,66 +103,41 @@ namespace EquipApps.Mvc.Internal
                 throw new ArgumentNullException(nameof(typeInfo));
             }
 
-            // For attribute routes on a controller, we want to support 'overriding' routes on a derived
-            // class. So we need to walk up the hierarchy looking for the first class to define routes.
-            //
-            // Then we want to 'filter' the set of attributes, so that only the effective routes apply.
-            var currentTypeInfo = typeInfo;
-            var objectTypeInfo = typeof(object).GetTypeInfo();
-
-            IRouteTemplateProvider[] routeAttributes;
-
-            do
-            {
-                routeAttributes = currentTypeInfo
-                    .GetCustomAttributes(inherit: false)
-                    .OfType<IRouteTemplateProvider>()
-                    .ToArray();
-
-                if (routeAttributes.Length > 0)
-                {
-                    // Found 1 or more route attributes.
-                    break;
-                }
-
-                currentTypeInfo = currentTypeInfo.BaseType.GetTypeInfo();
-            }
-            while (currentTypeInfo != objectTypeInfo);
-
             // CoreCLR returns IEnumerable<Attribute> from GetCustomAttributes - the OfType<object>
             // is needed to so that the result of ToArray() is object
             var attributes = typeInfo.GetCustomAttributes(inherit: true);
 
-            // This is fairly complicated so that we maintain referential equality between items in
-            // ControllerModel.Attributes and ControllerModel.Attributes[*].Attribute.
-            var filteredAttributes = new List<object>();
-            foreach (var attribute in attributes)
+            //-- Конфигурация BindingInfo
+            var bindingInfo = BindingInfo.GetBindingInfo(attributes);
+            if (bindingInfo == null)
             {
-                if (attribute is IRouteTemplateProvider)
+                //-- Создание BindingInfo через атрибут IModelExpected<>
+                var modelExpectedType = typeInfo.ImplementedInterfaces
+                    .FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IModelExpected<>));
+
+                if (modelExpectedType != null)
                 {
-                    // This attribute is a route-attribute, leave it out.
-                }
-                else
-                {
-                    filteredAttributes.Add(attribute);
+                    bindingInfo = new BindingInfo();
+                    bindingInfo.BindingModelType = modelExpectedType.GenericTypeArguments.FirstOrDefault();
+                    bindingInfo.BindingSource    = BindingSource.ModelProvider;
                 }
             }
 
-            filteredAttributes.AddRange(routeAttributes);
+            //-- Конфигурация DisplayInfo
+            var displayInfo = DisplayInfo.GetDisplayInfo(attributes);
 
-            attributes = filteredAttributes.ToArray();
+            var controllerModel = new ControllerModel(typeInfo, attributes)
+            {
+                DisplayInfo = displayInfo,
+                BindingInfo = bindingInfo,
+            };
 
-            var controllerModel = new ControllerModel(typeInfo, attributes);
 
-
-            //AddRange(controllerModel.Selectors, CreateSelectors(attributes));
-
-            controllerModel.ControllerName =
-                typeInfo.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase) ?
+            controllerModel.ControllerName = typeInfo.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase) ?
                     typeInfo.Name.Substring(0, typeInfo.Name.Length - "Controller".Length) :
                     typeInfo.Name;
 
-            //AddRange(controllerModel.Filters, attributes.OfType<IFilterMetadata>());
+
 
             foreach (var routeValueProvider in attributes.OfType<IRouteValueProvider>())
             {
@@ -208,41 +149,13 @@ namespace EquipApps.Mvc.Internal
                 controllerModel.OrderValues.Add(orderValueProvider.OrderKey, orderValueProvider.OrderValue);
             }
 
-            //var apiVisibility = attributes.OfType<IApiDescriptionVisibilityProvider>().FirstOrDefault();
-            //if (apiVisibility != null)
-            //{
-            //    controllerModel.ApiExplorer.IsVisible = !apiVisibility.IgnoreApi;
-            //}
-
-            //var apiGroupName = attributes.OfType<IApiDescriptionGroupNameProvider>().FirstOrDefault();
-            //if (apiGroupName != null)
-            //{
-            //    controllerModel.ApiExplorer.GroupName = apiGroupName.GroupName;
-            //}
-
-            // Controllers can implement action filter and result filter interfaces. We add
-            // a special delegating filter implementation to the pipeline to handle it.
-            //
-            // This is needed because filters are instantiated before the controller.
-            //if (typeof(IAsyncActionFilter).GetTypeInfo().IsAssignableFrom(typeInfo) ||
-            //    typeof(IActionFilter).GetTypeInfo().IsAssignableFrom(typeInfo))
-            //{
-            //    controllerModel.Filters.Add(new ControllerActionFilter());
-            //}
-            //if (typeof(IAsyncResultFilter).GetTypeInfo().IsAssignableFrom(typeInfo) ||
-            //    typeof(IResultFilter).GetTypeInfo().IsAssignableFrom(typeInfo))
-            //{
-            //    controllerModel.Filters.Add(new ControllerResultFilter());
-            //}
 
             return controllerModel;
         }
 
         /// <summary>
         /// Creates a <see cref="PropertyModel"/> for the given <see cref="PropertyInfo"/>.
-        /// </summary>
-        /// <param name="propertyInfo">The <see cref="PropertyInfo"/>.</param>
-        /// <returns>A <see cref="PropertyModel"/> for the given <see cref="PropertyInfo"/>.</returns>
+        /// </summary>       
         internal PropertyModel CreatePropertyModel(PropertyInfo propertyInfo)
         {
             if (propertyInfo == null)
@@ -252,23 +165,50 @@ namespace EquipApps.Mvc.Internal
 
             var attributes = propertyInfo.GetCustomAttributes(inherit: true);
 
+            // BindingInfo for properties can be either specified by decorating the property with binding specific attributes.
+            // ModelMetadata also adds information from the property's type and any configured IBindingMetadataProvider.
+            var modelMetadata = _modelMetadataProvider.GetMetadataForProperty(propertyInfo.DeclaringType, propertyInfo.Name);
+            var bindingInfo = BindingInfo.GetBindingInfo(attributes, modelMetadata);
+
+            if (bindingInfo == null)
+            {
+                // Look for BindPropertiesAttribute on the handler type if no BindingInfo was inferred for the property.
+                // This allows a user to enable model binding on properties by decorating the controller type with BindPropertiesAttribute.
+                var declaringType = propertyInfo.DeclaringType;
+                var bindPropertiesAttribute = declaringType.GetCustomAttribute<BindPropertiesAttribute>(inherit: true);
+                if (bindPropertiesAttribute != null)
+                {
+                    bindingInfo = new BindingInfo();
+                }
+            }
+
+            if (bindingInfo != null)
+            {
+                /*
+                 * Если Имя модели NULL      => Привязка по имени свойства
+                 * Если Тип модели NULL      => Привязка по типу свойства
+                 * Если Источник модели NULL => Привязка из DataContext
+                 */
+                if (bindingInfo.BindingModelName == null) bindingInfo.BindingModelName = propertyInfo.Name;
+                if (bindingInfo.BindingModelType == null) bindingInfo.BindingModelType = propertyInfo.PropertyType;
+                if (bindingInfo.BindingSource == null)    bindingInfo.BindingSource = BindingSource.DataContext;
+            }
+
             var propertyModel = new PropertyModel(propertyInfo, attributes)
             {
                 PropertyName = propertyInfo.Name,
+                BindingInfo  = bindingInfo
             };
+
+
+
 
             return propertyModel;
         }
 
         /// <summary>
         /// Creates the <see cref="ActionModel"/> instance for the given action <see cref="MethodInfo"/>.
-        /// </summary>
-        /// <param name="typeInfo">The controller <see cref="TypeInfo"/>.</param>
-        /// <param name="methodInfo">The action <see cref="MethodInfo"/>.</param>
-        /// <returns>
-        /// An <see cref="ActionModel"/> instance for the given action <see cref="MethodInfo"/> or
-        /// <c>null</c> if the <paramref name="methodInfo"/> does not represent an action.
-        /// </returns>
+        /// </summary>       
         internal ActionModel CreateActionModel(
             TypeInfo typeInfo,
             MethodInfo methodInfo)
@@ -294,8 +234,6 @@ namespace EquipApps.Mvc.Internal
 
             var actionModel = new ActionModel(methodInfo, attributes);
 
-            //AddRange(actionModel.Filters, attributes.OfType<IFilterMetadata>());
-
             var actionName = attributes.OfType<ActionNameAttribute>().FirstOrDefault();
             if (actionName?.Name != null)
             {
@@ -306,74 +244,18 @@ namespace EquipApps.Mvc.Internal
                 actionModel.ActionName = CanonicalizeActionName(methodInfo.Name);
             }
 
-            //var apiVisibility = attributes.OfType<IApiDescriptionVisibilityProvider>().FirstOrDefault();
-            //if (apiVisibility != null)
-            //{
-            //    actionModel.ApiExplorer.IsVisible = !apiVisibility.IgnoreApi;
-            //}
-
-            //var apiGroupName = attributes.OfType<IApiDescriptionGroupNameProvider>().FirstOrDefault();
-            //if (apiGroupName != null)
-            //{
-            //    actionModel.ApiExplorer.GroupName = apiGroupName.GroupName;
-            //}
+            actionModel.BindingInfo = BindingInfo.GetBindingInfo(attributes);
+            actionModel.DisplayInfo = DisplayInfo.GetDisplayInfo(attributes);
 
             foreach (var routeValueProvider in attributes.OfType<IRouteValueProvider>())
             {
                 actionModel.RouteValues.Add(routeValueProvider.RouteKey, routeValueProvider.RouteValue);
             }
 
-            // Now we need to determine the action selection info (cross-section of routes and constraints)
-            //
-            // For attribute routes on a action, we want to support 'overriding' routes on a
-            // virtual method, but allow 'overriding'. So we need to walk up the hierarchy looking
-            // for the first definition to define routes.
-            //
-            // Then we want to 'filter' the set of attributes, so that only the effective routes apply.
-            var currentMethodInfo = methodInfo;
-
-            IRouteTemplateProvider[] routeAttributes;
-
-            while (true)
+            foreach (var orderValueProvider in attributes.OfType<IOrderValueProvider>())
             {
-                routeAttributes = currentMethodInfo
-                    .GetCustomAttributes(inherit: false)
-                    .OfType<IRouteTemplateProvider>()
-                    .ToArray();
-
-                if (routeAttributes.Length > 0)
-                {
-                    // Found 1 or more route attributes.
-                    break;
-                }
-
-                // GetBaseDefinition returns 'this' when it gets to the bottom of the chain.
-                var nextMethodInfo = currentMethodInfo.GetBaseDefinition();
-                if (currentMethodInfo == nextMethodInfo)
-                {
-                    break;
-                }
-
-                currentMethodInfo = nextMethodInfo;
+                actionModel.OrderValues.Add(orderValueProvider.OrderKey, orderValueProvider.OrderValue);
             }
-
-            // This is fairly complicated so that we maintain referential equality between items in
-            // ActionModel.Attributes and ActionModel.Attributes[*].Attribute.
-            var applicableAttributes = new List<object>();
-            foreach (var attribute in attributes)
-            {
-                if (attribute is IRouteTemplateProvider)
-                {
-                    // This attribute is a route-attribute, leave it out.
-                }
-                else
-                {
-                    applicableAttributes.Add(attribute);
-                }
-            }
-
-            applicableAttributes.AddRange(routeAttributes);
-            //AddRange(actionModel.Selectors, CreateSelectors(applicableAttributes));
 
             return actionModel;
         }
@@ -393,10 +275,7 @@ namespace EquipApps.Mvc.Internal
 
         /// <summary>
         /// Returns <c>true</c> if the <paramref name="methodInfo"/> is an action. Otherwise <c>false</c>.
-        /// </summary>
-        /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
-        /// <param name="methodInfo">The <see cref="MethodInfo"/>.</param>
-        /// <returns><c>true</c> if the <paramref name="methodInfo"/> is an action. Otherwise <c>false</c>.</returns>
+        /// </summary>       
         /// <remarks>
         /// Override this method to provide custom logic to determine which methods are considered actions.
         /// </remarks>
@@ -461,9 +340,7 @@ namespace EquipApps.Mvc.Internal
 
         /// <summary>
         /// Creates a <see cref="ParameterModel"/> for the given <see cref="ParameterInfo"/>.
-        /// </summary>
-        /// <param name="parameterInfo">The <see cref="ParameterInfo"/>.</param>
-        /// <returns>A <see cref="ParameterModel"/> for the given <see cref="ParameterInfo"/>.</returns>
+        /// </summary>       
         internal ParameterModel CreateParameterModel(ParameterInfo parameterInfo)
         {
             if (parameterInfo == null)
@@ -473,9 +350,44 @@ namespace EquipApps.Mvc.Internal
 
             var attributes = parameterInfo.GetCustomAttributes(inherit: true);
 
+            BindingInfo bindingInfo;
+            if (_modelMetadataProvider is ModelMetadataProvider modelMetadataProviderBase)
+            {
+                var modelMetadata = modelMetadataProviderBase.GetMetadataForParameter(parameterInfo);
+                bindingInfo = BindingInfo.GetBindingInfo(attributes, modelMetadata);
+            }
+            else
+            {
+                // GetMetadataForParameter should only be used if the user has opted in to the 2.1 behavior.
+                bindingInfo = BindingInfo.GetBindingInfo(attributes);
+            }
+
+            if (bindingInfo != null)
+            {
+                /*
+                * Если Имя модели NULL      => Привязка по имени параметра
+                * Если Тип модели NULL      => Привязка по типу параметра
+                * Если Источник модели NULL => Привязка из DataContext
+                */
+                if (bindingInfo.BindingModelName == null) bindingInfo.BindingModelName = parameterInfo.Name;
+                if (bindingInfo.BindingModelType == null) bindingInfo.BindingModelType = parameterInfo.ParameterType;
+                if (bindingInfo.BindingSource == null) bindingInfo.BindingSource = BindingSource.DataContext;
+            }
+
+            //-- Все параметры должны иметь привязку.
+            //-- Если привязка не создана, делаем поумолчанию
+            if (bindingInfo == null)
+            {
+                bindingInfo = new BindingInfo();
+                bindingInfo.BindingModelName = parameterInfo.Name;
+                bindingInfo.BindingModelType = parameterInfo.ParameterType;
+                bindingInfo.BindingSource = BindingSource.DataContext;
+            }
+
             var parameterModel = new ParameterModel(parameterInfo, attributes)
             {
                 ParameterName = parameterInfo.Name,
+                BindingInfo   = bindingInfo
             };
 
             return parameterModel;
@@ -497,104 +409,9 @@ namespace EquipApps.Mvc.Internal
                  declaringTypeInfo.GetRuntimeInterfaceMap(typeof(IDisposable)).TargetMethods[0] == baseMethodInfo;
         }
 
-        #region Bind
+        
 
-        private void BindingControllerModel(ControllerModel controllerModel)
-        {
-            var bindingInfo = controllerModel.BindingInfo;
-            if (bindingInfo != null)
-            {
-                controllerModel.ModelBinder = _modelBinderFactory.Create(controllerModel);
-            }
-
-            if (controllerModel.Title != null)
-            {
-                controllerModel.TitleBinder = _modelBinderFactory.Create(controllerModel, controllerModel.Title);
-            }
-
-            if (controllerModel.Number != null)
-            {
-                controllerModel.NumberBinder = _modelBinderFactory.Create(controllerModel, controllerModel.Number);
-            }
-        }
-
-        private void BindingPropertyModel(PropertyModel propertyModel)
-        {
-            var bindingInfo = propertyModel.BindingInfo;
-            if (bindingInfo != null)
-            {
-                propertyModel.ModelBinder = _modelBinderFactory.Create(propertyModel);
-            }
-        }
-
-        private void BindingActionModel(ActionModel actionModel)
-        {
-            var bindingInfo = actionModel.BindingInfo;
-            if (bindingInfo != null)
-            {
-                var modelBinder = _modelBinderFactory.Create(actionModel);
-                if (modelBinder == null)
-                {
-                    var error = new StringBuilder()
-                        .AppendLine("Ошибка - Не возможно создать привязку!")
-
-                        .Append("Controller: ")
-                        .AppendLine(actionModel.Controller.ControllerName)
-                        .Append("Method: ")
-                        .AppendLine(actionModel.ActionName)
-                        .ToString();
-
-                    throw new InvalidOperationException(error);
-                }
-
-                actionModel.ModelBinder = modelBinder;
-            }
-
-            //--
-            if (actionModel.Title != null)
-            {
-                actionModel.TitleBinder = _modelBinderFactory.Create(actionModel, actionModel.Title);
-            }
-            if (actionModel.Number != null)
-            {
-                actionModel.NumberBinder = _modelBinderFactory.Create(actionModel, actionModel.Number);
-            }
-        }
-
-        private void BindingParameterModel(ParameterModel parameterModel)
-        {
-            var bindingInfo = parameterModel.BindingInfo;
-            if (bindingInfo == null)
-            {
-                //-- Информация о привязке должна существовать!
-                return;
-                throw new InvalidOperationException("Ошибка модели!");
-            }
-
-            var modelBinder = _modelBinderFactory.Create(parameterModel);
-            if (modelBinder == null)
-            {
-                var error = new StringBuilder()
-                    .AppendLine("Ошибка - Не возможно создать привязку!")
-
-                    .Append("Controller: ")
-                    .AppendLine(parameterModel.Action.Controller.ControllerName)
-                    .Append("Method: ")
-                    .AppendLine(parameterModel.Action.ActionName)
-                    .Append("Parameter: ")
-                    .AppendLine(parameterModel.ParameterName)
-                    .ToString();
-
-                throw new InvalidOperationException(error);
-            }
-
-            //-- Сохраняем!
-            parameterModel.ModelBinder = modelBinder;
-        }
-
-
-        #endregion
-
+        
 
         private static void AddRange<T>(IList<T> list, IEnumerable<T> items)
         {

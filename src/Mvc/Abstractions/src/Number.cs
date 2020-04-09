@@ -2,26 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using static EquipApps.Mvc.Objects.TestNumber;
+using static EquipApps.Mvc.Number;
 
-namespace EquipApps.Mvc.Objects
+namespace EquipApps.Mvc
 {
     /// <summary>
     /// Идентификатор.. 1.1.1.
     /// </summary>
-    public class TestNumber : IComparable<TestNumber>, IComparable, IEquatable<TestNumber>
+    public class Number : IComparable<Number>, IComparable, IEquatable<Number>
     {
         private string stringView;
         internal readonly TestNumberPart[] testIdParts;
 
-        internal TestNumber(TestNumberPart[] testIdParts)
+        internal Number(TestNumberPart[] testIdParts)
         {
             if (testIdParts.Length == 0)
                 throw new IndexOutOfRangeException();
 
             this.testIdParts = testIdParts;
         }
-        internal TestNumber(IEnumerable<TestNumberPart> testIdParts)
+        internal Number(IEnumerable<TestNumberPart> testIdParts)
             : this(testIdParts.ToArray())
         {
         }
@@ -29,7 +29,7 @@ namespace EquipApps.Mvc.Objects
 
         #region CompareTo
 
-        public int CompareTo(TestNumber other)
+        public int CompareTo(Number other)
         {
             if (other == null)
                 throw new ArgumentNullException(nameof(other));
@@ -52,13 +52,13 @@ namespace EquipApps.Mvc.Objects
 
         public int CompareTo(object obj)
         {
-            return CompareTo(obj as TestNumber);
+            return CompareTo(obj as Number);
         }
 
         #endregion
 
 
-        public bool Equals(TestNumber other)
+        public bool Equals(Number other)
         {
             if (other == null)
                 return false;
@@ -69,7 +69,7 @@ namespace EquipApps.Mvc.Objects
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as TestNumber);
+            return Equals(obj as Number);
         }
 
         public override int GetHashCode()
@@ -109,29 +109,10 @@ namespace EquipApps.Mvc.Objects
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         /// <summary>
         /// 
         /// </summary>
-        public static implicit operator TestNumber(string id)
+        public static implicit operator Number(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 throw new ArgumentNullException(nameof(id));
@@ -154,7 +135,7 @@ namespace EquipApps.Mvc.Objects
                 }
             }
 
-            return new TestNumber(testIdParts);
+            return new Number(testIdParts);
         }
 
 
@@ -252,7 +233,19 @@ namespace EquipApps.Mvc.Objects
 
         }
 
-        public TestNumberBuilder Append(TestNumber number)
+        //TODO: Оптимизировать создание.
+        public TestNumberBuilder Append(string number)
+        {
+            if(!string.IsNullOrWhiteSpace(number))
+            {
+                Number testNumber = number;
+                testNumberParts.AddRange(testNumber.testIdParts);
+            }
+
+            return this;
+        }
+
+        public TestNumberBuilder Append(Number number)
         {
             if (number != null)
             {
@@ -264,9 +257,9 @@ namespace EquipApps.Mvc.Objects
             return this;
         }
 
-        public TestNumber Build()
+        public Number Build()
         {
-            return new TestNumber(testNumberParts);
+            return new Number(testNumberParts);
         }
 
 

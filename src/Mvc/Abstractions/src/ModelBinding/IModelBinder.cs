@@ -1,4 +1,4 @@
-﻿using EquipApps.Mvc.Objects;
+﻿using EquipApps.Mvc.Abstractions;
 
 namespace EquipApps.Mvc.ModelBinding
 {
@@ -12,6 +12,6 @@ namespace EquipApps.Mvc.ModelBinding
         /// ВАЖНО!!
         /// ПРИВЯЗКА НЕ ДОЛЖНА ВЫДОВАТЬ ИСКЛЮЧЕНИЯ!!
         /// </summary>
-        BindingResult Bind(TestObject framworkElement, int offset = 0);
+        BindingResult Bind(ActionDescriptorObject framworkElement, int offset = 0);
     }
 }

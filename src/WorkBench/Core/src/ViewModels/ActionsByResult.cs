@@ -2,7 +2,6 @@
 using DynamicData.Aggregation;
 using EquipApps.Mvc;
 using EquipApps.Mvc.Abstractions;
-using EquipApps.Mvc.Objects;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Linq;
@@ -13,7 +12,7 @@ namespace EquipApps.WorkBench.ViewModels
     {
         private readonly IDisposable _cleanUp;
 
-        public ActionsByResult(IGroup<ActionDescriptor, TestNumber, Result> group)
+        public ActionsByResult(IGroup<ActionDescriptor, Number, Result> group)
         {
             Result = group?.Key ?? throw new ArgumentNullException(nameof(group));
 

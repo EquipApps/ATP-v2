@@ -12,14 +12,23 @@ namespace EquipApps.Mvc
         public ActionDescriptor()
         {
             Id = Guid.NewGuid().ToString();
-            Properties = new Dictionary<object, object>();
+            
+            OrderValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             RouteValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            Properties = new Dictionary<object, object>();
         }
 
         /// <summary>
         /// Gets an id which uniquely identifies the action.
         /// </summary>
         public string Id { get; }
+
+        // <summary>
+        /// Gets or sets the collection of route values that must be provided by routing
+        /// for the action to be selected.
+        /// </summary>
+        public IDictionary<string, string> OrderValues { get; set; }
 
         // <summary>
         /// Gets or sets the collection of route values that must be provided by routing

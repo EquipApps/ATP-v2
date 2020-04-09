@@ -1,5 +1,5 @@
-﻿using EquipApps.Mvc.ModelBinding;
-using EquipApps.Mvc.Objects;
+﻿using EquipApps.Mvc.Abstractions;
+using EquipApps.Mvc.ModelBinding;
 using System;
 using System.Linq;
 
@@ -21,7 +21,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
         }
 
 
-        public BindingResult Bind(TestObject framworkElement, int offset = 0)
+        public BindingResult Bind(ActionDescriptorObject framworkElement, int offset = 0)
         {
             try
             {

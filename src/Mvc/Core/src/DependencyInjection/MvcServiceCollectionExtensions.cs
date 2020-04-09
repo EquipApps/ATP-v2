@@ -252,8 +252,7 @@ namespace NLib.AtpNetCore.Testing
             //
             services.TryAddEnumerable(
               ServiceDescriptor.Transient<IApplicationModelProvider, DefaultApplicationModelProvider>());
-            services.TryAddEnumerable(
-              ServiceDescriptor.Transient<IApplicationModelProvider, BindingInfoApplicationModelProvider>());
+           
 
 
             // ----------------------------------------------------------------------------------------
@@ -272,7 +271,7 @@ namespace NLib.AtpNetCore.Testing
 
 
 
-            services.AddSingleton<IBindingFactory, BindingFactory>();
+            services.AddSingleton<IModelBindingFactory, ModelBindingFactory>();
 
         }
 

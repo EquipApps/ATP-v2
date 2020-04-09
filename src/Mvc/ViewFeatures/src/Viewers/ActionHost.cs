@@ -1,5 +1,4 @@
 ﻿using EquipApps.Mvc.Abstractions;
-using EquipApps.Mvc.Objects;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
@@ -47,11 +46,7 @@ namespace EquipApps.Mvc.Viewers
         }
 
 
-
-        public string Area => _model.Area;
-        public TestNumber Number => _model.Number;
-
-        //public string TestSuit => _model.TestSuit.Title;
+        public Number Number => _model.Number;
         public string TestCase => _model.TestCase.Title;
         public string TestStep => _model.TestStep.Title;
 
