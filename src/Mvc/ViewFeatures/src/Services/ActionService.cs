@@ -5,15 +5,15 @@ namespace EquipApps.Mvc.Services
 {
     public class ActionService : IActionService
     {
-        private readonly SourceCache<ActionDescriptor, Number> sourceCache;
+        private readonly SourceCache<ActionDescriptor, string> sourceCache;
 
         public ActionService()
         {
-            sourceCache = new SourceCache<ActionDescriptor, Number>(x => x.Id);
+            sourceCache = new SourceCache<ActionDescriptor, string>(x => x.Id);
             Observable = sourceCache.AsObservableCache();
         }
 
-        public IObservableCache<ActionDescriptor, Number> Observable { get; }
+        public IObservableCache<ActionDescriptor, string> Observable { get; }
 
         public void Update(IEnumerable<ActionDescriptor> actions)
         {

@@ -8,17 +8,17 @@ using System.Collections.Generic;
 
 namespace NLib.AtpNetCore.Mvc.ModelBinding
 {
-    public class ModelBindingFactory : IModelBindingFactory
+    public class ModelBinderFactory : IModelBinderFactory
     {
         private readonly IReadOnlyList<IBinderProvider> _providers;
-        private readonly ILogger<ModelBindingFactory> _logger;
+        private readonly ILogger<ModelBinderFactory> _logger;
 
         private readonly IModelMetadataProvider _metadataProvider;
         private readonly IPropertyProvider _propertyProvider;
 
-        public ModelBindingFactory(
+        public ModelBinderFactory(
             IOptions<MvcOptions> option,
-            ILogger<ModelBindingFactory> logger,
+            ILogger<ModelBinderFactory> logger,
 
             IModelMetadataProvider metadataProvider,
             IPropertyProvider propertyProvide)
@@ -75,9 +75,9 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding
 
         private class DefaultModelBinderProviderContext : BinderProviderContext
         {
-            private ModelBindingFactory _factory;
+            private ModelBinderFactory _factory;
 
-            public DefaultModelBinderProviderContext(ModelBindingFactory factory, IBindingModel bindableElement, BindingInfo bindingInfo)
+            public DefaultModelBinderProviderContext(ModelBinderFactory factory, IBindingModel bindableElement, BindingInfo bindingInfo)
             {
                 _factory = factory;
                 BindingModel = bindableElement;

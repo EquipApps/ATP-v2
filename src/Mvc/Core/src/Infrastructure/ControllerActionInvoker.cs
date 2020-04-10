@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Internal;
+﻿using EquipApps.Mvc.ModelBinding;
+using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -35,8 +36,8 @@ namespace EquipApps.Mvc.Infrastructure
 
             var actionParameters = new Dictionary<string, object>();
 
-            BindProperty(controller);                                                   //-- Привязка свойств            
-            BindParameters(actionParameters);                                             //-- Привзяка параметров
+            BindProperty(controller);                                                       //-- Привязка свойств            
+            BindParameters(actionParameters);                                               //-- Привзяка параметров
             PrepareArguments(actionParameters, objectMethodExecutor, out var arguments);    //-- Извлечение аргуменов функции
 
             //-- Set Context
@@ -74,16 +75,14 @@ namespace EquipApps.Mvc.Infrastructure
 
         private void BindProperty(object controller)
         {
-            var properties = controllerContext
-                .ActionDescriptor
-                .TestCase
-                .ControllerModel
-                .ControllerProperties;
+            var properties = controllerContext.ActionDescriptor.BoundBinderItem;
+            if (properties == null)
+            {
+                return;
+            }
 
-            var framworkElement = controllerContext
-               .ActionDescriptor
-               .TestCase;
-
+            var framworkElement = controllerContext.ActionDescriptor.TestCase;
+            
             foreach (var property in properties)
             {
                 //-- У свойства нету привязки! (Возможно ошибка модели приложения)
@@ -91,44 +90,44 @@ namespace EquipApps.Mvc.Infrastructure
                 {
                     logger.LogWarning(
                         $"У свойства нет привязки. (Возможно ошибка модели приложения) " +
-                        $"Контроллер: {property.Controller.DisplayName}; " +
-                        $"Свойство: {property.PropertyName};");
+                        $"Контроллер: {controllerContext.ActionDescriptor.ControllerName}; " +
+                        $"Свойство:   {property.ModelMetadata.Name};");
                     continue;
                 }
 
-                var resultBinding = property.ModelBinder.Bind(framworkElement, 1);
-                if (!resultBinding.IsModelSet)
+                var result = property.ModelBinder.Bind(framworkElement, 1);
+                if (!result.IsModelSet)
                 {
                     logger.LogError(
                         $"Не получилось привязаться к данным " +
-                        $"Контроллер: {property.Controller.DisplayName}; " +
-                        $"Свойство: {property.PropertyName};");
+                        $"Контроллер: {controllerContext.ActionDescriptor.ControllerName}; " +
+                        $"Свойство:   {property.ModelMetadata.Name};");
 
                     //TODO: Добавить информацию об ошибке модели!
 
                     continue;
                 }
 
-                if (resultBinding.IsModelNull)
+                if (result.IsModelNull)
                 {
                     logger.LogWarning(
-                    $"Модель привязки NULL. " + 
-                    $"Контроллер: {property.Controller.DisplayName}; " +
-                    $"Свойство: {property.PropertyName};");
+                    $"Модель привязки NULL. " +
+                    $"Контроллер: {controllerContext.ActionDescriptor.ControllerName}; " +
+                    $"Свойство:   {property.ModelMetadata.Name};");
                 }
 
                 try
                 {
-                    property.PropertyInfo.SetValue(controller, resultBinding.Model);
+                    PropertyValueSetter.SetValue(property.ModelMetadata, controller, result.Model);
                 }
                 catch (Exception ex)
                 {
                     //TODO: Добавить информацию об ошибке модели!
 
                     logger.LogError(ex,
-                    $"Не получилось присвоить значение свойству. " +                  
-                    $"Контроллер: {property.Controller.DisplayName}; " +
-                    $"Свойство: {property.PropertyName};");
+                    $"Не получилось присвоить значение свойству. " +
+                    $"Контроллер: {controllerContext.ActionDescriptor.ControllerName}; " +
+                    $"Свойство:   {property.ModelMetadata.Name};");
 
                     throw ex;
                 }
@@ -136,21 +135,14 @@ namespace EquipApps.Mvc.Infrastructure
         }
         private void BindParameters(Dictionary<string, object> arguments)
         {
-            var framworkElement = controllerContext
-                .ActionDescriptor
-                .TestStep;
+            var parameters = controllerContext.ActionDescriptor.BinderItem;
+            if (parameters == null)
+            {
+                return;
+            }
 
-            var bindingInfo = controllerContext
-                .ActionDescriptor
-                .TestStep
-                .ActionModel
-                .BindingInfo;
+            var framworkElement = controllerContext.ActionDescriptor.TestStep;
 
-            var parameters = controllerContext
-                .ActionDescriptor
-                .TestStep
-                .ActionModel
-                .Parameters;
 
             foreach (var parameter in parameters)
             {
@@ -158,10 +150,11 @@ namespace EquipApps.Mvc.Infrastructure
                 if (parameter.ModelBinder == null)
                 {
                     logger.LogWarning(
-                        $"У свойства нет привязки. (Возможно ошибка модели приложения) " +                    
-                        $"Контроллер: {parameter.Action.Controller.DisplayName}; " +
-                        $"Метод: {parameter.Action.ActionName}" +
-                        $"Аргумент: {parameter.DisplayName};");
+                        $"У свойства нет привязки. (Возможно ошибка модели приложения) " +
+                        $"Контроллер: {controllerContext.ActionDescriptor.ControllerName}; " +
+                        $"Метод: {controllerContext.ActionDescriptor.ActionName}; " +
+                        $"Аргумент: {parameter.ModelMetadata.Name}");
+                      
 
                     continue;
                 }
@@ -170,10 +163,10 @@ namespace EquipApps.Mvc.Infrastructure
                 if (!resultBinding.IsModelSet)
                 {
                     logger.LogError(
-                        $"Не получилось привязаться к данным " +                     
-                        $"Контроллер: {parameter.Action.Controller.DisplayName}; " +
-                        $"Метод: {parameter.Action.DisplayName}" +
-                        $"Аргумент: {parameter.DisplayName};");
+                        $"Не получилось привязаться к данным " +
+                        $"Контроллер: {controllerContext.ActionDescriptor.ControllerName}; " +
+                        $"Метод: {controllerContext.ActionDescriptor.ActionName}; " +
+                        $"Аргумент: {parameter.ModelMetadata.Name}");
 
                     //TODO: Добавить информацию об ошибке модели!
 
@@ -183,14 +176,14 @@ namespace EquipApps.Mvc.Infrastructure
                 if (resultBinding.IsModelNull)
                 {
                     logger.LogWarning(
-                        $"Модель привязки NULL. " +                       
-                        $"Контроллер: {parameter.Action.Controller.DisplayName}; " +
-                        $"Метод: {parameter.Action.DisplayName}" +
-                        $"Аргумент: {parameter.DisplayName};");
+                        $"Модель привязки NULL. " +
+                        $"Контроллер: {controllerContext.ActionDescriptor.ControllerName}; " +
+                        $"Метод: {controllerContext.ActionDescriptor.ActionName}; " +
+                        $"Аргумент: {parameter.ModelMetadata.Name}");
 
                 }
 
-                arguments[parameter.ParameterName] = resultBinding.Model;
+                arguments[parameter.ModelMetadata.Name] = resultBinding.Model;
             }
         }
         private void PrepareArguments(Dictionary<string, object> actionParameters, ObjectMethodExecutor objectMethodExecutor, out object[] arguments)

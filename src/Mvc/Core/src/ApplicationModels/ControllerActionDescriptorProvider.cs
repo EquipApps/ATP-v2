@@ -1,8 +1,6 @@
 ﻿using EquipApps.Mvc.Abstractions;
 using EquipApps.Mvc.ApplicationParts;
 using EquipApps.Mvc.Controllers;
-using EquipApps.Mvc.ModelBinding;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -13,11 +11,11 @@ namespace EquipApps.Mvc.ApplicationModels
     {
         private ApplicationPartManager _partManager;
         private ApplicationModelFactory _applicationModelFactory;
+        private ControllerActionDescriptorBuilder _controllerActionDescriptorBuilder;
 
         public ControllerActionDescriptorProvider(ApplicationPartManager partManager,
-                                                   ApplicationModelFactory applicationModelFactory,
-                                                   IModelBindingFactory modelBinderFactory,
-                                                   ILoggerFactory loggerFactory)
+                                                  ApplicationModelFactory applicationModelFactory,
+                                                  ControllerActionDescriptorBuilder controllerActionDescriptorBuilder)
         {
             if (partManager == null)
             {
@@ -29,8 +27,14 @@ namespace EquipApps.Mvc.ApplicationModels
                 throw new ArgumentNullException(nameof(applicationModelFactory));
             }
 
+            if (controllerActionDescriptorBuilder == null)
+            {
+                throw new ArgumentNullException(nameof(controllerActionDescriptorBuilder));
+            }
+
             _partManager = partManager;
             _applicationModelFactory = applicationModelFactory;
+            _controllerActionDescriptorBuilder = controllerActionDescriptorBuilder;
         }
 
         public int Order => -1000;
@@ -110,7 +114,7 @@ namespace EquipApps.Mvc.ApplicationModels
         {
             var controllerTypes = GetControllerTypes();
             var application = _applicationModelFactory.CreateApplicationModel(controllerTypes);
-            return _applicationModelFactory.Builder(application);
+            return _controllerActionDescriptorBuilder.Builder(application);
 
         }
 

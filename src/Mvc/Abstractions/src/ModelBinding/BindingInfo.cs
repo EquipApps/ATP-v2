@@ -34,6 +34,7 @@ namespace EquipApps.Mvc.ModelBinding
 
             BindingSource = other.BindingSource;
             BindingModelName = other.BindingModelName;
+            BindingModelPath = other.BindingModelPath;
             BinderType = other.BinderType;
             PropertyFilterProvider = other.PropertyFilterProvider;
             RequestPredicate = other.RequestPredicate;
@@ -51,6 +52,11 @@ namespace EquipApps.Mvc.ModelBinding
 
         /// <summary>
         /// Gets or sets the binder model name.
+        /// </summary>
+        public string BindingModelPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the binder model path.
         /// </summary>
         public string BindingModelName { get; set; }
 
@@ -115,6 +121,16 @@ namespace EquipApps.Mvc.ModelBinding
                 if (binderModelNameAttribute?.Name != null)
                 {
                     bindingInfo.BindingModelName = binderModelNameAttribute.Name;
+                    break;
+                }
+            }
+
+            foreach (var binderModelPathAttribute in attributes.OfType<IModelPathMetadata>())
+            {
+                isBindingInfoPresent = true;
+                if (binderModelPathAttribute?.ModelPath != null)
+                {
+                    bindingInfo.BindingModelPath = binderModelPathAttribute.ModelPath;
                     break;
                 }
             }

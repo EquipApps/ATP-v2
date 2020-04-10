@@ -4,7 +4,7 @@
     /// Инфроструктура фабрики <see cref="IModelBinder"/>.
     /// Singleton
     /// </summary>
-    public interface IModelBindingFactory
+    public interface IModelBinderFactory
     {
         /// <summary>
         /// Создает <see cref="IModelBinder"/>

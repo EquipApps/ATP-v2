@@ -42,7 +42,7 @@ namespace EquipApps.Mvc.Infrastructure
 
         private IReadOnlyList<ActionDescriptor> GetActionDescriptors()
         {
-            return _collectionProvider.ActionDescriptors.Items;
+            return _collectionProvider.ActionDescriptors.Items.OrderBy(x => x.Number).ToArray();
         }
 
         public void OnProvidersExecuted(FeatureProviderContext context)

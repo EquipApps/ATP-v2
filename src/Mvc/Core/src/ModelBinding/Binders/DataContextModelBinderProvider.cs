@@ -23,7 +23,7 @@ namespace NLib.AtpNetCore.Mvc.ModelBinding.Binders
                 context.BindingInfo.BindingSource.CanAcceptDataFrom(BindingSource.DataContext))
             {
                 var expectedBindingType = context.BindingInfo.BindingModelType;
-                var expectedBindingPath = context.BindingInfo.BindingModelName;
+                var expectedBindingPath = context.BindingInfo.BindingModelPath;
                 var parent = context.BindingModel;
                 var index = 0;
 

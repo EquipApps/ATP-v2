@@ -1,5 +1,4 @@
 ﻿using EquipApps.Mvc.ModelBinding;
-using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
 using System;
 
 namespace NLib.AtpNetCore.Mvc
@@ -37,16 +36,16 @@ namespace NLib.AtpNetCore.Mvc
         /// Конструктор не явной привязки
         /// </summary>
         /// 
-        /// <param name="modelName">
+        /// <param name="modelPath">
         /// Указывает путь извлечения модели
         /// </param>
         /// 
         /// <remarks>
         /// Провайдер привязки должен сам определить тип модели
         /// </remarks>
-        public BindDataAttribute(string modelName)
+        public BindDataAttribute(string modelPath)
         {
-            ModelPath = modelName ?? throw new ArgumentNullException(nameof(modelName));
+            ModelPath = modelPath ?? throw new ArgumentNullException(nameof(modelPath));
             ModelType = null;
         }
 

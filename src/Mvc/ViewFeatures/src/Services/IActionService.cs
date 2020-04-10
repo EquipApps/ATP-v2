@@ -11,7 +11,7 @@ namespace EquipApps.Mvc.Services
         /// <summary>
         /// 
         /// </summary>
-        IObservableCache<ActionDescriptor, Number> Observable { get; }
+        IObservableCache<ActionDescriptor, string> Observable { get; }
 
         /// <summary>
         /// 

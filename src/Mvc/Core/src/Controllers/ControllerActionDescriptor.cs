@@ -1,4 +1,4 @@
-﻿using EquipApps.Mvc.Objects;
+﻿using EquipApps.Mvc.ApplicationModels;
 using Microsoft.Extensions.Internal;
 using System;
 using System.Diagnostics;
@@ -18,23 +18,6 @@ namespace EquipApps.Mvc.Controllers
 
         public TypeInfo ControllerTypeInfo { get; set; }
 
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
         public ControllerActionDescriptor(ControllerTestCase testCase, ControllerTestStep testStep)
             : base(testCase, testStep)
         {
@@ -45,10 +28,12 @@ namespace EquipApps.Mvc.Controllers
         {
             get => (ControllerTestCase)base.TestCase;
         }
+
         public new ControllerTestStep TestStep
         {
             get => (ControllerTestStep)base.TestStep;
         }
+
         public override string DisplayName
         {
             get
@@ -76,5 +61,8 @@ namespace EquipApps.Mvc.Controllers
                 base.DisplayName = value;
             }
         }
+
+        public BinderItem[] BoundBinderItem { get; internal set; }
+        public BinderItem[] BinderItem { get; internal set; }
     }
 }

@@ -9,11 +9,19 @@
     <Import_RootNamespace>EquipApps</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)ClosedGenericMatcher\ClosedGenericMatcher.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)HashCodeCombiner\HashCodeCombiner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Microsoft.Extensions.Internal\ClosedGenericMatcher\ClosedGenericMatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Microsoft.Extensions.Internal\HashCodeCombiner\HashCodeCombiner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Manual.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Microsoft.Extensions.Internal\ObjectMethodExecutor\AwaitableInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Microsoft.Extensions.Internal\ObjectMethodExecutor\CoercedAwaitableInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Microsoft.Extensions.Internal\ObjectMethodExecutor\ObjectMethodExecutor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Microsoft.Extensions.Internal\ObjectMethodExecutor\ObjectMethodExecutorAwaitable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Microsoft.Extensions.Internal\ObjectMethodExecutor\ObjectMethodExecutorFSharpSupport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Microsoft.Extensions.Internal\ParameterDefaultValue\ParameterDefaultValues.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Microsoft.Extensions.Internal\PropertyHelper\PropertyHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Microsoft.Extensions.Internal\TypeNameHelper\TypeNameHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)HashCodeCombiner\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Microsoft.Extensions.Internal\HashCodeCombiner\" />
   </ItemGroup>
 </Project>

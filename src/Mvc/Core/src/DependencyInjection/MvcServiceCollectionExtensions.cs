@@ -246,6 +246,7 @@ namespace NLib.AtpNetCore.Testing
             // Singleton
             // 
             services.AddSingleton<ApplicationModelFactory>();
+            services.AddSingleton<ControllerActionDescriptorBuilder>();
 
             //
             // Action Descriptor Provider
@@ -271,7 +272,7 @@ namespace NLib.AtpNetCore.Testing
 
 
 
-            services.AddSingleton<IModelBindingFactory, ModelBindingFactory>();
+            services.AddSingleton<IModelBinderFactory, ModelBinderFactory>();
 
         }
 

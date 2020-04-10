@@ -12,7 +12,7 @@ namespace EquipApps.Mvc.ApplicationModels
     /// Модель класса контроллера
     /// </summary>
     [DebuggerDisplay("{DisplayName}")]
-    public partial class ControllerModel : IBindingModel
+    public partial class ControllerModel : IBindingModel, IDisplayModel
     {
         public ControllerModel(TypeInfo controllerType,
                                IReadOnlyList<object> attributes)
@@ -30,7 +30,7 @@ namespace EquipApps.Mvc.ApplicationModels
             ControllerType = controllerType;
             Attributes = new List<object>(attributes);
 
-            Actions = new List<ActionModel>();        
+            Actions = new List<ActionModel>();
             ControllerProperties = new List<PropertyModel>();
             Properties = new Dictionary<object, object>();
             RouteValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -52,7 +52,7 @@ namespace EquipApps.Mvc.ApplicationModels
 
         //    // These are just metadata, safe to create new collections
         //    Attributes = new List<object>(other.Attributes);
-            
+
         //    Actions = new List<ActionModel>(other.Actions.Select(a => new ActionModel(a) { Controller = this }));
         //    ControllerProperties = new List<PropertyModel>(other.ControllerProperties.Select(p => new PropertyModel(p) { Controller = this }));
         //    Properties = new Dictionary<object, object>(other.Properties);
@@ -118,7 +118,6 @@ namespace EquipApps.Mvc.ApplicationModels
             }
         }
 
-
         #region Binding
 
         /// <summary>
@@ -138,6 +137,10 @@ namespace EquipApps.Mvc.ApplicationModels
         /// Т.к контроллер является главнм самым верхним элементом с поддержкой привязки!
         /// </summary>
         IBindingModel IBindingModel.Parent => null;
+
+        MemberInfo ICommonModel.MemberInfo => ControllerType;
+
+        string ICommonModel.Name => ControllerName;
 
         #endregion
     }

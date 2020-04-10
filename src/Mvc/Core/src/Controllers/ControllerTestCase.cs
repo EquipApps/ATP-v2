@@ -9,26 +9,15 @@ namespace EquipApps.Mvc.Controllers
     {
         public int? BindIndex { get; }
 
-        public ControllerTestCase(ControllerModel controllerModel, int? bindIndex = null)
+        public ControllerTestCase(int? bindIndex = null)
         {
-            ControllerModel = controllerModel;
             BindIndex       = bindIndex;
             TestSteps       = new List<ControllerTestStep>();
         }
-
-        
-
-        /// <summary>
-        /// Возвращает <see cref="ControllerModel"/>
-        /// </summary>
-        public ControllerModel ControllerModel { get; }
-
-
         /// <summary>
         /// Возвращает коллекцию <see cref="TestStep"/>
         /// </summary>
         public IList<ControllerTestStep> TestSteps { get; }
-
 
         #region TestObject
 

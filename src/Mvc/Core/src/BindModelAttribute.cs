@@ -1,6 +1,5 @@
 ﻿using EquipApps.Mvc.ModelBinding;
 using NLib.AtpNetCore.Mvc.ModelBinding;
-using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
 using System;
 
 namespace EquipApps.Mvc

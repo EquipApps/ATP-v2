@@ -1,4 +1,4 @@
-﻿namespace NLib.AtpNetCore.Mvc.ModelBinding.Attribute
+﻿namespace EquipApps.Mvc.ModelBinding
 {
     /// <summary>
     /// Маркер.

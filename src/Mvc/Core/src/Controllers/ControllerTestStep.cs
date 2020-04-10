@@ -8,9 +8,8 @@ namespace EquipApps.Mvc.Controllers
     {
         public int? BindIndex { get; }
 
-        public ControllerTestStep(ActionModel actionModel, int? bindIndex = null)
+        public ControllerTestStep(int? bindIndex = null)
         {
-            ActionModel = actionModel ?? throw new ArgumentNullException(nameof(actionModel));
             BindIndex = bindIndex;
         }
 
@@ -18,22 +17,7 @@ namespace EquipApps.Mvc.Controllers
         /// Возвращает <see cref="ActionDescriptor"/>
         /// </summary>
         public ActionDescriptor ActionDescriptor { get; internal set; }
-
-        /// <summary>
-        /// Возвращает <see cref="ControllerModel"/>
-        /// </summary>
-        public ActionModel ActionModel { get; }
-
-        /// <summary>
-        /// Возвращает порядковый номер
-        /// </summary>
-        public int Index { get; }
-
-        /// <summary>
-        /// Возвращает порядковый номер
-        /// </summary>
-        public int? IndexSecond { get; }
-
+   
         /// <summary>
         /// Возвращает <see cref="TestCase"/>
         /// </summary>

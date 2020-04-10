@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using NLib.AtpNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -19,12 +20,12 @@ namespace EquipApps.Mvc.Internal
     {
         private readonly MvcOptions _mvcOptions;
         private readonly IModelMetadataProvider _modelMetadataProvider;      
-        private readonly IModelBindingFactory _modelBinderFactory;
+        private readonly IModelBinderFactory _modelBinderFactory;
 
         public DefaultApplicationModelProvider(
             IOptions<MvcOptions> mvcOptionsAccessor,
             IModelMetadataProvider modelMetadataProvider,
-            IModelBindingFactory modelBinderFactory)
+            IModelBinderFactory modelBinderFactory)
         {
             _mvcOptions            = mvcOptionsAccessor.Value;
             _modelMetadataProvider = modelMetadataProvider;
@@ -88,10 +89,7 @@ namespace EquipApps.Mvc.Internal
 
         public void OnProvidersExecuted(ApplicationModelProviderContext context)
         {
-            //--
         }
-
-        
 
         /// <summary>
         /// Creates a <see cref="ControllerModel"/> for the given <see cref="TypeInfo"/>.
@@ -189,7 +187,7 @@ namespace EquipApps.Mvc.Internal
                  * Если Тип модели NULL      => Привязка по типу свойства
                  * Если Источник модели NULL => Привязка из DataContext
                  */
-                if (bindingInfo.BindingModelName == null) bindingInfo.BindingModelName = propertyInfo.Name;
+                if (bindingInfo.BindingModelPath == null) bindingInfo.BindingModelPath = propertyInfo.Name;
                 if (bindingInfo.BindingModelType == null) bindingInfo.BindingModelType = propertyInfo.PropertyType;
                 if (bindingInfo.BindingSource == null)    bindingInfo.BindingSource = BindingSource.DataContext;
             }
@@ -369,7 +367,7 @@ namespace EquipApps.Mvc.Internal
                 * Если Тип модели NULL      => Привязка по типу параметра
                 * Если Источник модели NULL => Привязка из DataContext
                 */
-                if (bindingInfo.BindingModelName == null) bindingInfo.BindingModelName = parameterInfo.Name;
+                //if (bindingInfo.BindingModelPath == null) bindingInfo.BindingModelPath = parameterInfo.Name;
                 if (bindingInfo.BindingModelType == null) bindingInfo.BindingModelType = parameterInfo.ParameterType;
                 if (bindingInfo.BindingSource == null) bindingInfo.BindingSource = BindingSource.DataContext;
             }
@@ -379,7 +377,7 @@ namespace EquipApps.Mvc.Internal
             if (bindingInfo == null)
             {
                 bindingInfo = new BindingInfo();
-                bindingInfo.BindingModelName = parameterInfo.Name;
+                bindingInfo.BindingModelPath = parameterInfo.Name;
                 bindingInfo.BindingModelType = parameterInfo.ParameterType;
                 bindingInfo.BindingSource = BindingSource.DataContext;
             }
@@ -409,9 +407,6 @@ namespace EquipApps.Mvc.Internal
                  declaringTypeInfo.GetRuntimeInterfaceMap(typeof(IDisposable)).TargetMethods[0] == baseMethodInfo;
         }
 
-        
-
-        
 
         private static void AddRange<T>(IList<T> list, IEnumerable<T> items)
         {
@@ -420,5 +415,6 @@ namespace EquipApps.Mvc.Internal
                 list.Add(item);
             }
         }
+
     }
 }

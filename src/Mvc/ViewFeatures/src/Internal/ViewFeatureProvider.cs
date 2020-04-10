@@ -49,7 +49,6 @@ namespace EquipApps.Mvc.Internal
             //-- 
             context.Collection.Set(viewFeature);
         }
-
         public void OnProvidersExecuting(FeatureProviderContext context)
         {
             logger.LogTrace(nameof(OnProvidersExecuting));

@@ -11,7 +11,7 @@ namespace EquipApps.Mvc.ApplicationModels
     /// An application model for controller actions.
     /// </summary>
     [DebuggerDisplay("{DisplayName}")]
-    public class ActionModel : IBindingModel
+    public class ActionModel : IBindingModel, IDisplayModel
     {
         public ActionModel(
             MethodInfo actionMethod,
@@ -66,8 +66,6 @@ namespace EquipApps.Mvc.ApplicationModels
         //    //Selectors = new List<SelectorModel>(other.Selectors.Select(s => new SelectorModel(s)));
         //}
 
-
-
         /// <summary>
         /// Возвращает <see cref="MethodInfo"/>
         /// </summary>
@@ -108,7 +106,6 @@ namespace EquipApps.Mvc.ApplicationModels
         /// </summary>
         public IDictionary<object, object> Properties { get; }
 
-
         /// <summary>
         /// Gets the action display name.
         /// </summary>
@@ -126,7 +123,6 @@ namespace EquipApps.Mvc.ApplicationModels
                 return $"{controllerType}.{ActionMethod.Name} ({controllerAssembly})";
             }
         }
-
 
         #region Binding
 
@@ -147,6 +143,16 @@ namespace EquipApps.Mvc.ApplicationModels
         /// Т.к контроллер является главнм самым верхним элементом с поддержкой привязки!
         /// </summary>
         IBindingModel IBindingModel.Parent => Controller;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        MemberInfo ICommonModel.MemberInfo => ActionMethod;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        string ICommonModel.Name => ActionName;
 
         #endregion
     }

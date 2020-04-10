@@ -10,6 +10,14 @@ namespace EquipApps.Mvc.Infrastructure
         private volatile InnerCache _currentCache;
         private IActionDescriptorCollectionProvider _collectionProvider;
 
+        
+
+        public ControllerActionInvokerCache(
+            IActionDescriptorCollectionProvider collectionProvider)
+        {
+            _collectionProvider = collectionProvider;
+        }
+
         private InnerCache CurrentCache
         {
             get
@@ -27,12 +35,6 @@ namespace EquipApps.Mvc.Infrastructure
             }
         }
 
-        public ControllerActionInvokerCache(
-            IActionDescriptorCollectionProvider collectionProvider)
-        {
-            _collectionProvider = collectionProvider;
-        }  
-
         public ControllerActionInvokerCacheEntry GetCachedResult(ControllerContext controllerContext)
         {
             try
@@ -40,29 +42,24 @@ namespace EquipApps.Mvc.Infrastructure
                 var cache = CurrentCache;
                 var actionDescriptor = controllerContext.ActionDescriptor;
 
-                //TODO: Ключь сделать ActionDescriptor?
-                //-- Получаем модель действия!
-                var actionModel = controllerContext
-                    .ActionDescriptor
-                    .TestStep
-                    .ActionModel;
-
-                if (!cache.Entries.TryGetValue(actionModel, out var cacheEntry))
+                if (!cache.Entries.TryGetValue(actionDescriptor, out var cacheEntry))
                 {
-                    var methodInfo = actionModel.ActionMethod;
-                    var targetInfo = actionModel.Controller.ControllerType;
-
                     //-- Создаем параметры по умолчаению!
-                    var parameterDefaultValues = ParameterDefaultValues.GetParameterDefaultValues(methodInfo);
+                    var parameterDefaultValues = ParameterDefaultValues
+                        .GetParameterDefaultValues(actionDescriptor.MethodInfo);
 
-                    var objectMethodExecutor = ObjectMethodExecutor.Create(methodInfo, targetInfo, parameterDefaultValues);
+                    var objectMethodExecutor = ObjectMethodExecutor.Create(                        
+                        actionDescriptor.MethodInfo,
+                        actionDescriptor.ControllerTypeInfo,
+                        parameterDefaultValues);
+
                     var actionMethodExecutor = ActionMethodExecutor.GetExecutor(objectMethodExecutor);
 
                     cacheEntry = new ControllerActionInvokerCacheEntry(
                         objectMethodExecutor,
                         actionMethodExecutor);
 
-                    cacheEntry = cache.Entries.GetOrAdd(actionModel, cacheEntry);
+                    cacheEntry = cache.Entries.GetOrAdd(actionDescriptor, cacheEntry);
                 }
 
                 return cacheEntry;
@@ -80,8 +77,8 @@ namespace EquipApps.Mvc.Infrastructure
                 Version = version;
             }
 
-            public ConcurrentDictionary<ActionModel, ControllerActionInvokerCacheEntry> Entries { get; } =
-                new ConcurrentDictionary<ActionModel, ControllerActionInvokerCacheEntry>();
+            public ConcurrentDictionary<ActionDescriptor, ControllerActionInvokerCacheEntry> Entries { get; } =
+                new ConcurrentDictionary<ActionDescriptor, ControllerActionInvokerCacheEntry>();
 
             public int Version { get; }
         }

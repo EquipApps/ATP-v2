@@ -16,11 +16,12 @@ namespace EquipApps.Mvc
         {
             if (context is ControllerContext controllerContext)
             {
+                
                 //-- Извлекаем.. 
                 var actionDescriptor = controllerContext
                     .ActionDescriptor
                     .TestCase
-                    .TestSteps.FirstOrDefault(x => x.ActionModel.ActionName == _actionName)?.ActionDescriptor;
+                    .TestSteps.FirstOrDefault(x => x.ActionDescriptor.RouteValues["action"] == _actionName)?.ActionDescriptor;
 
                 if (actionDescriptor == null)
                 {

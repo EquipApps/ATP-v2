@@ -47,17 +47,12 @@ namespace EquipApps.Mvc.ApplicationModels
 
         public string Name { get; protected set; }
 
-
         /// <summary>
         /// Задает или возвращает <see cref="ModelBinding.BindingInfo"/>.
         /// Может быть NULL.
         /// </summary>
         public BindingInfo BindingInfo { get; set; }
 
-        /// <summary>
-        /// Задает или возвращает <see cref="IModelBinder"/>
-        /// Может быть NULL.
-        /// </summary>
-        public IModelBinder ModelBinder { get; set; }
+        
     }
 }

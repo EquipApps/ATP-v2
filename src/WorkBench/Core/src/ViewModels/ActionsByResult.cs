@@ -12,7 +12,7 @@ namespace EquipApps.WorkBench.ViewModels
     {
         private readonly IDisposable _cleanUp;
 
-        public ActionsByResult(IGroup<ActionDescriptor, Number, Result> group)
+        public ActionsByResult(IGroup<ActionDescriptor, string, Result> group)
         {
             Result = group?.Key ?? throw new ArgumentNullException(nameof(group));
 

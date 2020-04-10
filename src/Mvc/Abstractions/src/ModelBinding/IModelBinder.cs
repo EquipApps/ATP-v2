@@ -1,4 +1,5 @@
 ﻿using EquipApps.Mvc.Abstractions;
+using System;
 
 namespace EquipApps.Mvc.ModelBinding
 {
@@ -12,6 +13,7 @@ namespace EquipApps.Mvc.ModelBinding
         /// ВАЖНО!!
         /// ПРИВЯЗКА НЕ ДОЛЖНА ВЫДОВАТЬ ИСКЛЮЧЕНИЯ!!
         /// </summary>
+        [Obsolete("IHierarhicalDataObject")]
         BindingResult Bind(ActionDescriptorObject framworkElement, int offset = 0);
     }
 }
