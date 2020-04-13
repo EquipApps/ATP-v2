@@ -29,14 +29,12 @@ namespace EquipApps.Mvc.ApplicationModels
 
             ActionMethod = actionMethod;
 
-            //ApiExplorer = new ApiExplorerModel();
-            Attributes = new List<object>(attributes);
-            //Filters = new List<IFilterMetadata>();
+            Attributes = new List<object>(attributes);            
             Parameters = new List<ParameterModel>();
             OrderValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             RouteValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Properties = new Dictionary<object, object>();
-            //Selectors = new List<SelectorModel>();
+            
         }
 
 

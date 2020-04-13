@@ -11,7 +11,7 @@ namespace EquipApps.Mvc
     /// <summary>
     /// Дескриптер действия
     /// </summary>
-    public abstract partial class ActionDescriptor : IDisposable
+    public abstract partial class ActionDescriptor
     {
         private readonly ISubject<bool> _checkChangedSubject = new ReplaySubject<bool>();
         private readonly ISubject<bool> _breakChangedSubject = new ReplaySubject<bool>();
@@ -24,7 +24,7 @@ namespace EquipApps.Mvc
         private Result _result;
         private State _state;
 
-        private static int Count = 0;
+       
 
         public ActionDescriptor(ActionDescriptorObject testCase, ActionDescriptorObject testStep)
             :this()
@@ -32,7 +32,7 @@ namespace EquipApps.Mvc
             TestCase = testCase ?? throw new ArgumentNullException(nameof(testCase));
             TestStep = testStep ?? throw new ArgumentNullException(nameof(testStep));
 
-            Count++;
+          
             Exception = null;
             Result = Result.NotExecuted;
             State  = State.Empy;
@@ -137,39 +137,5 @@ namespace EquipApps.Mvc
 
 
         #endregion
-
-        
-
-      
-
-
-        ~ActionDescriptor()
-        {
-            Count--;
-            System.Diagnostics.Debug.WriteLine("ActionDescriptor Count :" + Count);
-
-            if (true)
-            {
-
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public void Dispose()
-        {
-
-        }
     }
 }

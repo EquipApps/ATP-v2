@@ -1,11 +1,6 @@
-﻿using EquipApps.Mvc.Abstractions;
-using EquipApps.Mvc.Controllers;
-using EquipApps.Mvc.ModelBinding;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -15,7 +10,6 @@ namespace EquipApps.Mvc.ApplicationModels
     {
         private readonly IApplicationModelProvider[] _applicationModelProviders;
         private readonly IList<IApplicationModelConvention> _conventions;
-        
 
         public ApplicationModelFactory(
             IEnumerable<IApplicationModelProvider> applicationModelProviders,
