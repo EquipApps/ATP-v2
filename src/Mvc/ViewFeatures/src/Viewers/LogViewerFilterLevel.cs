@@ -1,13 +1,12 @@
-﻿using EquipApps.WorkBench.Models;
-using ReactiveUI;
+﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 
-namespace EquipApps.WorkBench.ViewModels
+namespace EquipApps.Mvc.Viewers
 {
-    public class LogFilterLevelVM : ReactiveObject
+    public class LogViewerFilterLevel : ReactiveObject
     {
-        public LogFilterLevelVM()
+        public LogViewerFilterLevel()
         {
             ObservableFilter = this.WhenAnyValue(x => x.ShowDbug,
                                                  x => x.ShowInfo,
@@ -33,20 +32,20 @@ namespace EquipApps.WorkBench.ViewModels
         {
             //TODO: Рефакторинг таблицы истинности!
             if (showDbug && showInfo && showWarn && showFail)
-                return TRUE ;
+                return LogViewerFilter.TRUE;
 
             if (!showDbug && !showInfo && !showWarn && !showFail)
-                return FALSE;
+                return LogViewerFilter.FALSE;
 
             return (LogEntry logEntrie) =>
             {
                 if (logEntrie != null)
                 {
-                    switch (logEntrie.LogLevel)
+                    switch (logEntrie.Level)
                     {
-                        case LogLevel.dbug: return showDbug;                           
+                        case LogLevel.dbug: return showDbug;
                         case LogLevel.info: return showInfo;
-                        case LogLevel.warn: return showWarn;                           
+                        case LogLevel.warn: return showWarn;
                         case LogLevel.fail: return showFail;
                         default:
                             break;
@@ -56,17 +55,7 @@ namespace EquipApps.WorkBench.ViewModels
                 return false;
             };
         }
-
-        private static bool FALSE(LogEntry logEntry)
-        {
-            return false;
-        }
-
-        private static bool TRUE(LogEntry logEntry)
-        {
-            return true;
-        }
     }
 
-    
+
 }

@@ -1,5 +1,4 @@
 ﻿using EquipApps.Testing.Wpf;
-using EquipApps.WorkBench.Services;
 using EquipApps.WorkBench.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -28,7 +27,9 @@ namespace EquipApps.WorkBench
                 resolver.InitializeReactiveUI();        //-- ReactiveUI
                                                         //-- Теперь Splat пише в Extensions.Logging
                 resolver.RegisterConstant(new FuncLogManager(FuncLogFactory), typeof(ILogManager));
-            
+
+                resolver.RegisterViewsForViewModels(typeof(WbApp).Assembly);
+
             //-- Вызываем баззовую функцию конфигурации
             base.ConfigureServiceCollectionDefault(serviceCollection);
 
@@ -38,7 +39,7 @@ namespace EquipApps.WorkBench
 
 
             //-------------------------------------------------------------
-            serviceCollection.AddTransient<LogViewerViewModel>();
+            serviceCollection.AddTransient<LogViewModel>();
             serviceCollection.AddTransient<TestViewerViewModel>();
             serviceCollection.AddTransient<WorkViewerViewModel>();
 

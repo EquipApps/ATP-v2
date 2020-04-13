@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EquipApps.WorkBench.Models
+namespace EquipApps.Mvc
 {
     public class LogOptions
     {

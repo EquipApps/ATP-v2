@@ -11,7 +11,7 @@ namespace EquipApps.Mvc
     /// <summary>
     /// Дескриптер действия
     /// </summary>
-    public abstract partial class ActionDescriptor
+    public abstract partial class ActionDescriptor : IDisposable
     {
         private readonly ISubject<bool> _checkChangedSubject = new ReplaySubject<bool>();
         private readonly ISubject<bool> _breakChangedSubject = new ReplaySubject<bool>();
@@ -71,7 +71,12 @@ namespace EquipApps.Mvc
             }
         }
         public virtual Number Number { get; set; }
-       
+
+        public void Dispose()
+        {
+            
+        }
+
 
         #region Property
 
@@ -133,8 +138,6 @@ namespace EquipApps.Mvc
         public IObservable<Exception> ExceptionObservable => _exceptionChangedSubject.AsObservable();
         public IObservable<Result> ResultObservable => _resultChangedSubject.AsObservable();
         public IObservable<State> StateObservable => _stateChangedSubject.AsObservable();
-
-
 
         #endregion
     }

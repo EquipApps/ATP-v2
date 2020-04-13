@@ -1,9 +1,8 @@
 ﻿using DynamicData;
-using EquipApps.WorkBench.Models;
 using System;
 using System.Reactive.Subjects;
 
-namespace EquipApps.WorkBench.Services
+namespace EquipApps.Mvc.Infrastructure
 {
     /// <summary>
     /// Счетчик.
@@ -24,16 +23,16 @@ namespace EquipApps.WorkBench.Services
         private volatile int countwarn = 0;
         private volatile int countfail = 0;
 
-        private Subject<LogLevelCount> subject;       
+        private Subject<LogLevelCount> subject;
 
         public LogLevelCounter(IObservable<IChangeSet<LogEntry>> source)
         {
-            if(source == null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            
+
 
             subject = new Subject<LogLevelCount>();
             disposable = source.Subscribe(OnNext);
@@ -46,7 +45,7 @@ namespace EquipApps.WorkBench.Services
 
         public IDisposable Subscribe(IObserver<LogLevelCount> observer)
         {
-            if(observer == null)
+            if (observer == null)
             {
                 throw new ArgumentNullException(nameof(observer));
             }
@@ -64,16 +63,16 @@ namespace EquipApps.WorkBench.Services
             });
 
             //-- Сохраняем подписчика
-            return subject.Subscribe(observer);         
+            return subject.Subscribe(observer);
         }
 
         public void Dispose()
         {
             disposable?.Dispose();
-            subject   ?.Dispose();
+            subject?.Dispose();
 
-            disposable  = null;
-            subject     = null;
+            disposable = null;
+            subject = null;
         }
 
         private void OnNext(IChangeSet<LogEntry> changes)
@@ -100,11 +99,11 @@ namespace EquipApps.WorkBench.Services
                             Clear();
                         }
                         break;
-                    case ListChangeReason.Replace:                      
-                    case ListChangeReason.Remove:                     
-                    case ListChangeReason.RemoveRange:                      
-                    case ListChangeReason.Refresh:                      
-                    case ListChangeReason.Moved:     
+                    case ListChangeReason.Replace:
+                    case ListChangeReason.Remove:
+                    case ListChangeReason.RemoveRange:
+                    case ListChangeReason.Refresh:
+                    case ListChangeReason.Moved:
                     default:
                         break;
                 }
@@ -117,11 +116,11 @@ namespace EquipApps.WorkBench.Services
                 Countwarn = countwarn,
                 Countfail = countfail,
             });
-        }       
+        }
 
         private void OnNext(LogEntry logEntry)
         {
-            switch (logEntry.LogLevel)
+            switch (logEntry.Level)
             {
                 case LogLevel.dbug: countdbug++; break;
                 case LogLevel.info: countinfo++; break;
@@ -129,7 +128,7 @@ namespace EquipApps.WorkBench.Services
                 case LogLevel.fail: countfail++; break;
                 default:
                     break;
-            }            
+            }
         }
 
         private void Clear()

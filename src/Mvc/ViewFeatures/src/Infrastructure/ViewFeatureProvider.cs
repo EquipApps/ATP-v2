@@ -3,7 +3,7 @@ using EquipApps.Testing.Features;
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace EquipApps.Mvc.Internal
+namespace EquipApps.Mvc.Infrastructure
 {
     /// <summary>
     /// Расширение.
@@ -33,8 +33,6 @@ namespace EquipApps.Mvc.Internal
         
         public void OnProvidersExecuted(FeatureProviderContext context)
         {
-            logger.LogTrace(nameof(OnProvidersExecuted));
-
             //-- Поиск IMvcFeature
             var mvcFechure = context.Collection.Get<IMvcFeature>();
             if (mvcFechure == null)
@@ -51,7 +49,7 @@ namespace EquipApps.Mvc.Internal
         }
         public void OnProvidersExecuting(FeatureProviderContext context)
         {
-            logger.LogTrace(nameof(OnProvidersExecuting));
+            //---
         }
     }
 }

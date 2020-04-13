@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EquipApps.Mvc.Internal
+namespace EquipApps.Mvc.Infrastructure
 {
     public class ViewActionInvokerProvider : IActionInvokerProvider
     {

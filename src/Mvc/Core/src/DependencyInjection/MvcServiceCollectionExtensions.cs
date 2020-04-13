@@ -4,7 +4,7 @@ using EquipApps.Mvc.ApplicationModels;
 using EquipApps.Mvc.ApplicationParts;
 using EquipApps.Mvc.Controllers;
 using EquipApps.Mvc.Infrastructure;
-using EquipApps.Mvc.Internal;
+using EquipApps.Mvc.Infrastructure;
 using EquipApps.Mvc.ModelBinding;
 using EquipApps.Mvc.ModelBinding.Metadata;
 using EquipApps.Mvc.ModelBinding.Property;

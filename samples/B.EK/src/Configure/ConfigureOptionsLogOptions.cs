@@ -1,5 +1,5 @@
-﻿using EquipApps.Testing;
-using EquipApps.WorkBench.Models;
+﻿using EquipApps.Mvc;
+using EquipApps.Testing;
 using Microsoft.Extensions.Options;
 
 namespace B.EK.Configure

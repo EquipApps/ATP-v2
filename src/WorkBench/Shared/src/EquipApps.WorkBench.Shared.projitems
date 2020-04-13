@@ -9,13 +9,7 @@
     <Import_RootNamespace>EquipApps.WorkBench</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Internal\DafaultTest.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Internal\DefaultTestContext.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Internal\DefaultTestDelegateBuilder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Internal\DefaultTestFeatureCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IShellContentService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TestFactory.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LogViewerViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WorkViewerViewModel - Build.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WorkViewerViewModel - Exe.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WorkViewerViewModel - Property.cs" />

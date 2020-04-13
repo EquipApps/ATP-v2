@@ -1,4 +1,4 @@
-﻿namespace EquipApps.WorkBench.Services
+﻿namespace EquipApps.Mvc.Infrastructure
 {
     public struct LogLevelCount
     {

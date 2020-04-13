@@ -1,6 +1,4 @@
-﻿using EquipApps.Mvc.Abstractions;
-using EquipApps.WorkBench.Services;
-using EquipApps.WorkBench.ViewModels;
+﻿using EquipApps.WorkBench.ViewModels;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -13,7 +11,7 @@ namespace Microsoft.Extensions.DependencyInjection
             //
             // 
            // services.AddSingleton<IActionService,   ActionService>();
-            services.AddSingleton<ILogEntryService, LogEntryService>();
+            //services.AddSingleton<ILogEntryService, LogEntryService>();
 
             
             

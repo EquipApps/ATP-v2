@@ -1,4 +1,4 @@
-﻿namespace EquipApps.WorkBench.Models
+﻿namespace EquipApps.Mvc
 {
     public class GroupInfo
     {
@@ -15,6 +15,6 @@
         /// <summary>
         /// ЗАголовок группы
         /// </summary>
-        public string Title         { get; set; }
+        public string Title { get; set; }
     }
 }

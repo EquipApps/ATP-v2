@@ -1,22 +1,21 @@
 ﻿using DynamicData;
-using EquipApps.WorkBench.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace EquipApps.WorkBench.Services
+namespace EquipApps.Mvc.Services
 {
-    public class LogEntryService : ILogEntryService
+    public class LogService : ILogService
     {
         private readonly SourceList<LogEntry> source;
 
-        public LogEntryService()
+        public LogService()
         {
             source = new SourceList<LogEntry>();
             Observable = source.AsObservableList();
         }
 
         public IObservableList<LogEntry> Observable { get; }
-        
+
         public void Clean()
         {
             source.Clear();

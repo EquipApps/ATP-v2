@@ -115,7 +115,6 @@ namespace EquipApps.Mvc.ApplicationModels
             var controllerTypes = GetControllerTypes();
             var application = _applicationModelFactory.CreateApplicationModel(controllerTypes);
             return _controllerActionDescriptorBuilder.Builder(application);
-
         }
 
         private IEnumerable<TypeInfo> GetControllerTypes()

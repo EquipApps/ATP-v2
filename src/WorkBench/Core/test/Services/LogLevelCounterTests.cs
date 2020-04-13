@@ -1,10 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EquipApps.WorkBench.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using DynamicData;
-using EquipApps.WorkBench.Models;
+using EquipApps.Mvc;
+using EquipApps.Mvc.Infrastructure;
 
 namespace EquipApps.WorkBench.Services.Tests
 {
@@ -44,11 +42,11 @@ namespace EquipApps.WorkBench.Services.Tests
             {
                 sourceList.Add(new LogEntry()
                 {
-                    LogLevel = LogLevel.dbug
+                    Level = LogLevel.dbug
                 });
                 sourceList.Add(new LogEntry()
                 {
-                    LogLevel = LogLevel.warn
+                    Level = LogLevel.warn
                 });
             }
 
@@ -79,11 +77,11 @@ namespace EquipApps.WorkBench.Services.Tests
             {
                 sourceList.Add(new LogEntry()
                 {
-                    LogLevel = LogLevel.dbug
+                    Level = LogLevel.dbug
                 });
                 sourceList.Add(new LogEntry()
                 {
-                    LogLevel = LogLevel.warn
+                    Level = LogLevel.warn
                 });
             }
 
@@ -114,11 +112,11 @@ namespace EquipApps.WorkBench.Services.Tests
             {
                 sourceList.Add(new LogEntry()
                 {
-                    LogLevel = LogLevel.dbug
+                    Level = LogLevel.dbug
                 });
                 sourceList.Add(new LogEntry()
                 {
-                    LogLevel = LogLevel.warn
+                    Level = LogLevel.warn
                 });
             }
 
@@ -161,11 +159,11 @@ namespace EquipApps.WorkBench.Services.Tests
                 {
                     sourceList.Add(new LogEntry()
                     {
-                        LogLevel = LogLevel.dbug
+                        Level = LogLevel.dbug
                     });
                     sourceList.Add(new LogEntry()
                     {
-                        LogLevel = LogLevel.warn
+                        Level = LogLevel.warn
                     });
                 }
 
@@ -199,11 +197,11 @@ namespace EquipApps.WorkBench.Services.Tests
             {
                 sourceList.Add(new LogEntry()
                 {
-                    LogLevel = LogLevel.dbug
+                    Level = LogLevel.dbug
                 });
                 sourceList.Add(new LogEntry()
                 {
-                    LogLevel = LogLevel.warn
+                    Level = LogLevel.warn
                 });
             }
 

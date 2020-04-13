@@ -1,10 +1,9 @@
 ﻿using DynamicData;
-using EquipApps.WorkBench.Models;
 using System.Threading.Tasks;
 
-namespace EquipApps.WorkBench.Services
+namespace EquipApps.Mvc.Services
 {
-    public interface ILogEntryService
+    public interface ILogService
     {
         /// <summary>
         /// 

@@ -1,4 +1,4 @@
-﻿namespace EquipApps.Mvc.Internal
+﻿namespace EquipApps.Mvc.Infrastructure
 {
     public class ViewActionInvoker : IActionInvoker
     {

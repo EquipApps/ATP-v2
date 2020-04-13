@@ -15,7 +15,7 @@ namespace EquipApps.WorkBench.ViewModels
         private ITestFactory testFactory;
       
         private IActionService testService;
-        private ILogEntryService logsService;
+        private ILogService logsService;
 
 
         private IRuntimeService runtimeService;
@@ -27,7 +27,7 @@ namespace EquipApps.WorkBench.ViewModels
             IRuntimeService runtimeService,
             ITestFactory testFactory,
             IActionService actionDescripterService,
-            ILogEntryService logEntryService)
+            ILogService logEntryService)
         {
             this.testFactory = testFactory        ?? throw new ArgumentNullException(nameof(testFactory));
             testService = actionDescripterService ?? throw new ArgumentNullException(nameof(actionDescripterService));

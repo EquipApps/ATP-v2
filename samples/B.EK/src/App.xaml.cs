@@ -6,6 +6,9 @@ using B.EK.Services;
 using B.EK.ViewModels;
 using EquipApps.Builder;
 using EquipApps.Mvc.Infrastructure;
+using EquipApps.Mvc.Infrastructure;
+using EquipApps.Mvc.Services;
+using EquipApps.Mvc.Viewers;
 using EquipApps.Testing;
 using EquipApps.WorkBench;
 using EquipApps.WorkBench.Services;
@@ -54,7 +57,7 @@ namespace B.EK
 
             var ttt = this.ServiceProvider.GetServices<EquipApps.Testing.Features.IFeatureProvider>();
 
-            var vm1 = this.ServiceProvider.GetRequiredService<LogViewerViewModel>();
+            var vm1 = this.ServiceProvider.GetRequiredService<LogViewModel>();
             var vm2 = this.ServiceProvider.GetRequiredService<TestViewerViewModel>();
             var vm3 = this.ServiceProvider.GetRequiredService<WorkViewerViewModel>();
 
@@ -77,14 +80,14 @@ namespace B.EK
         {
             loggingBuilder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
 
-            loggingBuilder.AddSerilog(Logger);
-            loggingBuilder.Services.AddSingleton<ILoggerProvider, LogEntryLoggerProvider>();
+            loggingBuilder.AddSerilog(Logger);           
+            loggingBuilder.Services.AddSingleton<ILoggerProvider, ViewLoggerProvider>();
 
         }
 
         protected override void ConfigureServiceCollection(IServiceCollection serviceCollection)
         {
-            Locator.CurrentMutable.RegisterViewsForViewModels(typeof(LogViewerViewModel).Assembly);
+            
 
             serviceCollection.AddTransient<IMahAppsService, MahAppsService>();
 
@@ -130,7 +133,7 @@ namespace B.EK
             builder.Use(async (TestContext context) =>
             {
                 //-- Очищаем список ошибок
-                var logService = context.TestServices.GetService<ILogEntryService>();
+                var logService = context.TestServices.GetService<ILogService>();
                 await logService.CleanAsync();
 
                 //-- Выводим информацию в протокол

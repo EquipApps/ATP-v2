@@ -1,4 +1,4 @@
-﻿using EquipApps.Mvc.Internal;
+﻿using EquipApps.Mvc.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NLib.AtpNetCore.Mvc.Internal.Tests

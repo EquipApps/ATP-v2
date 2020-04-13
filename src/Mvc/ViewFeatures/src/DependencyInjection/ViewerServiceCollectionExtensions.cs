@@ -1,4 +1,4 @@
-﻿using EquipApps.Mvc.Internal;
+﻿using EquipApps.Mvc.Infrastructure;
 using EquipApps.Mvc.Services;
 using EquipApps.Mvc.Viewers;
 
@@ -13,10 +13,12 @@ namespace Microsoft.Extensions.DependencyInjection
 
             //-- Регистрация сервисов
             services.AddSingleton<IActionService, ActionService>();
+            services.AddSingleton<ILogService, LogService>();
 
 
             //-- Viewers
             services.AddTransient<ActionsViewer>();
+            services.AddTransient<LogViewer>();
 
         }
     }

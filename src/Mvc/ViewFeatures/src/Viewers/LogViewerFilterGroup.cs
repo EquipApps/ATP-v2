@@ -1,20 +1,19 @@
-﻿using EquipApps.WorkBench.Models;
-using ReactiveUI;
+﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace EquipApps.WorkBench.ViewModels
+namespace EquipApps.Mvc.Viewers
 {
-    public class LogFilterGroupVM : ViewModelBase
+    public class LogViewerFilterGroup : ReactiveObject
     {
         private readonly Dictionary<string, GroupInfo> cache;
 
-        public LogFilterGroupVM(LogOptions options)
+        public LogViewerFilterGroup(LogOptions options)
         {
-            if(options == null)
+            if (options == null)
             {
                 throw new ArgumentNullException(nameof(options));
             }
@@ -23,7 +22,7 @@ namespace EquipApps.WorkBench.ViewModels
 
             foreach (var contextPair in options.ContextCollection)
             {
-                var context  = contextPair.Key;
+                var context = contextPair.Key;
                 var groupKey = contextPair.Value;
 
                 if (options.GroupCollection.TryGetValue(groupKey, out GroupInfo group))
@@ -39,8 +38,8 @@ namespace EquipApps.WorkBench.ViewModels
 
             ObservableFilter = this.WhenAnyValue(x => x.GroupSelected, ObservedFilter);
 
-            Groups           = new ObservableCollection<GroupInfo>(options.GroupCollection.Values);
-            GroupSelected    = Groups.FirstOrDefault();
+            Groups = new ObservableCollection<GroupInfo>(options.GroupCollection.Values);
+            GroupSelected = Groups.FirstOrDefault();
 
 
 
@@ -62,7 +61,7 @@ namespace EquipApps.WorkBench.ViewModels
 
         private Func<LogEntry, bool> ObservedFilter(GroupInfo logGroupSelected)
         {
-            return (LogEntry logEntrie) =>
+            return (logEntrie) =>
             {
                 if (logEntrie == null)
                     return false;

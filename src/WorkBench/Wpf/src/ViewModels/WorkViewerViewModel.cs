@@ -11,7 +11,7 @@ namespace EquipApps.WorkBench.ViewModels
     {
         public WorkViewerViewModel(ITestFactory testFactory,
             IActionService actionDescripterService,
-            ILogEntryService logEntryService,
+            ILogService logEntryService,
             IRuntimeService runtimeService)
             :base("Панель управления")
         {

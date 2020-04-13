@@ -11,7 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace EquipApps.Mvc.Internal
+namespace EquipApps.Mvc.Infrastructure
 {
     /// <summary>
     /// Провайдер <see cref="ApplicationModel"/> (по умолчанию).

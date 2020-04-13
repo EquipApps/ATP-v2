@@ -1,4 +1,4 @@
-﻿namespace EquipApps.WorkBench.Models
+﻿namespace EquipApps.Mvc
 {
     public enum LogLevel
     {

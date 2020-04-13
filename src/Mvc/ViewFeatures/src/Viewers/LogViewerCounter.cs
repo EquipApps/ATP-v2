@@ -1,33 +1,32 @@
 ﻿using DynamicData;
-using EquipApps.WorkBench.Models;
-using EquipApps.WorkBench.Services;
+using EquipApps.Mvc.Infrastructure;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Reactive.Linq;
 
-namespace EquipApps.WorkBench.ViewModels
+namespace EquipApps.Mvc.Viewers
 {
-    public class LogCounterVM : ReactiveObject, IDisposable
+    public class LogViewerCounter : ReactiveObject, IDisposable
     {
         private const double throttleMilliseconds = 500.0;
         private LogLevelCounter levelCounter;
-        private IDisposable     disposable;
+        private IDisposable disposable;
 
-        public LogCounterVM(IObservable<IChangeSet<LogEntry>> source)
+        public LogViewerCounter(IObservable<IChangeSet<LogEntry>> source)
         {
             levelCounter = new LogLevelCounter(source);
-            disposable   = levelCounter
-                .Throttle   (TimeSpan.FromMilliseconds(throttleMilliseconds))
-                .ObserveOn  (RxApp.MainThreadScheduler)
-                .Subscribe  (OnNext);
+            disposable = levelCounter
+                .Throttle(TimeSpan.FromMilliseconds(throttleMilliseconds))
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(OnNext);
         }
 
         public void Dispose()
         {
-            disposable  .Dispose();
+            disposable.Dispose();
             levelCounter.Dispose();
-        } 
+        }
 
         private void OnNext(LogLevelCount levelCount)
         {
@@ -36,20 +35,17 @@ namespace EquipApps.WorkBench.ViewModels
             CountWarn = levelCount.Countwarn;
         }
 
-        [Reactive]
-        public int CountFail
+        [Reactive] public int CountFail
         {
             get; private set;
         }
 
-        [Reactive]
-        public int CountInfo
+        [Reactive] public int CountInfo
         {
             get; private set;
         }
 
-        [Reactive]
-        public int CountWarn
+        [Reactive] public int CountWarn
         {
             get;
             private set;

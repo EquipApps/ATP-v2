@@ -2,7 +2,7 @@
 using EquipApps.Testing;
 using System;
 
-namespace EquipApps.Mvc.Internal
+namespace EquipApps.Mvc.Infrastructure
 {
     /// <summary>
     /// Фича.

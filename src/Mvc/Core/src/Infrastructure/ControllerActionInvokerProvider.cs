@@ -3,7 +3,7 @@ using EquipApps.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace EquipApps.Mvc.Internal
+namespace EquipApps.Mvc.Infrastructure
 {
     public class ControllerActionInvokerProvider : IActionInvokerProvider
     {

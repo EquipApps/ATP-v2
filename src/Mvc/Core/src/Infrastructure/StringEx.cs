@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace EquipApps.Mvc.Internal
+namespace EquipApps.Mvc.Infrastructure
 {
     public static class StringEx
     {

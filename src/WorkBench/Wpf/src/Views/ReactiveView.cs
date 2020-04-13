@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -18,7 +19,6 @@ namespace EquipApps.WorkBench.Views
             {
                 return;
             }
-
             var view = ViewLocator.Current.ResolveView(datacotext);
             if (view == null)
             {
