@@ -2,13 +2,14 @@
 using DynamicData.Aggregation;
 using EquipApps.Mvc;
 using EquipApps.Mvc.Abstractions;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Linq;
 
 namespace EquipApps.WorkBench.ViewModels
 {
-    public class ActionsByResult : ViewModelBase, IDisposable
+    public class ActionsByResult : ReactiveObject, IDisposable
     {
         private readonly IDisposable _cleanUp;
 

@@ -9,7 +9,7 @@ using System.Reactive.Linq;
 
 namespace EquipApps.WorkBench.ViewModels
 {
-    public class ActionsByResultViewer : ViewModelBase, IDisposable
+    public class ActionsByResultViewer : ReactiveObject, IDisposable
     {
         private readonly IDisposable _cleanUp;
         private readonly ReadOnlyObservableCollection<ActionsByResult> _data;

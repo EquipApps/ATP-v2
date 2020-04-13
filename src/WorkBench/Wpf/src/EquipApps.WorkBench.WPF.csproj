@@ -34,8 +34,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Hardware\Behavior.Digital\src\EquipApps.Hardware.Behavior.Digital.csproj" />
+    <ProjectReference Include="..\..\..\Hardware\Behavior.Relay\src\EquipApps.Hardware.Behavior.Relay.csproj" />
+    <ProjectReference Include="..\..\..\Hardware\Core\src\EquipApps.Hardware.Core.csproj" />
+    <ProjectReference Include="..\..\..\Mvc\Core\src\EquipApps.Mvc.Core.csproj" />
+    <ProjectReference Include="..\..\..\Mvc\ViewFeatures\src\EquipApps.Mvc.ViewFeatures.csproj" />
     <ProjectReference Include="..\..\..\Testing\Wpf\src\EquipApps.Testing.Wpf.csproj" />
-    <ProjectReference Include="..\..\Core\src\EquipApps.WorkBench.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -35,9 +35,15 @@
                 <StatusBarItem x:Name="customStatusBarItem" HorizontalAlignment="Right" />
             </StatusBar>
         </ContentControl>
-
         <ContentControl Grid.Column="0" x:Name="contentControl" >
-            <local:DockingView/>
+            <Grid>
+                <!--<Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="300"/>
+                </Grid.ColumnDefinitions>-->
+
+                <local:DockingView Grid.Column="0"/>
+            </Grid>
         </ContentControl>
     </DockPanel>
 </Controls:MetroWindow>
