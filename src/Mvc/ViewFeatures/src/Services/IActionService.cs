@@ -22,6 +22,13 @@ namespace EquipApps.Mvc.Services
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="actionDescriptor"></param>
+        void Update(ActionDescriptor actionDescriptor);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         void Clear();
     }
 }

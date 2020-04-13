@@ -10,6 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             //-- Extentions
             services.AddTransientFeatureProvider<ViewFeatureProvider>();
+            services.AddTransientActionInvokerProvider<ViewActionInvokerProvider>();
 
             //-- Регистрация сервисов
             services.AddSingleton<IActionService, ActionService>();

@@ -13,6 +13,10 @@
     <Folder Include="Ordering\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Reactive" Version="4.4.1" />
+  </ItemGroup>
+
   <Import Project="..\..\..\Shared\src\EquipApps.Shared\EquipApps.Shared.projitems" Label="Shared" />
 
 </Project>

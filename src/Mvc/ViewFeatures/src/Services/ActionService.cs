@@ -23,10 +23,18 @@ namespace EquipApps.Mvc.Services
                 {
                     item.Dispose();
                 }
-
                 updater.Clear();
                 updater.AddOrUpdate(actions);
             });
+        }
+
+        public void Update(ActionDescriptor actionDescriptor)
+        {
+            sourceCache.AddOrUpdate(actionDescriptor);
+            //sourceCache.Edit(updater =>
+            //{
+            //    updater.Refresh(actionDescriptor);
+            //});
         }
 
         public void Clear()
@@ -41,5 +49,7 @@ namespace EquipApps.Mvc.Services
                 updater.Clear();
             });
         }
+
+        
     }
 }

@@ -64,17 +64,7 @@ namespace NLib.AtpNetCore.Testing
                 .Add(assemblyPart);
         }
 
-        //-- AddActionDescriptorProvider
-        public static void AddTransientActionDescriptorProvider<TProvider>(this IServiceCollection serviceDescriptors)
-            where TProvider : class, IActionDescriptorProvider
-        {
-            //
-            // Action Descriptor Provider
-            // Transient
-            // 
-            serviceDescriptors.TryAddEnumerable(
-                ServiceDescriptor.Transient<IActionDescriptorProvider, TProvider>());
-        }
+        
 
 
 
@@ -208,7 +198,8 @@ namespace NLib.AtpNetCore.Testing
             //      ControllerActionInvokerProvider
             // 
             //            
-            services.AddTransient<IActionInvokerProvider, ControllerActionInvokerProvider>();
+
+            services.AddTransientActionInvokerProvider<ControllerActionInvokerProvider>();
 
             services.AddSingleton<ControllerActionInvokerCache>();
 

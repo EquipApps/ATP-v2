@@ -1,31 +1,13 @@
 ﻿using EquipApps.Mvc.Abstractions;
 using System;
-using System.Collections.Generic;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
 
 namespace EquipApps.Mvc
 {
-    public delegate void ActionDescriptorUpdate(ActionDescriptor action);
-
     /// <summary>
     /// Дескриптер действия
     /// </summary>
     public abstract partial class ActionDescriptor : IDisposable
     {
-        private readonly ISubject<bool> _checkChangedSubject = new ReplaySubject<bool>();
-        private readonly ISubject<bool> _breakChangedSubject = new ReplaySubject<bool>();
-
-        private readonly ISubject<Exception> _exceptionChangedSubject = new ReplaySubject<Exception>();
-        private readonly ISubject<Result> _resultChangedSubject = new ReplaySubject<Result>();
-        private readonly ISubject<State> _stateChangedSubject = new ReplaySubject<State>();
-
-        private Exception _exception;
-        private Result _result;
-        private State _state;
-
-       
-
         public ActionDescriptor(ActionDescriptorObject testCase, ActionDescriptorObject testStep)
             :this()
         {
@@ -37,15 +19,6 @@ namespace EquipApps.Mvc
             Result = Result.NotExecuted;
             State  = State.Empy;
         }
-
-      
-
-        
-
-
-
-
-        //-------------------------------
 
         /// <summary>
         /// Возвращает <see cref="ActionDescriptorObject"/> для Тесторого случая
@@ -72,13 +45,7 @@ namespace EquipApps.Mvc
         }
         public virtual Number Number { get; set; }
 
-        public void Dispose()
-        {
-            
-        }
-
-
-        #region Property
+       
 
         /// <summary>
         /// Флаг. Указывает будет ли элемент участвовать в проверке.
@@ -93,52 +60,25 @@ namespace EquipApps.Mvc
         /// <summary>
         /// Исключение (Ошибки)
         /// </summary>
-        public Exception Exception
-        {
-            get => _exception;
-            set
-            {
-                _exception = value;
-                _exceptionChangedSubject.OnNext(value);
-            }
-        }
+        public Exception Exception { get; set; }
 
         /// <summary>
         /// Результат
         /// </summary>
-        public Result Result
-        {
-            get => _result;
-            set
-            {
-                _result = value;
-                _resultChangedSubject.OnNext(value);
-            }
-        }
+        public Result Result { get; set; }
+        
 
         /// <summary>
         /// Результат
         /// </summary>
-        public State State
+        public State State { get; set; }
+
+
+
+
+        public void Dispose()
         {
-            get => _state;
-            set
-            {
-                _state = value;
-                _stateChangedSubject.OnNext(value);
-            }
+
         }
-
-        #endregion
-
-        #region Property [Observable]
-
-        public IObservable<bool> IsCheckObservable => _checkChangedSubject.AsObservable();
-        public IObservable<bool> IsBreakObservable => _breakChangedSubject.AsObservable();
-        public IObservable<Exception> ExceptionObservable => _exceptionChangedSubject.AsObservable();
-        public IObservable<Result> ResultObservable => _resultChangedSubject.AsObservable();
-        public IObservable<State> StateObservable => _stateChangedSubject.AsObservable();
-
-        #endregion
     }
 }

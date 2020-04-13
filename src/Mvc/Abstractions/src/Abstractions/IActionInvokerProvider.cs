@@ -1,4 +1,4 @@
-﻿namespace EquipApps.Mvc
+﻿namespace EquipApps.Mvc.Abstractions
 {
     /// <summary>
     /// 

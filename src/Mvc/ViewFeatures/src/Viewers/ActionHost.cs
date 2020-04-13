@@ -27,22 +27,22 @@ namespace EquipApps.Mvc.Viewers
 
             //-- Подписываемя на обновление состояня модели
 
-            var excRefresher = _model.ExceptionObservable
-                .Subscribe(_ => Exception = _model.Exception);
+            //var excRefresher = _model.ExceptionObservable
+            //    .Subscribe(_ => Exception = _model.Exception);
 
-            var resRefresher = _model.ResultObservable
-                .Subscribe(_ => Result = _model.Result);
+            //var resRefresher = _model.ResultObservable
+            //    .Subscribe(_ => Result = _model.Result);
 
-            var staRefresher = _model.StateObservable
-                .Subscribe(_ => State = _model.State);
+            //var staRefresher = _model.StateObservable
+            //    .Subscribe(_ => State = _model.State);
 
-            //-- 
-            _cleanUp = Disposable.Create(() =>
-            {
-                excRefresher.Dispose();
-                resRefresher.Dispose();
-                staRefresher.Dispose();
-            });
+            ////-- 
+            //_cleanUp = Disposable.Create(() =>
+            //{
+            //    excRefresher.Dispose();
+            //    resRefresher.Dispose();
+            //    staRefresher.Dispose();
+            //});
         }
 
 
@@ -53,14 +53,14 @@ namespace EquipApps.Mvc.Viewers
 
         #region Property [Reactive]        
 
-        [Reactive]
-        public Exception Exception { get; private set; }
+        //[Reactive]
+        public Exception Exception => _model.Exception;
 
-        [Reactive]
-        public Result Result { get; private set; }
+        //[Reactive]
+        public Result Result => _model.Result;
 
-        [Reactive]
-        public State State { get; private set; }
+        //[Reactive]
+        public State State => _model.State;
 
 
         public bool IsBreak
@@ -91,7 +91,7 @@ namespace EquipApps.Mvc.Viewers
 
         public void Dispose()
         {
-            _cleanUp.Dispose();
+            //_cleanUp.Dispose();
         }
     }
 }

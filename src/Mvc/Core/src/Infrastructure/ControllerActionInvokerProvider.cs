@@ -1,4 +1,5 @@
-﻿using EquipApps.Mvc.Controllers;
+﻿using EquipApps.Mvc.Abstractions;
+using EquipApps.Mvc.Controllers;
 using EquipApps.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 using System;
