@@ -61,6 +61,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{26B50B
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "EquipApps.Shared", "src\Shared\src\EquipApps.Shared\EquipApps.Shared.shproj", "{D2614BB7-1EA9-4084-9F6F-B2520B7D7E5D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EquipApps.WorkBench.WPF.MaterialDesign", "src\WorkBench\Wpf.MaterialDesign\src\EquipApps.WorkBench.WPF.MaterialDesign.csproj", "{1C4A942A-3E84-4878-B251-2E0641D19C9C}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\Shared\src\EquipApps.Shared\EquipApps.Shared.projitems*{34c9b411-6946-4a89-b76a-eeaf231e8126}*SharedItemsImports = 5
@@ -140,6 +142,10 @@ Global
 		{BEE154A7-86E1-477D-B2C7-B33B88981F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEE154A7-86E1-477D-B2C7-B33B88981F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEE154A7-86E1-477D-B2C7-B33B88981F83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C4A942A-3E84-4878-B251-2E0641D19C9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C4A942A-3E84-4878-B251-2E0641D19C9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C4A942A-3E84-4878-B251-2E0641D19C9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C4A942A-3E84-4878-B251-2E0641D19C9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -172,6 +178,7 @@ Global
 		{BEE154A7-86E1-477D-B2C7-B33B88981F83} = {135838B4-4F28-4B6E-B8BF-EAD73B1DC0C2}
 		{26B50B69-6DB4-44BE-93C3-9BFB170343A3} = {3E1A9720-FB34-43D1-9BBA-E7E36138CBB0}
 		{D2614BB7-1EA9-4084-9F6F-B2520B7D7E5D} = {26B50B69-6DB4-44BE-93C3-9BFB170343A3}
+		{1C4A942A-3E84-4878-B251-2E0641D19C9C} = {F4F5D2F7-5C6D-41B5-8693-52A29537AAA9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5541298D-733B-43FF-81EF-6CC5EDD40E71}
