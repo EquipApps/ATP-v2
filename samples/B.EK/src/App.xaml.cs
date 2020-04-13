@@ -62,11 +62,11 @@ namespace B.EK
             var vm3 = this.ServiceProvider.GetRequiredService<WorkViewerViewModel>();
 
 
-            //var vm4 = this.ServiceProvider.GetRequiredService<ActionsByResultTool>();
+            var vm4 = this.ServiceProvider.GetRequiredService<ActionsByResultTool>();
 
             Workspace.This.Tools.Add(vm1);
             Workspace.This.Tools.Add(vm3);
-            //Workspace.This.Tools.Add(vm4);
+            Workspace.This.Tools.Add(vm4);
 
 
             Workspace.This.Files.Add(vm2);
