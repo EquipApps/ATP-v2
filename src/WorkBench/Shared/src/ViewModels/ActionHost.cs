@@ -1,10 +1,9 @@
-﻿using EquipApps.Mvc.Abstractions;
+﻿using EquipApps.Mvc;
+using EquipApps.Mvc.Abstractions;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using System;
-using System.Reactive.Disposables;
 
-namespace EquipApps.Mvc.Viewers
+namespace EquipApps.WorkBench.ViewModels
 {
     public class ActionHost : ReactiveObject, IDisposable
     {

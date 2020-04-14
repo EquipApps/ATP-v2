@@ -55,7 +55,7 @@ namespace B.EK
             var ttt = this.ServiceProvider.GetServices<EquipApps.Testing.Features.IFeatureProvider>();
 
             var vm1 = this.ServiceProvider.GetRequiredService<LogViewModel>();
-            var vm2 = this.ServiceProvider.GetRequiredService<TestExplorerTool>();
+            var vm2 = this.ServiceProvider.GetRequiredService<ActionsViewer>();
             var vm3 = this.ServiceProvider.GetRequiredService<WorkViewerViewModel>();
 
 

@@ -13,8 +13,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interactions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IShellContentService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewForExt.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ActionHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ActionsByResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ActionsByResultViewer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ActionsViewer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ActionsViewerCounter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ActionsViewerFilter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SettingsViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WorkViewerViewModel - Build.cs" />

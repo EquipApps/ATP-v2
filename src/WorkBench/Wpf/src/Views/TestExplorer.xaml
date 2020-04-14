@@ -1,5 +1,5 @@
 ﻿<reactiveUI:ReactiveUserControl x:Class="EquipApps.WorkBench.Views.TestExplorerToolView"
-                                x:TypeArguments="vm:TestExplorerTool"
+                                x:TypeArguments="vm:ActionsViewer"
                                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -23,28 +23,28 @@
 
             <Separator/>
 
-            <ToggleButton x:Name="FilterAll" >
+            <Button x:Name="FilterClear" >                
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterial Kind="Filter" />
+                    <iconPacks:PackIconMaterial Kind="FilterRemove" />
                     <TextBlock x:Name="TotalTotal"  Margin="1,0,1,0" />                   
                 </StackPanel>
-            </ToggleButton>
+            </Button>
 
-            <ToggleButton x:Name="FilterTrue" >
+            <ToggleButton x:Name="FilterPassed" >
                 <StackPanel Orientation="Horizontal">
                     <Image Height="16" Width="16"  Margin="0,0,1,0" Source="/EquipApps.WorkBench.WPF;component/Images/TestCompleted.png" />
                     <TextBlock x:Name="TotalPassed"  Margin="1,0,1,0" />                    
                 </StackPanel>
             </ToggleButton>
 
-            <ToggleButton x:Name="FilterFail" >
+            <ToggleButton x:Name="FilterFailed" >
                 <StackPanel Orientation="Horizontal">
                     <Image Height="16" Width="16"  Margin="0,0,1,0" Source="/EquipApps.WorkBench.WPF;component/Images/TestFailed.png" />
                     <TextBlock x:Name="TotalFailed"  Margin="1,0,1,0" />                    
                 </StackPanel>
             </ToggleButton>
 
-            <ToggleButton x:Name="FilterInfo" >
+            <ToggleButton x:Name="FilterNotRun" >
                 <StackPanel Orientation="Horizontal">
                     <Image Height="16" Width="16" Margin="0,0,1,0"   Source="/EquipApps.WorkBench.WPF;component/Images/TestInitialize.png" />
                     <TextBlock x:Name="TotalNotRun" Margin="0,0,1,0"/>                    

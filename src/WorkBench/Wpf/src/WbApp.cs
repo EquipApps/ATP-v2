@@ -1,5 +1,4 @@
-﻿using EquipApps.Mvc.Viewers;
-using EquipApps.Testing.Wpf;
+﻿using EquipApps.Testing.Wpf;
 using EquipApps.WorkBench.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -41,7 +40,7 @@ namespace EquipApps.WorkBench
 
             //-------------------------------------------------------------
             serviceCollection.AddTransient<LogViewModel>();
-            serviceCollection.AddTransient<TestExplorerTool>();
+           
             serviceCollection.AddTransient<WorkViewerViewModel>();
 
 

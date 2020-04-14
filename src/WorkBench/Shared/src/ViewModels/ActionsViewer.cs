@@ -1,7 +1,7 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
+using EquipApps.Mvc;
 using EquipApps.Mvc.Services;
-using EquipApps.WorkBench.Viewers;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
@@ -10,18 +10,14 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-namespace EquipApps.Mvc.Viewers
+namespace EquipApps.WorkBench.ViewModels
 {
-    /// <summary>
-    /// Transient
-    /// </summary>
-    public class ActionsViewer : ReactiveObject, IDisposable
+    public partial class ActionsViewer : IReactiveObject, IDisposable
     {
         private ReadOnlyObservableCollection<ActionHost> _items;
         private IDisposable _cleanUp;
-        private IDisposable dddd;
 
-        public ActionsViewer(IActionService  actionService)
+        public ActionsViewer(IActionService actionService)
         {
             //-- Создаем фильтр
             Filter = new ActionsViewerFilter();
@@ -32,17 +28,9 @@ namespace EquipApps.Mvc.Viewers
             //-- Создаем счетчик
             CountTotal = new ActionsViewerCounter(sourceConnect);
 
-            //-- Фильтруем данные
-            var sourceFiltred = sourceConnect.Filter(Filter.ObservableFilter);
-
             //-- Создаем счетчик
-            //CountFiltr = new ActionsViewerCounter(sourceConnect);
-
-
-            dddd = CountTotal.WhenAnyValue(x => x.Failed).Subscribe(dd);
-
-
-            var cleanUpConnect = sourceConnect.Transform(x => new ActionHost(x))
+            var cleanUpConnect = sourceConnect.Filter(Filter.ObservableFilter)
+                                              .Transform(x => new ActionHost(x))
                                               .Sort(SortExpressionComparer<ActionHost>.Ascending(x => x.Number))
                                               .ObserveOn(RxApp.MainThreadScheduler)
                                               .Bind(out _items)
@@ -64,15 +52,14 @@ namespace EquipApps.Mvc.Viewers
                 }
             });
 
-            _cleanUp = new CompositeDisposable(cleanUpConnect, cleanUpBreakPointListen, cleanUpCheckPointListen);
+            _cleanUp = new CompositeDisposable(cleanUpConnect,
+                                               cleanUpBreakPointListen,
+                                               cleanUpCheckPointListen);
+
+            Initialize();
         }
 
-        private void dd(int obj)
-        {
-            
-        }
-
-        
+        partial void Initialize();
 
         /// <summary>
         /// Счетчик. Общий.
@@ -83,29 +70,12 @@ namespace EquipApps.Mvc.Viewers
         }
 
         /// <summary>
-        /// Счетчик. Данных
-        /// </summary>
-        public ActionsViewerCounter CountFiltr
-        { 
-            get; 
-        }
-
-        /// <summary>
         /// Фильтры.
         /// </summary>
         public ActionsViewerFilter Filter
         {
             get;
         }
-
-
-
-
-
-
-
-
-
 
         /// <summary>
         /// Разрешить / запретить BreakPoint
@@ -146,7 +116,6 @@ namespace EquipApps.Mvc.Viewers
             get;
             private set;
         }
-        
 
         /// <summary>
         /// 

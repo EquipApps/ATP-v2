@@ -1,6 +1,6 @@
 ﻿using DynamicData;
 using DynamicData.Aggregation;
-using DynamicData.Alias;
+using EquipApps.Mvc;
 using EquipApps.Mvc.Abstractions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -8,33 +8,40 @@ using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-namespace EquipApps.Mvc.Viewers
+namespace EquipApps.WorkBench.ViewModels
 {
+    /// <summary>
+    /// Счетчик для <see cref="ActionDescriptor"/>.
+    /// </summary>
     public class ActionsViewerCounter : ReactiveObject, IDisposable
     {
-        private const double throttleMilliseconds = 500.0;
         private IDisposable _cleanUp;
 
         public ActionsViewerCounter(IObservable<IChangeSet<ActionDescriptor, string>> source)
         {
-            var totalDisposable = source.Count()
-                                        .ObserveOn(RxApp.MainThreadScheduler)
-                                        .Subscribe(value => Total = value);
+            var totalDisposable
+                = source.Count()
+                        .ObserveOn(RxApp.MainThreadScheduler)
+                        .Subscribe(value => Total = value);
 
-            var passedDisposable = source.Filter(x => x.Result == Result.Passed)
-                                         .Count()
-                                         .ObserveOn(RxApp.MainThreadScheduler)
-                                         .Subscribe(value => Passed = value);
+            var passedDisposable
+                = source.Filter(x => x.Result == Result.Passed)
+                        .Count()
+                        .ObserveOn(RxApp.MainThreadScheduler)
+                        .Subscribe(value => Passed = value);
 
-            var failedDisposable = source.Filter(x => x.Result == Result.Failed)
-                                         .Count()
-                                         .ObserveOn(RxApp.MainThreadScheduler)
-                                         .Subscribe(value => Failed = value);
+            var failedDisposable
+                = source.Filter(x => x.Result == Result.Failed)
+                        .Count()
+                        .ObserveOn(RxApp.MainThreadScheduler)
+                        .Subscribe(value => Failed = value);
 
-            var notRunDisposable = source.Filter(x => x.Result == Result.NotRun)
-                                         .Count()
-                                         .ObserveOn(RxApp.MainThreadScheduler)
-                                         .Subscribe(value => NotRun = value);
+            var notRunDisposable
+                = source.Filter(x => x.Result == Result.NotRun)
+                        .Count()
+                        .ObserveOn(RxApp.MainThreadScheduler)
+                        .Subscribe(value => NotRun = value);
+
 
             _cleanUp = new CompositeDisposable(totalDisposable,
                                                passedDisposable,
@@ -46,7 +53,7 @@ namespace EquipApps.Mvc.Viewers
         /// Всего тестов
         /// </summary>
         [Reactive] public int Total { get; private set; }
-        
+
         /// <summary>
         /// Счетчик. Пройденных тестов
         /// </summary>

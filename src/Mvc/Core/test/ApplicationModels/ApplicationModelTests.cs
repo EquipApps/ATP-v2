@@ -11,8 +11,7 @@ namespace NLib.AtpNetCore.Mvc.ApplicationModels.Tests
         {
             ApplicationModel applicationModel = new ApplicationModel();
 
-            Assert.IsNotNull(applicationModel);
-            Assert.IsNotNull(applicationModel.Areas);
+            Assert.IsNotNull(applicationModel);           
             Assert.IsNotNull(applicationModel.Controllers);
         }
     }
