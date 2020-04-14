@@ -3,6 +3,7 @@ using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace EquipApps.Mvc.Infrastructure
 {
@@ -26,6 +27,38 @@ namespace EquipApps.Mvc.Infrastructure
         }
 
         public void Invoke()
+        {
+            try
+            {
+                InvokeInternel();
+            }
+            catch (Exception ex)
+            {
+                var exception = ex;
+                //TODO: Написать юнит тесты для поиска состояния остановка!
+                if (exception is TargetInvocationException)
+                {
+                    exception = ex.InnerException ?? ex;
+                }
+                if (exception is AggregateException)
+                {
+                    exception = ex.InnerException ?? ex;
+                }
+
+                if (exception is OperationCanceledException)
+                {
+                    controllerContext.ActionDescriptor.Result = Abstractions.Result.NotRun;
+                    controllerContext.ActionDescriptor.Exception = exception;
+                }
+                else
+                {
+                    controllerContext.ActionDescriptor.Result = Abstractions.Result.Failed;
+                    controllerContext.ActionDescriptor.Exception = exception;
+                }
+            }
+        }
+
+        private void InvokeInternel()
         {
             //-- 
             var objectMethodExecutor = controllerActionCacheEntry.ObjectMethodExecutor;

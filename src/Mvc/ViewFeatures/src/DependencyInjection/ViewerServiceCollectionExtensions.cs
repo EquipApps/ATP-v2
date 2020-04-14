@@ -17,8 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<ILogService, LogService>();
 
 
-            //-- Viewers
-            services.AddTransient<ActionsViewer>();
+            
             services.AddTransient<LogViewer>();
 
         }

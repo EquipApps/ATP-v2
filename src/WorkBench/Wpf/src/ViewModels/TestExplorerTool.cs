@@ -4,9 +4,9 @@ using System;
 
 namespace EquipApps.WorkBench.ViewModels
 {
-    public class TestViewerViewModel : FileViewModel
+    public class TestExplorerTool : FileViewModel
     {
-        public TestViewerViewModel(ActionsViewer actionViewViewModel)
+        public TestExplorerTool(ActionsViewer actionViewViewModel)
             :base()
         {
             Action = actionViewViewModel ?? throw new ArgumentNullException(nameof(actionViewViewModel));

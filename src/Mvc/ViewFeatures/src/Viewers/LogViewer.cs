@@ -30,10 +30,10 @@ namespace EquipApps.Mvc.Viewers
                                    .Throttle(TimeSpan.FromMilliseconds(throttleMilliseconds));
 
             //-- Подключаемя к данным
-            var sourceConnext = logService.Observable.Connect();
+            var sourceConnect = logService.Observable.Connect();
 
             //-- Фильтруем данные
-            var sourceFiltred = sourceConnext
+            var sourceFiltred = sourceConnect
                 .Filter(FilterGroup.ObservableFilter, ListFilterPolicy.CalculateDiff)
                 .Filter(FilterScope.ObservableFilter, ListFilterPolicy.CalculateDiff)
                 .Filter(FilterLevel.ObservableFilter, ListFilterPolicy.CalculateDiff);
@@ -47,7 +47,7 @@ namespace EquipApps.Mvc.Viewers
 
 
 
-            TotalCount    = new LogViewerCounter(sourceConnext);
+            TotalCount    = new LogViewerCounter(sourceConnect);
             FiltrCount  = new LogViewerCounter(sourceFiltred);
 
 

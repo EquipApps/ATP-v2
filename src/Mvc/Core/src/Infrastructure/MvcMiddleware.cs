@@ -3,6 +3,7 @@ using EquipApps.Mvc.Runtime;
 using EquipApps.Testing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -44,7 +45,7 @@ namespace EquipApps.Mvc.Infrastructure
             //-- 2) Обновляем состояние
             foreach (var actionDescriptor in actionDescriptors)
             {
-                actionDescriptor.Result    = Result.NotExecuted;
+                actionDescriptor.Result    = Result.NotRun;
                 actionDescriptor.Exception = null;
             }
 
@@ -147,32 +148,10 @@ namespace EquipApps.Mvc.Infrastructure
                         }
                         catch (Exception ex)
                         {
-                            var exception = ex;
-                            //TODO: Написать юнит тесты для поиска состояния остановка!
-                            if (exception is TargetInvocationException)
-                            {
-                                exception = ex.InnerException ?? ex;
-                            }
-                            if (exception is AggregateException)
-                            {
-                                exception = ex.InnerException ?? ex;
-                            }
+                            //TODO: Написать юнит тесты. Не должно быть исключений!
 
-                            if (exception is NotImplementedException)
-                            {
-                                descriptor.Result = Result.NotImplemented;
-                                descriptor.Exception = exception;
-                            }
-                            else if (exception is OperationCanceledException)
-                            {
-                                descriptor.Result = Result.Inconclusive;
-                                descriptor.Exception = exception;
-                            }
-                            else
-                            {
-                                descriptor.Exception = exception;
-                                descriptor.Result = Result.Failed;
-                            }
+                            Debug.Fail("Не обработанное исключение");
+                           
                         }
                         finally
                         {

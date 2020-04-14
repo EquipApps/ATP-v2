@@ -95,7 +95,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <ToolBar >
+        <ToolBar>
             <ToolBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <DockPanel/>

@@ -16,7 +16,7 @@ namespace EquipApps.Mvc
 
           
             Exception = null;
-            Result = Result.NotExecuted;
+            Result = Result.NotRun;
             State  = State.Empy;
         }
 

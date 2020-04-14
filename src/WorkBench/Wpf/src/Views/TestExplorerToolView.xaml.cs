@@ -8,14 +8,32 @@ namespace EquipApps.WorkBench.Views
     /// <summary>
     /// Interaction logic for TestView.xaml
     /// </summary>
-    public partial class TestViewerView : ReactiveUserControl<TestViewerViewModel>
+    public partial class TestExplorerToolView : ReactiveUserControl<TestExplorerTool>
     {
-        public TestViewerView()
+        public TestExplorerToolView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             this.WhenActivated(disposable =>
             {
+                //-- Привязка счетчика
+                this.OneWayBind(this.ViewModel, x => x.Action.CountTotal.Failed, x => x.TotalFailed.Text).DisposeWith(disposable);
+                this.OneWayBind(this.ViewModel, x => x.Action.CountTotal.NotRun, x => x.TotalNotRun.Text).DisposeWith(disposable);
+                this.OneWayBind(this.ViewModel, x => x.Action.CountTotal.Passed, x => x.TotalPassed.Text).DisposeWith(disposable);
+                this.OneWayBind(this.ViewModel, x => x.Action.CountTotal.Total,  x => x.TotalTotal.Text) .DisposeWith(disposable);
+
+
+
+
+
+
+
+
+
+
+
+
+
                 //-- Привязка Скрывает Column_BreakPoint 
                 this.OneWayBind(this.ViewModel, x => x.Action.IsEnabledBreakPoint, x => x.Column_BreakPoint.Visibility, ToVisibility)
                     .DisposeWith(disposable);
@@ -37,7 +55,7 @@ namespace EquipApps.WorkBench.Views
                     .DisposeWith(disposable);
 
                 //-- Привязка Команды фильтрации
-                this.BindCommand(this.ViewModel, x => x.Action.Filter, x => x.dataGrid_cm_FilterButton)
+                this.BindCommand(this.ViewModel, x => x.Action.FilterLogs, x => x.dataGrid_cm_FilterButton)
                     .DisposeWith(disposable);
             });
         }

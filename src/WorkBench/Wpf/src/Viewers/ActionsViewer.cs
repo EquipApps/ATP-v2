@@ -1,6 +1,7 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
 using EquipApps.Mvc.Services;
+using EquipApps.WorkBench.Viewers;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
@@ -18,17 +19,35 @@ namespace EquipApps.Mvc.Viewers
     {
         private ReadOnlyObservableCollection<ActionHost> _items;
         private IDisposable _cleanUp;
+        private IDisposable dddd;
 
-        public ActionsViewer(IActionService actionDescriptorService)
+        public ActionsViewer(IActionService  actionService)
         {
-            var cleanUpConnect = actionDescriptorService.Observable
-                .Connect()
-                .Transform(x => new ActionHost(x))
-                .Sort(SortExpressionComparer<ActionHost>.Ascending(x => x.Number))
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .Bind(out _items)
-                .DisposeMany()
-                .Subscribe();
+            //-- Создаем фильтр
+            Filter = new ActionsViewerFilter();
+
+            //-- Подключаемя к данным
+            var sourceConnect = actionService.Observable.Connect();
+
+            //-- Создаем счетчик
+            CountTotal = new ActionsViewerCounter(sourceConnect);
+
+            //-- Фильтруем данные
+            var sourceFiltred = sourceConnect.Filter(Filter.ObservableFilter);
+
+            //-- Создаем счетчик
+            //CountFiltr = new ActionsViewerCounter(sourceConnect);
+
+
+            dddd = CountTotal.WhenAnyValue(x => x.Failed).Subscribe(dd);
+
+
+            var cleanUpConnect = sourceConnect.Transform(x => new ActionHost(x))
+                                              .Sort(SortExpressionComparer<ActionHost>.Ascending(x => x.Number))
+                                              .ObserveOn(RxApp.MainThreadScheduler)
+                                              .Bind(out _items)
+                                              .DisposeMany()
+                                              .Subscribe();
 
             var cleanUpBreakPointListen = MessageBusEx.ListenEnabledBreakPoint()
                 .Subscribe(isEnabled => IsEnabledBreakPoint = isEnabled);
@@ -36,7 +55,7 @@ namespace EquipApps.Mvc.Viewers
             var cleanUpCheckPointListen = MessageBusEx.ListenEnabledCheckPoint()
                 .Subscribe(isEnabled => IsEnabledCheckPoint = isEnabled);
 
-            Filter = ReactiveCommand.Create(() =>
+            FilterLogs = ReactiveCommand.Create(() =>
             {
                 var selectedItem = SelectedItem;
                 if (selectedItem != null)
@@ -47,6 +66,46 @@ namespace EquipApps.Mvc.Viewers
 
             _cleanUp = new CompositeDisposable(cleanUpConnect, cleanUpBreakPointListen, cleanUpCheckPointListen);
         }
+
+        private void dd(int obj)
+        {
+            
+        }
+
+        
+
+        /// <summary>
+        /// Счетчик. Общий.
+        /// </summary>
+        public ActionsViewerCounter CountTotal
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Счетчик. Данных
+        /// </summary>
+        public ActionsViewerCounter CountFiltr
+        { 
+            get; 
+        }
+
+        /// <summary>
+        /// Фильтры.
+        /// </summary>
+        public ActionsViewerFilter Filter
+        {
+            get;
+        }
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// Разрешить / запретить BreakPoint
@@ -82,11 +141,12 @@ namespace EquipApps.Mvc.Viewers
         /// <summary>
         /// 
         /// </summary>
-        public ReactiveCommand<Unit, Unit> Filter
+        public ReactiveCommand<Unit, Unit> FilterLogs
         {
             get;
             private set;
         }
+        
 
         /// <summary>
         /// 

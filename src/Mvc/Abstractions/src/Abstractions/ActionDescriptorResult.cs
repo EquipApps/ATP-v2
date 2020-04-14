@@ -8,26 +8,16 @@
         /// <summary>
         /// Не выполненно
         /// </summary>
-        NotExecuted = 1,
+        NotRun = 0,
 
         /// <summary>
         /// Прошло
         /// </summary>
-        Passed = 2,
-
-        /// <summary>
-        /// Не реализованна
-        /// </summary>
-        NotImplemented = 3,
-
-        /// <summary>
-        ///  Прерванна
-        /// </summary>
-        Inconclusive = 4,
+        Passed = 1,
 
         /// <summary>
         /// Провалена
         /// </summary>
-        Failed = 5
+        Failed = 2
     }
 }

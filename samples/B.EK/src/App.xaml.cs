@@ -5,10 +5,9 @@ using B.EK.Models;
 using B.EK.Services;
 using B.EK.ViewModels;
 using EquipApps.Builder;
-using EquipApps.Mvc.Infrastructure;
+using EquipApps.Mvc;
 using EquipApps.Mvc.Infrastructure;
 using EquipApps.Mvc.Services;
-using EquipApps.Mvc.Viewers;
 using EquipApps.Testing;
 using EquipApps.WorkBench;
 using EquipApps.WorkBench.Services;
@@ -18,11 +17,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLib.AtpNetCore.Builder;
 using NLib.AtpNetCore.Testing;
-using ReactiveUI;
 using Serilog;
 using Splat;
-using System;
-using System.Reactive;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 
@@ -58,7 +55,7 @@ namespace B.EK
             var ttt = this.ServiceProvider.GetServices<EquipApps.Testing.Features.IFeatureProvider>();
 
             var vm1 = this.ServiceProvider.GetRequiredService<LogViewModel>();
-            var vm2 = this.ServiceProvider.GetRequiredService<TestViewerViewModel>();
+            var vm2 = this.ServiceProvider.GetRequiredService<TestExplorerTool>();
             var vm3 = this.ServiceProvider.GetRequiredService<WorkViewerViewModel>();
 
 
@@ -156,6 +153,8 @@ namespace B.EK
             //-- Выводим информацию в протокол
             builder.Use((TestContext context) =>
             {
+                var ddd = context.GetActionDescriptors().Where(x => x.Result == EquipApps.Mvc.Abstractions.Result.NotRun).ToArray();
+
                 if (context.TestAborted.IsCancellationRequested)
                 {
                     context.TestLogger.LogInformation("Проверка прервана");
