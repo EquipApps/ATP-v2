@@ -8,6 +8,9 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static void AddViewer(this IServiceCollection services)
         {
+            //-- Middleware
+            services.AddSingleton<ViewMiddleware>();
+
             //-- Extentions
             services.AddTransientFeatureProvider<ViewFeatureProvider>();
             services.AddTransientActionInvokerProvider<ViewActionInvokerProvider>();

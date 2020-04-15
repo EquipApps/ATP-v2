@@ -28,13 +28,14 @@ namespace EquipApps.Mvc.Runtime
         /// </summary>        
         int MillisecondsTimeout { get; set; }
 
+
         /// <summary>
         /// Позволчят подписаться на события изменения состояния паузы
         /// </summary>
         IObservable<bool> ObservablePause { get; }
 
+        //IObservable<ActionDescriptor> ObservableBrack { get; }
 
-        
 
 
         /// <summary>

@@ -15,7 +15,6 @@ using EquipApps.WorkBench.ViewModels;
 using EquipApps.WorkBench.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NLib.AtpNetCore.Builder;
 using NLib.AtpNetCore.Testing;
 using Serilog;
 using Splat;
@@ -146,6 +145,8 @@ namespace B.EK
 
             //-- Инициализация устройств
             builder.UseHardware();
+
+            builder.UseView();
 
             //-- Основная проверка
             builder.UseMvc();

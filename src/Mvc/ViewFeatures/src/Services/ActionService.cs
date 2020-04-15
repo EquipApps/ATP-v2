@@ -1,4 +1,5 @@
 ﻿using DynamicData;
+using System;
 using System.Collections.Generic;
 
 namespace EquipApps.Mvc.Services
@@ -35,6 +36,14 @@ namespace EquipApps.Mvc.Services
             //{
             //    updater.Refresh(actionDescriptor);
             //});
+        }
+
+        public void Update()
+        {
+            sourceCache.Edit(updater =>
+            {
+                updater.AddOrUpdate(updater.Items);
+            });
         }
 
         public void Clear()

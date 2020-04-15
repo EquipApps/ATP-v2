@@ -39,18 +39,11 @@ namespace EquipApps.Mvc.Runtime
             //-- 1) Извлечение дескриптеров действий
             var actionDescriptors = testContext.GetActionDescriptors();
 
-            //-- 2) Обновляем состояние.
-            foreach (var actionDescriptor in actionDescriptors)
-            {
-                actionDescriptor.Result = Result.NotRun;
-                actionDescriptor.Exception = null;
-            }
-
-            //-- 3) Создаем временные ресурсы (будут уничтожены после окончения проверки)
+            //-- 2) Создаем временные ресурсы (будут уничтожены после окончения проверки)
             using (actionEnumerator = new ActionDescriptorEnumerator(actionDescriptors))
             using (actionFactory = new ActionInvokerFactory(_actionInvokerProviders))
             {
-                //-- 4) Создаем контекст. (контекст не должен уничтожать ресурсы, он только передает к ним доступ)
+                //-- 3) Создаем контекст. (контекст не должен уничтожать ресурсы, он только передает к ним доступ)
                 var runtimeContext = new DefaultRuntimeContext(testContext, actionEnumerator);
 
                 /*
@@ -121,7 +114,7 @@ namespace EquipApps.Mvc.Runtime
                         }
 
                         //
-                        // Если флаг установлен, то данная проверка будет пропущенна
+                        // Если флаг установлен, то данная проверка будет приостановленна
                         //
                         if (descriptor.IsBreak)
                         {

@@ -1,9 +1,8 @@
 ﻿using EquipApps.Mvc.Runtime;
-using EquipApps.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace NLib.AtpNetCore.Builder
+namespace EquipApps.Testing
 {
     public static class MvcBuilderExtensions
     {
