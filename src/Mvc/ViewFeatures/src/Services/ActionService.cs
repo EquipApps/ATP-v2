@@ -38,14 +38,6 @@ namespace EquipApps.Mvc.Services
             //});
         }
 
-        public void Update()
-        {
-            sourceCache.Edit(updater =>
-            {
-                updater.AddOrUpdate(updater.Items);
-            });
-        }
-
         public void Clear()
         {
             sourceCache.Edit(updater =>
@@ -59,6 +51,5 @@ namespace EquipApps.Mvc.Services
             });
         }
 
-        
     }
 }

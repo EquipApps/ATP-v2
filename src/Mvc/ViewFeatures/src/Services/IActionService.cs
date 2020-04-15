@@ -28,11 +28,6 @@ namespace EquipApps.Mvc.Services
         /// <summary>
         /// 
         /// </summary>
-        void Update();
-
-        /// <summary>
-        /// 
-        /// </summary>
         void Clear();
     }
 }
