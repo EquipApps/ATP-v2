@@ -144,7 +144,9 @@ namespace B.EK
             });
 
             //-- Инициализация устройств
-            builder.UseHardware();           
+            builder.UseHardware();
+
+            builder.UseView();
 
             //-- Основная проверка
             builder.UseMvc();
