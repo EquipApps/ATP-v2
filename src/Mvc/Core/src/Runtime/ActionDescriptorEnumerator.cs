@@ -1,8 +1,9 @@
-﻿using System;
+﻿using EquipApps.Mvc.Infrastructure;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace EquipApps.Mvc.Infrastructure
+namespace EquipApps.Mvc.Runtime
 {
     /// <summary>
     /// Реализация <see cref="IActionDescriptorEnumerator"/>.

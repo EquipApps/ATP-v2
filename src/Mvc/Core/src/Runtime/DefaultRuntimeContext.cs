@@ -22,7 +22,8 @@ namespace EquipApps.Mvc.Runtime
 
         public override bool JumpTo(RuntimeState runtimeState)
         {
-            throw new NotImplementedException();
+            //TODO: Реализовать функцию
+            throw new NotImplementedException(nameof(JumpTo));
         }
     }
 }

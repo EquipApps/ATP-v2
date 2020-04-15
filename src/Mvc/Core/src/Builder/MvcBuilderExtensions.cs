@@ -1,4 +1,4 @@
-﻿using EquipApps.Mvc.Infrastructure;
+﻿using EquipApps.Mvc.Runtime;
 using EquipApps.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,9 +16,9 @@ namespace NLib.AtpNetCore.Builder
             if (application == null)
                 throw new ArgumentNullException(nameof(application));
 
-            var mvcMiddleware = application.ApplicationServices.GetService<MvcMiddleware>();
+            var mvcMiddleware = application.ApplicationServices.GetService<RuntimeMiddleware>();
             if (mvcMiddleware == null)
-                throw new Exception(nameof(MvcMiddleware));
+                throw new Exception(nameof(RuntimeMiddleware));
 
             application.Use(mvcMiddleware.RunAsync);
         }

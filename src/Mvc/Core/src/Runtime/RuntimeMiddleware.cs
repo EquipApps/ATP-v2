@@ -1,32 +1,29 @@
 ﻿using EquipApps.Mvc.Abstractions;
-using EquipApps.Mvc.Runtime;
 using EquipApps.Testing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection;
 using System.Threading.Tasks;
 
-namespace EquipApps.Mvc.Infrastructure
+namespace EquipApps.Mvc.Runtime
 {
     /// <summary>
-    /// Процес выполнения. 
+    /// DependencyInjection (Singleton).
+    /// Главный промежуточный слой.
+    /// Отвечает за извлечение и обработку <see cref="ActionDescriptor"/>.
     /// </summary>
     /// 
-    /// <remarks>
-    /// Извлекает и обрабатывает <see cref="ActionDescriptor"/>. 
-    /// Include State Pattern
-    /// </remarks>
-    public class MvcMiddleware
+    public class RuntimeMiddleware
     {
         private readonly DefaultRuntimeSynchService _synchService;
         private readonly IEnumerable<IActionInvokerProvider> _actionInvokerProviders;
-        
+
         private ActionInvokerFactory actionFactory;
         private ActionDescriptorEnumerator actionEnumerator;
 
-        public MvcMiddleware(DefaultRuntimeSynchService synchService,
-                             IEnumerable<IActionInvokerProvider> actionInvokerProviders)
+        public RuntimeMiddleware(
+            DefaultRuntimeSynchService synchService,
+            IEnumerable<IActionInvokerProvider> actionInvokerProviders)
         {
             _synchService = synchService ?? throw new ArgumentNullException(nameof(synchService));
             _actionInvokerProviders = actionInvokerProviders ?? throw new ArgumentNullException(nameof(actionInvokerProviders));
@@ -37,27 +34,32 @@ namespace EquipApps.Mvc.Infrastructure
             return Task.Run(() => Run(testContext));
         }
 
-        public void Run(TestContext testContext)
+        private void Run(TestContext testContext)
         {
-            //-- 1) Извлечение
+            //-- 1) Извлечение дескриптеров действий
             var actionDescriptors = testContext.GetActionDescriptors();
 
-            //-- 2) Обновляем состояние
+            //-- 2) Обновляем состояние.
             foreach (var actionDescriptor in actionDescriptors)
             {
-                actionDescriptor.Result    = Result.NotRun;
+                actionDescriptor.Result = Result.NotRun;
                 actionDescriptor.Exception = null;
             }
 
+            //-- 3) Создаем временные ресурсы (будут уничтожены после окончения проверки)
             using (actionEnumerator = new ActionDescriptorEnumerator(actionDescriptors))
-            using (actionFactory    = new ActionInvokerFactory(_actionInvokerProviders))
+            using (actionFactory = new ActionInvokerFactory(_actionInvokerProviders))
             {
-
+                //-- 4) Создаем контекст. (контекст не должен уничтожать ресурсы, он только передает к ним доступ)
                 var runtimeContext = new DefaultRuntimeContext(testContext, actionEnumerator);
 
+                /*
+                 * Регистрация действия Next по умолчанию при запросе на прерывание проверки..
+                 * Позволяет прерывать проверку погда конвеер состояний находиться в состоянии паузы.
+                 */
                 testContext.TestAborted.Register(_synchService.Next);
 
-                // `
+                // `next
                 var next = RuntimeState.Reset;
 
                 // `isCompleted
@@ -119,27 +121,39 @@ namespace EquipApps.Mvc.Infrastructure
                         }
 
                         //
-                        // Создаем обертку для логера!
+                        // Если флаг установлен, то данная проверка будет пропущенна
                         //
+                        if (descriptor.IsBreak)
+                        {
+                            switch (_synchService.Pause())
+                            {
+                                case RuntimeCase.Replay:
+                                    break;
+                                case RuntimeCase.Next:                                
+                                    break;
+                                case RuntimeCase.Previous:
+                                default:
+                                    throw new NotImplementedException();
+                            }
+                        }
+
+
+                        //
+                        // Создаем ActionContext для текущего ActionDescriptor
+                        //
+                        var actionContext = new ActionContext(context, descriptor);
+
+                        //
+                        // Создаем IActionInvoker для текущего ActionContext
+                        //
+                        var invoker = actionFactory.CreateInvoker(actionContext);
+                        if (invoker == null)
+                        {
+                            throw new ArgumentNullException(nameof(invoker));
+                        }
+
                         try
                         {
-
-                            //descriptor.State = Abstractions.State.Invoke;
-
-                            //
-                            // Создаем ActionContext для текущего ActionDescriptor
-                            //
-                            var actionContext = new ActionContext(context, descriptor);
-
-                            //
-                            // Создаем IActionInvoker для текущего ActionContext
-                            //
-                            var invoker = actionFactory.CreateInvoker(actionContext);
-                            if (invoker == null)
-                            {
-                                throw new ArgumentNullException(nameof(invoker));
-                            }
-
                             //
                             // Вызываем функцию
                             //
@@ -151,7 +165,7 @@ namespace EquipApps.Mvc.Infrastructure
                             //TODO: Написать юнит тесты. Не должно быть исключений!
 
                             Debug.Fail("Не обработанное исключение");
-                           
+
                         }
                         finally
                         {
@@ -177,8 +191,7 @@ namespace EquipApps.Mvc.Infrastructure
                                     next = RuntimeState.Invoke;
                                     return;
                                 }
-
-                            case RuntimeCase.Previous:
+                            case RuntimeCase.Previous: //TODO: Когданибудь реализовать
                             default:
                                 throw new NotImplementedException();
                         }

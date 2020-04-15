@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EquipApps.Mvc.Infrastructure
+namespace EquipApps.Mvc.Runtime
 {
     /// <summary>
     /// Создает <see cref="IActionInvoker"/> используя <see cref="IActionInvokerProvider"/>
     /// </summary>
-    public class ActionInvokerFactory : IActionInvokerFactory
+    public class ActionInvokerFactory : IDisposable
     {
         IActionInvokerProvider[] _providers;
 

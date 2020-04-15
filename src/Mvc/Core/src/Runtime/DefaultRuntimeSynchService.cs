@@ -4,13 +4,6 @@ using System.Threading;
 
 namespace EquipApps.Mvc.Runtime
 {
-    public enum RuntimeCase
-    {
-        Previous,
-        Replay,
-        Next,
-    }
-
     public class DefaultRuntimeSynchService : IRuntimeService, IDisposable
     {
         private volatile ManualResetEvent threadLocker = new ManualResetEvent(false);
@@ -20,15 +13,27 @@ namespace EquipApps.Mvc.Runtime
         private readonly ISubject<bool> pauseChangedSubject = new ReplaySubject<bool>();
         private volatile bool isEnabledPause = false;
 
+        public DefaultRuntimeSynchService()
+        {
+            MillisecondsTimeout = 100;
+            CountRepeat = -1;
+        }
 
+        /// <inheritdoc/>
+        public bool IsEnabledRepeat
+        { 
+            get; 
+            set; 
+        }
+        
+        /// <inheritdoc/>
+        public bool IsEnabledRepeatOnce
+        {
+            get;
+            set;
+        }
 
-        public int MillisecondsTimeout { get; set; }
-
-
-
-        public bool IsEnabledRepeat { get; set; }
-        public bool IsEnabledRepeatOnce { get; set; }
-
+        /// <inheritdoc/>
         public bool IsEnabledPause
         {
             get => isEnabledPause;
@@ -47,8 +52,23 @@ namespace EquipApps.Mvc.Runtime
             }
         }
 
+        /// <inheritdoc/>
+        public int MillisecondsTimeout
+        {
+            get;
+            set;
+        }
+
+        public int CountRepeat
+        {
+            get;
+            set;
+        }
+
+        /// <inheritdoc/>
         public IObservable<bool> ObservablePause => pauseChangedSubject;
 
+        /// <inheritdoc/>
         public void Next()      
         {
             //--
@@ -57,14 +77,7 @@ namespace EquipApps.Mvc.Runtime
             threadLocker.Set();
         }
 
-        public void Previous()  
-        {
-            //--
-            runtimeCase = RuntimeCase.Previous;
-            //--
-            threadLocker.Set();
-        }
-
+        /// <inheritdoc/>
         public void Replay()    
         {
             //--
@@ -73,11 +86,21 @@ namespace EquipApps.Mvc.Runtime
             threadLocker.Set();
         }
 
-        public void Dispose()   
+        /// <inheritdoc/>
+        public void Previous()  
         {
-            throw new NotImplementedException();
+            //--
+            runtimeCase = RuntimeCase.Previous;
+            //--
+            threadLocker.Set();
         }
-        
+
+        #region internal
+
+        /// <summary>
+        /// Конвеер переходт в состояние паузы
+        /// </summary>
+        /// <returns></returns>
         internal RuntimeCase Pause()
         {
             threadLocker.Reset();
@@ -95,10 +118,44 @@ namespace EquipApps.Mvc.Runtime
             Thread.Sleep(100);
         }
 
+        public bool TryRepeat()
+        {
+            return false;
+        }
+
         internal void Repeat()
         {
-            //TODO: Обновить через настройки
-            Thread.Sleep(100);
+            var count = CountRepeat;
+            if (count < 0)
+            {
+                Sleep();
+            }
+
+            if (count > 0) 
+            { 
+
+            }
+
+
+            
+            
+        }
+
+        internal void Sleep()
+        {
+            var timeOut = MillisecondsTimeout;
+            if (timeOut > 0)
+            {
+                Thread.Sleep(timeOut);
+            }
+        }
+
+        #endregion
+
+        public void Dispose()
+        {
+            //TODO: Написать юнит тест
+            pauseChangedSubject.OnCompleted();
         }
     }
 }

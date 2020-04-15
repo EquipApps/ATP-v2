@@ -4,7 +4,6 @@ using EquipApps.Mvc.ApplicationModels;
 using EquipApps.Mvc.ApplicationParts;
 using EquipApps.Mvc.Controllers;
 using EquipApps.Mvc.Infrastructure;
-using EquipApps.Mvc.Infrastructure;
 using EquipApps.Mvc.ModelBinding;
 using EquipApps.Mvc.ModelBinding.Metadata;
 using EquipApps.Mvc.ModelBinding.Property;
@@ -189,7 +188,7 @@ namespace NLib.AtpNetCore.Testing
             //
             // 
             //
-            services.AddSingleton<MvcMiddleware>();
+            services.AddSingleton<RuntimeMiddleware>();
             services.AddSingleton<DefaultRuntimeSynchService>();
             services.AddSingleton<IRuntimeService>(x => x.GetService<DefaultRuntimeSynchService>());
             
