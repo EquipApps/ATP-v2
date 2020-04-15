@@ -11,7 +11,7 @@ namespace EquipApps.Mvc
     {
         public ActionContext(ActionContext actionContext)
             : this(actionContext.RuntimeContext,
-                  actionContext.ActionDescriptor)
+                   actionContext.ActionDescriptor)
         {
             if (actionContext == null)
             {

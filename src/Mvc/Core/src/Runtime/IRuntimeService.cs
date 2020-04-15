@@ -3,10 +3,10 @@
 namespace EquipApps.Mvc.Runtime
 {
     /// <summary>
+    /// DependencyInjection (Singleton).
     /// Сервис управления процессом проверки.
-    /// Singleton
     /// </summary>
-    public interface IRuntimeService: IDisposable
+    public interface IRuntimeService
     {
         // <summary>
         /// Разрешить / запретить цикл всех действий
@@ -18,49 +18,33 @@ namespace EquipApps.Mvc.Runtime
         /// </summary>
         bool IsEnabledRepeatOnce { get; set; }
 
-
-        
-        int MillisecondsTimeout { get; set; }
-
-
-
-        /// <summary>
+        // <summary>
         /// Разрешить / запретить пошаговый режим
         /// </summary>
         bool IsEnabledPause { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>        
+        int MillisecondsTimeout { get; set; }
 
         /// <summary>
         /// Позволчят подписаться на события изменения состояния паузы
         /// </summary>
         IObservable<bool> ObservablePause { get; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         /// <summary>
-        /// 
+        /// Навигация. Шаг вперед.
         /// </summary>
         void Next();
 
         /// <summary>
-        /// 
+        /// Навигация. Повтор.
         /// </summary>
         void Replay();
 
         /// <summary>
-        /// 
+        /// Навигация. Шаг назад.
         /// </summary>
         void Previous();
     }
