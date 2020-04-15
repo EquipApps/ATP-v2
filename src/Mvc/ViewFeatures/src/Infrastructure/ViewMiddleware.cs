@@ -36,8 +36,7 @@ namespace EquipApps.Mvc.Infrastructure
             //-- 2) Обновляем состояние.
             foreach (var actionDescriptor in actionDescriptors)
             {
-                actionDescriptor.Result    = Result.NotRun;
-                actionDescriptor.Exception = null;
+                actionDescriptor.SetResult(ActionDescriptorResultType.NotRun);
             }
 
             _actionService.Update(actionDescriptors);

@@ -39,11 +39,17 @@ namespace EquipApps.Mvc.Runtime
             //-- 1) Извлечение дескриптеров действий
             var actionDescriptors = testContext.GetActionDescriptors();
 
-            //-- 2) Создаем временные ресурсы (будут уничтожены после окончения проверки)
+            //-- 2) Обновляем состояние.
+            foreach (var actionDescriptor in actionDescriptors)
+            {
+                actionDescriptor.SetResult(ActionDescriptorResultType.NotRun);
+            }
+
+            //-- 3) Создаем временные ресурсы (будут уничтожены после окончения проверки)
             using (actionEnumerator = new ActionDescriptorEnumerator(actionDescriptors))
             using (actionFactory = new ActionInvokerFactory(_actionInvokerProviders))
             {
-                //-- 3) Создаем контекст. (контекст не должен уничтожать ресурсы, он только передает к ним доступ)
+                //-- Создаем контекст. (контекст не должен уничтожать ресурсы, он только передает к ним доступ)
                 var runtimeContext = new DefaultRuntimeContext(testContext, actionEnumerator);
 
                 /*
@@ -84,7 +90,7 @@ namespace EquipApps.Mvc.Runtime
                         //
                         if (actionEnumerator.MoveNext())
                         {
-                            goto case RuntimeState.Invoke;
+                            goto case RuntimeState.Begin;
                         }
                         else
                         {
@@ -94,42 +100,50 @@ namespace EquipApps.Mvc.Runtime
                             throw new InvalidOperationException("Проверка прервана.Коллекция пуста!");
                         }
                     }
-                case RuntimeState.Invoke:
+                case RuntimeState.Begin:
                     {
                         //
                         // Получаем текущий элемент actionDescriptor
                         //
                         var descriptor = actionEnumerator.Current;
-                        if (descriptor == null)
-                        {
-                            throw new ArgumentNullException(nameof(descriptor));
-                        }
+                        Debug.Assert(descriptor != null, "Descriptor are equal NULL");
 
                         //
                         // Если флаг не установлен, то данная проверка будет пропущенна
                         //
                         if (!descriptor.IsCheck)
                         {
-                            goto case RuntimeState.Move;
+                            goto case RuntimeState.Move;                          
                         }
 
                         //
-                        // Если флаг установлен, то данная проверка будет приостановленна
+                        // Если флаг не установлен, то переходим к выполнению
                         //
-                        if (descriptor.IsBreak)
+                        if (!descriptor.IsBreak)
                         {
-                            switch (_synchService.Pause())
-                            {
-                                case RuntimeCase.Replay:
-                                    break;
-                                case RuntimeCase.Next:                                
-                                    break;
-                                case RuntimeCase.Previous:
-                                default:
-                                    throw new NotImplementedException();
-                            }
+                            goto case RuntimeState.Invoke;
                         }
 
+                        /*
+                         * ВАЖНО.
+                         * ПОСЛЕ ОБРБОТКИ ПАУЗЫ НУЖНО ВЫЙТИ ИЗ ФУНКЦИИ.
+                         * ЧТОБЫ БЫЛА ВОЗМОЖНОСТЬ ПРЕРВАТЬ ПРОВЕРКУ!
+                         */
+                        
+                        descriptor.SetState(State.BreakPoint);  //-- Изменяем состояние ОСТАНОВКА
+                        _synchService.Pause();
+                        descriptor.SetState(State.Empy);        //-- Изменяем состояние
+
+                        next = RuntimeState.Invoke;             //-- Следующее состояние по умолчанию
+                        break;
+                    }
+                case RuntimeState.Invoke:
+                    {
+                        //
+                        // Получаем текущий элемент actionDescriptor
+                        //
+                        var descriptor = actionEnumerator.Current;
+                        Debug.Assert(descriptor != null, "Descriptor are equal NULL");
 
                         //
                         // Создаем ActionContext для текущего ActionDescriptor
@@ -172,29 +186,46 @@ namespace EquipApps.Mvc.Runtime
                         if (!_synchService.IsEnabledPause)
                             goto case RuntimeState.RepeatOnce;
 
+                        //
+                        // Получаем текущий элемент actionDescriptor
+                        //
+                        var descriptor = actionEnumerator.Current;
+                        if (descriptor == null)
+                        {
+                            throw new ArgumentNullException(nameof(descriptor));
+                        }
+
+                        //-- Изменяем состояние ПАУЗА
+                        descriptor.SetState(State.Pause);
+
                         switch (_synchService.Pause())
                         {
                             case RuntimeCase.Next:
                                 {
                                     next = RuntimeState.RepeatOnce;
-                                    return;
+                                    break;
                                 }
                             case RuntimeCase.Replay:
                                 {
-                                    next = RuntimeState.Invoke;
-                                    return;
+                                    next = RuntimeState.Begin;
+                                    break;
                                 }
                             case RuntimeCase.Previous: //TODO: Когданибудь реализовать
                             default:
                                 throw new NotImplementedException();
                         }
+
+                        //-- Изменяем состояние
+                        descriptor.SetState(State.Empy);
+
+                        return;
                     }
                 case RuntimeState.RepeatOnce:
                     {
                         if (_synchService.IsEnabledRepeatOnce)
                         {
                             _synchService.RepeatOnce();
-                            goto case RuntimeState.Invoke;
+                            goto case RuntimeState.Begin;
                         }
                         else
                             goto case RuntimeState.Move;
@@ -209,7 +240,7 @@ namespace EquipApps.Mvc.Runtime
                             //
                             // Переходим в состояние      
                             //
-                            goto case RuntimeState.Invoke;
+                            goto case RuntimeState.Begin;
                         }
                         else
                         {

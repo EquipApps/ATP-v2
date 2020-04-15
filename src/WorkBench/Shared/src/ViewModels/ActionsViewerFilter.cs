@@ -70,13 +70,13 @@ namespace EquipApps.WorkBench.ViewModels
         {
             return (actionDescriptor) =>
             {
-                switch (actionDescriptor.Result)
+                switch (actionDescriptor.Result.Type)
                 {
-                    case Mvc.Abstractions.Result.NotRun:
+                    case Mvc.Abstractions.ActionDescriptorResultType.NotRun:
                         return arg.showNotRun;
-                    case Mvc.Abstractions.Result.Passed:
+                    case Mvc.Abstractions.ActionDescriptorResultType.Passed:
                         return arg.showPassed;
-                    case Mvc.Abstractions.Result.Failed:
+                    case Mvc.Abstractions.ActionDescriptorResultType.Failed:
                         return arg.showFailed;
                     default:
                         return false;

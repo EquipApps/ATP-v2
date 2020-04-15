@@ -25,19 +25,19 @@ namespace EquipApps.WorkBench.ViewModels
                         .Subscribe(value => Total = value);
 
             var passedDisposable
-                = source.Filter(x => x.Result == Result.Passed)
+                = source.Filter(x => x.Result.Type == ActionDescriptorResultType.Passed)
                         .Count()
                         .ObserveOn(RxApp.MainThreadScheduler)
                         .Subscribe(value => Passed = value);
 
             var failedDisposable
-                = source.Filter(x => x.Result == Result.Failed)
+                = source.Filter(x => x.Result.Type == ActionDescriptorResultType.Failed)
                         .Count()
                         .ObserveOn(RxApp.MainThreadScheduler)
                         .Subscribe(value => Failed = value);
 
             var notRunDisposable
-                = source.Filter(x => x.Result == Result.NotRun)
+                = source.Filter(x => x.Result.Type == ActionDescriptorResultType.NotRun)
                         .Count()
                         .ObserveOn(RxApp.MainThreadScheduler)
                         .Subscribe(value => NotRun = value);

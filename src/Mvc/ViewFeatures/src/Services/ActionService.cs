@@ -19,11 +19,7 @@ namespace EquipApps.Mvc.Services
         public void Update(IEnumerable<ActionDescriptor> actions)
         {
             sourceCache.Edit(updater =>
-            {
-                foreach (var item in updater.Items)
-                {
-                    item.Dispose();
-                }
+            {                
                 updater.Clear();
                 updater.AddOrUpdate(actions);
             });
@@ -32,23 +28,11 @@ namespace EquipApps.Mvc.Services
         public void Update(ActionDescriptor actionDescriptor)
         {
             sourceCache.AddOrUpdate(actionDescriptor);
-            //sourceCache.Edit(updater =>
-            //{
-            //    updater.Refresh(actionDescriptor);
-            //});
         }
 
         public void Clear()
         {
-            sourceCache.Edit(updater =>
-            {
-                foreach (var item in updater.Items)
-                {
-                    item.Dispose();
-                }
-
-                updater.Clear();
-            });
+            sourceCache.Clear();
         }
 
     }

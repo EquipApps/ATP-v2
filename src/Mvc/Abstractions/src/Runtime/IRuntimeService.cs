@@ -34,10 +34,6 @@ namespace EquipApps.Mvc.Runtime
         /// </summary>
         IObservable<bool> ObservablePause { get; }
 
-        //IObservable<ActionDescriptor> ObservableBrack { get; }
-
-
-
         /// <summary>
         /// Навигация. Шаг вперед.
         /// </summary>

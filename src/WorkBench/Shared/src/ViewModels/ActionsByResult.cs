@@ -13,7 +13,7 @@ namespace EquipApps.WorkBench.ViewModels
     {
         private readonly IDisposable _cleanUp;
 
-        public ActionsByResult(IGroup<ActionDescriptor, string, Result> group)
+        public ActionsByResult(IGroup<ActionDescriptor, string, ActionDescriptorResultType> group)
         {
             Result = group?.Key ?? throw new ArgumentNullException(nameof(group));
 
@@ -23,7 +23,7 @@ namespace EquipApps.WorkBench.ViewModels
 
         }
 
-        public Result Result { get; }
+        public ActionDescriptorResultType Result { get; }
 
         [Reactive] public int Count     { get; private set; }
 

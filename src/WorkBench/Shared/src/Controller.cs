@@ -56,15 +56,15 @@ namespace EquipApps.WorkBench
         [NonAction]
         public virtual void ErrorOK()   
         {
-            this.ControllerContext.ActionDescriptor.Result    = Result.Failed;
-            this.ControllerContext.ActionDescriptor.Exception = WorkBenchException.ErrorOK;
+            this.ControllerContext.ActionDescriptor.SetResult(ActionDescriptorResultType.Failed,
+                                                              WorkBenchException.ErrorOK);
         }
 
         [NonAction]
         public virtual void ErrorAAP()  
         {
-            this.ControllerContext.ActionDescriptor.Result    = Result.Failed;
-            this.ControllerContext.ActionDescriptor.Exception = WorkBenchException.ErrorAAP;
+            this.ControllerContext.ActionDescriptor.SetResult(ActionDescriptorResultType.Failed,
+                                                              WorkBenchException.ErrorAAP);
         }
 
 

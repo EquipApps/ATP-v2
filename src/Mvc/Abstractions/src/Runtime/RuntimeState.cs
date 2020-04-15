@@ -11,33 +11,38 @@
         Reset = 0,
 
         /// <summary>
-        /// Состояние выполнения
+        /// Подготовка
         /// </summary>
-        Invoke = 1,
+        Begin = 1,
+
+        /// <summary>
+        /// Состояние выполнения 
+        /// </summary>
+        Invoke = 2,
 
         /// <summary>
         /// Состояние паузы
         /// </summary>
-        Pause = 2,
+        Pause = 3,
 
         /// <summary>
         /// Состояние повтора. одного шага.
         /// </summary>
-        RepeatOnce = 3,
+        RepeatOnce = 4,
 
         /// <summary>
         /// Состояние перехода
         /// </summary>
-        Move = 4,
+        Move = 5,
 
         /// <summary>
         /// Состояние повтора. цикл.
         /// </summary>
-        Repeat = 5,
+        Repeat = 6,
 
         /// <summary>
         /// Конец
         /// </summary>
-        End = 6,
+        End = 7,
     }
 }

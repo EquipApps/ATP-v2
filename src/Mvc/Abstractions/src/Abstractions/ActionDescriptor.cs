@@ -1,5 +1,6 @@
 ﻿using EquipApps.Mvc.Abstractions;
 using System;
+using System.Reactive.Subjects;
 
 namespace EquipApps.Mvc
 {
@@ -8,16 +9,37 @@ namespace EquipApps.Mvc
     /// </summary>
     public abstract partial class ActionDescriptor : IDisposable
     {
+        private readonly ISubject<State> _stateChangedSubject = new ReplaySubject<State>();
+
+        public IObservable<State> StateObservable => _stateChangedSubject;
+
+        public void SetState(State state)
+        {
+            _stateChangedSubject.OnNext(state);
+        }
+
+        /// <summary>
+        /// Возвращает <see cref="Abstractions.ActionDescriptorResult"/>
+        /// </summary>
+        public ActionDescriptorResult Result { get; private set; }
+
+        
+
+        public void SetResult(
+            ActionDescriptorResultType resultType,
+            Exception exception = null)
+        {
+            Result = new ActionDescriptorResult(resultType, exception);
+        }
+
+
         public ActionDescriptor(ActionDescriptorObject testCase, ActionDescriptorObject testStep)
             :this()
         {
             TestCase = testCase ?? throw new ArgumentNullException(nameof(testCase));
             TestStep = testStep ?? throw new ArgumentNullException(nameof(testStep));
 
-          
-            Exception = null;
-            Result = Result.NotRun;
-            State  = State.Empy;
+            Result = new ActionDescriptorResult(ActionDescriptorResultType.NotRun);
         }
 
         /// <summary>
@@ -57,28 +79,16 @@ namespace EquipApps.Mvc
         /// </summary>
         public bool IsBreak { get; set; } = false;
 
-        /// <summary>
-        /// Исключение (Ошибки)
-        /// </summary>
-        public Exception Exception { get; set; }
 
-        /// <summary>
-        /// Результат
-        /// </summary>
-        public Result Result { get; set; }
-        
 
-        /// <summary>
-        /// Результат
-        /// </summary>
-        public State State { get; set; }
 
 
 
 
         public void Dispose()
         {
-
+            //TODO: Должна удаляться при очистке кеша!
+            _stateChangedSubject.OnCompleted();
         }
     }
 }

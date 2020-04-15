@@ -1,23 +1,29 @@
-﻿namespace EquipApps.Mvc.Abstractions
+﻿using System;
+
+namespace EquipApps.Mvc.Abstractions
 {
-    // <summary>
-    /// Результат
-    /// </summary>
-    public enum Result : byte
+    public readonly struct ActionDescriptorResult
     {
-        /// <summary>
-        /// Не выполненно
-        /// </summary>
-        NotRun = 0,
+        public ActionDescriptorResult(ActionDescriptorResultType type, Exception exception = null)
+        {
+            this.Type = type;
+            this.Exception = exception;
+        }
 
         /// <summary>
-        /// Прошло
+        /// Возвращает <see cref="ActionDescriptorResultType"/>
         /// </summary>
-        Passed = 1,
+        public ActionDescriptorResultType Type { get; }
 
         /// <summary>
-        /// Провалена
+        /// Возвращает <see cref="Exception"/>
         /// </summary>
-        Failed = 2
+        public Exception Exception { get; }
+
+
+
+        public bool IsEmpty => (Type == ActionDescriptorResultType.NotRun) && (Exception == null);
     }
+
+    
 }

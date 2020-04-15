@@ -15,8 +15,7 @@ namespace EquipApps.Mvc
             
             OrderValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             RouteValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
-            Properties = new Dictionary<object, object>();
+            Properties  = new Dictionary<object, object>();
         }
 
         /// <summary>

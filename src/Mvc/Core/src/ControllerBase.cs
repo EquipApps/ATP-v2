@@ -121,16 +121,14 @@ namespace EquipApps.Mvc
         /// </summary>
         /// 
         /// <remarks>
-        /// Устанавливает результат проверки как <see cref="Result.Passed"/>
-        /// если    <see cref="ActionDescriptor.Result"/>    равен <see cref="Result.NotRun"/>
-        /// и       <see cref="ActionDescriptor.Exception"/> равен Null
+        /// Устанавливает результат проверки как <see cref="ActionDescriptorResultType.Passed"/>
+        /// если <see cref="ActionDescriptor.Result"/> не установлен.      
         /// </remarks>
         protected virtual void Finaly_PassedIfNotExecutedAndNullException()
         {
-            if (ControllerContext.ActionDescriptor.Result == Result.NotRun &&
-                ControllerContext.ActionDescriptor.Exception == null)
+            if (ControllerContext.ActionDescriptor.Result.IsEmpty) 
             {
-                ControllerContext.ActionDescriptor.Result = Result.Passed;
+                ControllerContext.ActionDescriptor.SetResult(ActionDescriptorResultType.Passed);
             }
         }
 

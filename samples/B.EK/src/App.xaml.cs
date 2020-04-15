@@ -144,9 +144,7 @@ namespace B.EK
             });
 
             //-- Инициализация устройств
-            builder.UseHardware();
-
-            builder.UseView();
+            builder.UseHardware();           
 
             //-- Основная проверка
             builder.UseMvc();
@@ -154,8 +152,6 @@ namespace B.EK
             //-- Выводим информацию в протокол
             builder.Use((TestContext context) =>
             {
-                var ddd = context.GetActionDescriptors().Where(x => x.Result == EquipApps.Mvc.Abstractions.Result.NotRun).ToArray();
-
                 if (context.TestAborted.IsCancellationRequested)
                 {
                     context.TestLogger.LogInformation("Проверка прервана");

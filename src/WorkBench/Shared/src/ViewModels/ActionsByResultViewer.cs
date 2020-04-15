@@ -24,7 +24,7 @@ namespace EquipApps.WorkBench.ViewModels
             var grouperRefresher = Observable.Interval(TimeSpan.FromSeconds(1)).Select(_ => Unit.Default);
 
             _cleanUp        = actionService.Observable.Connect()
-                .Group      (action => action.Result, grouperRefresher)
+                .Group      (action => action.Result.Type, grouperRefresher)
                 .Transform  (group  => new ActionsByResult(group))
                 .Sort       (SortExpressionComparer<ActionsByResult>.Descending(t => t.Result))
                 .ObserveOn  (RxApp.MainThreadScheduler)

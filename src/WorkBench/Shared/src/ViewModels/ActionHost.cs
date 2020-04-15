@@ -1,7 +1,10 @@
 ﻿using EquipApps.Mvc;
 using EquipApps.Mvc.Abstractions;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using System;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace EquipApps.WorkBench.ViewModels
 {
@@ -10,57 +13,31 @@ namespace EquipApps.WorkBench.ViewModels
         private ActionDescriptor _model;
         private IDisposable _cleanUp;
 
-        ~ActionHost()
-        {
-            if (true)
-            {
-
-            }
-        }
-
-
         public ActionHost(ActionDescriptor model)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
 
+            State = State.Empy;
 
             //-- Подписываемя на обновление состояня модели
 
-            //var excRefresher = _model.ExceptionObservable
-            //    .Subscribe(_ => Exception = _model.Exception);
+            var staRefresher = _model.StateObservable.ObserveOn(RxApp.MainThreadScheduler)
+                                                     .Subscribe(NotifyProperty);
 
-            //var resRefresher = _model.ResultObservable
-            //    .Subscribe(_ => Result = _model.Result);
-
-            //var staRefresher = _model.StateObservable
-            //    .Subscribe(_ => State = _model.State);
-
-            ////-- 
-            //_cleanUp = Disposable.Create(() =>
-            //{
-            //    excRefresher.Dispose();
-            //    resRefresher.Dispose();
-            //    staRefresher.Dispose();
-            //});
+            //-- 
+            _cleanUp = Disposable.Create(() =>
+            {
+                staRefresher.Dispose();
+            });
         }
 
+        public Number Number    => _model.Number;
+        public string TestCase  => _model.TestCase.Title;
+        public string TestStep  => _model.TestStep.Title;
+        public Exception Exception => _model.Result.Exception;
+        public ActionDescriptorResultType Result => _model.Result.Type;
 
-        public Number Number => _model.Number;
-        public string TestCase => _model.TestCase.Title;
-        public string TestStep => _model.TestStep.Title;
-
-
-        #region Property [Reactive]        
-
-        //[Reactive]
-        public Exception Exception => _model.Exception;
-
-        //[Reactive]
-        public Result Result => _model.Result;
-
-        //[Reactive]
-        public State State => _model.State;
-
+        [Reactive] public State State { get; private set; }
 
         public bool IsBreak
         {
@@ -71,7 +48,6 @@ namespace EquipApps.WorkBench.ViewModels
                 this.RaisePropertyChanged(nameof(IsBreak));
             }
         }
-
         public bool IsCheck
         {
             get => _model.IsCheck;
@@ -81,16 +57,15 @@ namespace EquipApps.WorkBench.ViewModels
                 this.RaisePropertyChanged(nameof(IsCheck));
             }
         }
-
-
-
-
-        #endregion
-
-
         public void Dispose()
         {
-            //_cleanUp.Dispose();
+            _cleanUp.Dispose();
+        }
+
+
+        private void NotifyProperty(State state)
+        {
+            State = state;
         }
     }
 }
