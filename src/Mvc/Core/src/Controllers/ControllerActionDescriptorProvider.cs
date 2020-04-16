@@ -1,4 +1,5 @@
 ﻿using EquipApps.Mvc.Abstractions;
+using EquipApps.Mvc.ApplicationModels.Infrastructure;
 using EquipApps.Mvc.ApplicationParts;
 using EquipApps.Mvc.Controllers;
 using System;

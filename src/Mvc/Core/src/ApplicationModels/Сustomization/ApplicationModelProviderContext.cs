@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace EquipApps.Mvc.ApplicationModels
+namespace EquipApps.Mvc.ApplicationModels.Сustomization
 {
     /// <summary>
     /// A context object for <see cref="IApplicationModelProvider"/>.

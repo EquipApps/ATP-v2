@@ -1,4 +1,4 @@
-﻿namespace EquipApps.Mvc.ApplicationModels
+﻿namespace EquipApps.Mvc.ApplicationModels.Сustomization
 {
     /// <summary>
     /// Используется для кастомизации создания  <see cref="ApplicationModel"/>

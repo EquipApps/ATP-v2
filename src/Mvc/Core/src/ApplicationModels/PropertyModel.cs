@@ -7,16 +7,11 @@ using System.Reflection;
 namespace EquipApps.Mvc.ApplicationModels
 {
     /// <summary>
-    /// A type which is used to represent a property in a <see cref="ControllerModel"/>.
+    /// Модель свойства контроллера.
     /// </summary>
     [DebuggerDisplay("PropertyModel: Name={PropertyName}")]
     public class PropertyModel : ParameterModelBase, ICommonModel, IBindingModel
     {
-        /// <summary>
-        /// Creates a new instance of <see cref="PropertyModel"/>.
-        /// </summary>
-        /// <param name="propertyInfo">The <see cref="PropertyInfo"/> for the underlying property.</param>
-        /// <param name="attributes">Any attributes which are annotated on the property.</param>
         public PropertyModel(
             PropertyInfo propertyInfo,
             IReadOnlyList<object> attributes)
@@ -25,10 +20,7 @@ namespace EquipApps.Mvc.ApplicationModels
             PropertyInfo = propertyInfo ?? throw new ArgumentNullException(nameof(propertyInfo));
         }
 
-        /// <summary>
-        /// Creates a new instance of <see cref="PropertyModel"/> from a given <see cref="PropertyModel"/>.
-        /// </summary>
-        /// <param name="other">The <see cref="PropertyModel"/> which needs to be copied.</param>
+        
         public PropertyModel(PropertyModel other)
             : base(other)
         {
@@ -37,8 +29,7 @@ namespace EquipApps.Mvc.ApplicationModels
                 throw new ArgumentNullException(nameof(other));
             }
 
-            Controller = other.Controller;
-            BindingInfo = BindingInfo == null ? null : new BindingInfo(other.BindingInfo);
+            Controller   = other.Controller;
             PropertyInfo = other.PropertyInfo;
         }
 

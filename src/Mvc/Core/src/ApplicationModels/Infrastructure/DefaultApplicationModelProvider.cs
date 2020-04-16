@@ -1,4 +1,5 @@
 ﻿using EquipApps.Mvc.ApplicationModels;
+using EquipApps.Mvc.ApplicationModels.Сustomization;
 using EquipApps.Mvc.ModelBinding;
 using EquipApps.Mvc.Routing;
 using Microsoft.Extensions.Internal;
@@ -11,7 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace EquipApps.Mvc.Infrastructure
+namespace EquipApps.Mvc.ApplicationModels.Infrastructure
 {
     /// <summary>
     /// Провайдер <see cref="ApplicationModel"/> (по умолчанию).
@@ -19,7 +20,7 @@ namespace EquipApps.Mvc.Infrastructure
     public class DefaultApplicationModelProvider : IApplicationModelProvider
     {
         private readonly MvcOptions _mvcOptions;
-        private readonly IModelMetadataProvider _modelMetadataProvider;      
+        private readonly IModelMetadataProvider _modelMetadataProvider;
         private readonly IModelBinderFactory _modelBinderFactory;
 
         public DefaultApplicationModelProvider(
@@ -27,7 +28,7 @@ namespace EquipApps.Mvc.Infrastructure
             IModelMetadataProvider modelMetadataProvider,
             IModelBinderFactory modelBinderFactory)
         {
-            _mvcOptions            = mvcOptionsAccessor.Value;
+            _mvcOptions = mvcOptionsAccessor.Value;
             _modelMetadataProvider = modelMetadataProvider;
             _modelBinderFactory = modelBinderFactory;
         }
@@ -117,7 +118,7 @@ namespace EquipApps.Mvc.Infrastructure
                 {
                     bindingInfo = new BindingInfo();
                     bindingInfo.BindingModelType = modelExpectedType.GenericTypeArguments.FirstOrDefault();
-                    bindingInfo.BindingSource    = BindingSource.ModelProvider;
+                    bindingInfo.BindingSource = BindingSource.ModelProvider;
                 }
             }
 
@@ -189,13 +190,13 @@ namespace EquipApps.Mvc.Infrastructure
                  */
                 if (bindingInfo.BindingModelPath == null) bindingInfo.BindingModelPath = propertyInfo.Name;
                 if (bindingInfo.BindingModelType == null) bindingInfo.BindingModelType = propertyInfo.PropertyType;
-                if (bindingInfo.BindingSource == null)    bindingInfo.BindingSource = BindingSource.DataContext;
+                if (bindingInfo.BindingSource == null) bindingInfo.BindingSource = BindingSource.DataContext;
             }
 
             var propertyModel = new PropertyModel(propertyInfo, attributes)
             {
                 PropertyName = propertyInfo.Name,
-                BindingInfo  = bindingInfo
+                BindingInfo = bindingInfo
             };
 
 
@@ -385,7 +386,7 @@ namespace EquipApps.Mvc.Infrastructure
             var parameterModel = new ParameterModel(parameterInfo, attributes)
             {
                 ParameterName = parameterInfo.Name,
-                BindingInfo   = bindingInfo
+                BindingInfo = bindingInfo
             };
 
             return parameterModel;

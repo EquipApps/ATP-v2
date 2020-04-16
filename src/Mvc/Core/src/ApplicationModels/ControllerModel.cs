@@ -3,13 +3,12 @@ using Microsoft.Extensions.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 
 namespace EquipApps.Mvc.ApplicationModels
 {
     /// <summary>
-    /// Модель класса контроллера
+    /// Модель контроллера
     /// </summary>
     [DebuggerDisplay("{DisplayName}")]
     public partial class ControllerModel : IBindingModel, IDisplayModel
@@ -36,29 +35,6 @@ namespace EquipApps.Mvc.ApplicationModels
             RouteValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             OrderValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
-
-        //public ControllerModel(ControllerModel other)
-        //{
-        //    if (other == null)
-        //    {
-        //        throw new ArgumentNullException(nameof(other));
-        //    }
-
-        //    ControllerName = other.ControllerName;
-        //    ControllerType = other.ControllerType;
-
-        //    // Still part of the same application
-        //    Application = other.Application;
-
-        //    // These are just metadata, safe to create new collections
-        //    Attributes = new List<object>(other.Attributes);
-
-        //    Actions = new List<ActionModel>(other.Actions.Select(a => new ActionModel(a) { Controller = this }));
-        //    ControllerProperties = new List<PropertyModel>(other.ControllerProperties.Select(p => new PropertyModel(p) { Controller = this }));
-        //    Properties = new Dictionary<object, object>(other.Properties);
-        //    RouteValues = new Dictionary<string, string>(other.RouteValues, StringComparer.OrdinalIgnoreCase);
-        //    OrderValues = new Dictionary<string, string>(other.OrderValues, StringComparer.OrdinalIgnoreCase);
-        //}
 
         /// <summary>
         /// 

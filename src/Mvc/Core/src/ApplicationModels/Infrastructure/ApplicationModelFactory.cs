@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.Options;
+﻿using EquipApps.Mvc.ApplicationModels.Сustomization;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace EquipApps.Mvc.ApplicationModels
+namespace EquipApps.Mvc.ApplicationModels.Infrastructure
 {
     public class ApplicationModelFactory
     {
