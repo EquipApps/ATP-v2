@@ -2,6 +2,7 @@
 using EquipApps.Testing.Features;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 
 namespace EquipApps.Mvc.Infrastructure
 {
@@ -11,21 +12,11 @@ namespace EquipApps.Mvc.Infrastructure
     /// </summary>
     public class ViewFeatureProvider : IFeatureProvider
     {
-        private ILogger<ViewFeatureProvider> logger;
         private IActionService _actionService;
 
-        public ViewFeatureProvider(ILoggerFactory loggerFactory,
-                                   IActionService actionService)
+        public ViewFeatureProvider(IActionService actionService)
         {
-            if (loggerFactory == null)
-                throw new ArgumentNullException(nameof(loggerFactory));
-
-            if (actionService == null)
-                throw new ArgumentNullException(nameof(loggerFactory));
-
-            logger = loggerFactory.CreateLogger<ViewFeatureProvider>();
-
-            _actionService = actionService;
+            _actionService = actionService ?? throw new ArgumentNullException(nameof(actionService));
         }
 
         public int Order => 0;
@@ -35,11 +26,9 @@ namespace EquipApps.Mvc.Infrastructure
         {
             //-- Поиск IMvcFeature
             var mvcFechure = context.Collection.Get<IMvcFeature>();
-            if (mvcFechure == null)
-            {
-                logger.LogError("IMvcFeature не найден");
-                return;
-            }
+
+            //--
+            Debug.Assert(mvcFechure != null, "IMvcFeature не найден");
 
             //-- Создаем фичу!
             var viewFeature = new ViewFeature(_actionService, mvcFechure);
