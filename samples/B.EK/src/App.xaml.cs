@@ -97,13 +97,13 @@ namespace B.EK
             serviceCollection.ConfigureOptions<ConfigureOptionsHardwareOptions>();
             serviceCollection.ConfigureOptions<ConfigureOptionsLogOptions>();
             serviceCollection.ConfigureOptions<ConfigureOptionsTestOptions>();
-
+            serviceCollection.ConfigureOptions<ConfigureOptionsMvcOptions>();
 
             //-- MVC
             serviceCollection.AddMvc();
           
             serviceCollection.AddMvcAssemply(Assembly.GetEntryAssembly());
-            serviceCollection.AddTransientActionDescriptorProvider<ConfigureActions>();
+            
 
             serviceCollection.AddMvcModelProvider<Command, CommandProvider>();
 

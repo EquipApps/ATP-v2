@@ -1,4 +1,4 @@
-﻿using EquipApps.Mvc.Abstractions;
+﻿using EquipApps.Mvc;
 using EquipApps.Testing;
 using Microsoft.Extensions.Options;
 using System;
@@ -6,26 +6,42 @@ using System.Linq;
 
 namespace B.EK.Configure
 {
+    public class ConfigureOptionsMvcOptions : IConfigureOptions<MvcOptions>
+    {
+        private IOptions<TestOptions> testOptions;
+
+        public ConfigureOptionsMvcOptions(IOptions<TestOptions> options)
+        {
+            this.testOptions = options;
+        }
+
+        public void Configure(MvcOptions options)
+        {
+            options.FeatureConvetions.Add(new MvcFeatureConvetion(testOptions));
+        }
+    }
+
+
     /// <summary>
     /// Фильрация алгоритма проверки
     /// </summary>
-    public class ConfigureActions : ActionDescripterFilterBase
+    public class MvcFeatureConvetion : IMvcFeatureConvetion
     {
         private TestOptions options;
 
-        public ConfigureActions(IOptions<TestOptions> options)
+        public MvcFeatureConvetion(IOptions<TestOptions> options)
         {
             this.options = options?.Value ?? throw new ArgumentNullException(nameof(options));
         }
 
-        protected override void OnFilterExecuted(ActionDescriptorProviderContext context)
+        public void Apply(IMvcFeature feature)
         {
             var executingMode = options.GetExecutingMode<string>();
 
             //-- Реализация фильра
             if (executingMode == Settings.ExecutingMode_Operate)
             {
-                context.Results = context.Results
+                feature.ActionDescriptors = feature.ActionDescriptors
                     .Where(x => x.Area == null ? false : x.Area.Contains(Areas.Operate))
                     .ToList();
 
@@ -35,7 +51,7 @@ namespace B.EK.Configure
             //-- Реализация фильра
             if (executingMode == Settings.ExecutingMode_Power)
             {
-                context.Results = context.Results
+                feature.ActionDescriptors = feature.ActionDescriptors
                     .Where(x => x.Area == null ? false : x.Area.Contains(Areas.Power))
                     .ToList();
 
@@ -45,7 +61,7 @@ namespace B.EK.Configure
             if (executingMode == Settings.ExecutingMode_Main)
             {
                 //-- Реализация фильра для 
-                context.Results = context.Results
+                feature.ActionDescriptors = feature.ActionDescriptors
                        .Where(x => x.Area == null)
                        .ToList();
 

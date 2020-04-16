@@ -1,6 +1,7 @@
 ﻿using EquipApps.Mvc.ApplicationModels;
 using EquipApps.Mvc.ModelBinding;
 using EquipApps.Mvc.ModelBinding.Metadata;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace EquipApps.Mvc
@@ -9,8 +10,8 @@ namespace EquipApps.Mvc
     {
         public MvcOptions()
         {
-            Conventions = new List<IApplicationModelConvention>();
-
+            ApplicationConventions = new List<IApplicationModelConvention>();
+            FeatureConvetions      = new List<IMvcFeatureConvetion>();
 
 
             BindingProviders = new List<IBinderProvider>();
@@ -25,10 +26,31 @@ namespace EquipApps.Mvc
 
 
         /// <summary>
-        /// Gets a list of <see cref="IApplicationModelConvention"/> instances that will be applied to
-        /// the <see cref="ApplicationModel"/> when discovering actions.
+        /// Возращает список <see cref="IApplicationModelConvention"/>.
+        /// Используются во время создания <see cref="ApplicationModel"/>.
         /// </summary>
-        public IList<IApplicationModelConvention> Conventions { get; }
+        public IList<IApplicationModelConvention> ApplicationConventions { get; }
+
+        /// <summary>
+        /// Возращает список <see cref="IMvcFeatureConvetion"/>.
+        /// Используются во время создания <see cref="IMvcFeature"/>.
+        /// </summary>
+        public IList<IMvcFeatureConvetion> FeatureConvetions { get; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

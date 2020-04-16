@@ -1,5 +1,6 @@
 ﻿using EquipApps.Mvc.Abstractions;
 using EquipApps.Testing.Features;
+using Microsoft.Extensions.Options;
 using NLib.AtpNetCore.Testing.Mvc.Internal;
 using System;
 using System.Collections.Generic;
@@ -12,32 +13,43 @@ namespace EquipApps.Mvc.Infrastructure
     /// </summary>
     public class MvcFeatureProvider : IFeatureProvider
     {
-        IActionDescriptorCollectionProvider _collectionProvider;
+        IActionDescriptorCollectionProvider          _collectionProvider;
+        private readonly IList<IMvcFeatureConvetion> _conventions;
 
-        public MvcFeatureProvider(IActionDescriptorCollectionProvider collectionProvider)
+        public MvcFeatureProvider(
+            IActionDescriptorCollectionProvider collectionProvider, IOptions<MvcOptions> options)
         {
-            _collectionProvider = collectionProvider ?? throw new ArgumentNullException(nameof(collectionProvider));
+            if (collectionProvider == null)
+            {
+                throw new ArgumentNullException(nameof(collectionProvider));
+            }
+
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            _collectionProvider = collectionProvider;
+            _conventions = options.Value.FeatureConvetions;
         }
 
         public int Order => 0;
 
         public void OnProvidersExecuting(FeatureProviderContext context)
         {
-            //-- Извлекаем из колллекции
-            var actionDescriptorFeature = context.Collection.Get<IMvcFeature>();
-            if (actionDescriptorFeature == null)
+            //-- 1) Создаем фичу
+            var feature = new MvcFeature();
+
+            //-- 2) Конфигурируем фичу
+            feature.ActionDescriptors = GetActionDescriptors();
+
+            foreach (var convention in _conventions)
             {
-                //-- Если null (первый запуск).. добавляем!
-                actionDescriptorFeature = new MvcFeature();
-                actionDescriptorFeature.ActionDescriptors = GetActionDescriptors();
-                context.Collection.Set(actionDescriptorFeature);
+                convention.Apply(feature);
             }
-            else
-            {
-                //-- Обновляем коллекцию!
-                actionDescriptorFeature.ActionDescriptors = null;
-                actionDescriptorFeature.ActionDescriptors = GetActionDescriptors();
-            }
+
+            //-- 3) Сохраняем
+            context.Collection.Set<IMvcFeature>(feature);
         }
 
         private IReadOnlyList<ActionDescriptor> GetActionDescriptors()
