@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph GraphDirection="TopToBottom" Layout="Sugiyama" ZoomLevel="-1" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="Action" Bounds="124.301666666538,112.720099999947,54.0766666666666,25.96" />
+    <Node Id="Application" Bounds="1.60000000000001,0.799899999999948,80.1033333333334,25.96" UseManualLocation="True" />
+    <Node Id="Controller" Bounds="48.26,56.7599999999999,72.7833333333333,25.96" UseManualLocation="True" />
+    <Node Id="Parameter" Bounds="113.138333333333,168.680199999947,73.8266666666667,25.96" />
+    <Node Id="Property" Bounds="29.0016666666667,112.7201,65.3,25.96" UseManualLocation="True" />
+    <Node Id="TestCase" Category="Comment" Bounds="266.258333333333,-56.8,79.5866666666666,25.96" Label="DataObject" UseManualLocation="True" />
+  </Nodes>
+  <Links>
+    <Link Source="Action" Target="Parameter" Bounds="150.557643157817,138.680099999947,0.483526663676599,21.0024841821789" />
+    <Link Source="Application" Target="Controller" Bounds="51.6255587790825,26.7598999999999,17.5685236601775,22.8636358343233" />
+    <Link Source="Controller" Target="Action" Bounds="100.120090895105,82.72,28.8571838538037,24.2148935722713" />
+    <Link Source="Controller" Target="Property" Bounds="70.4078946302985,82.72,8.90889951112247,21.6757785883637" />
+    <Link Source="TestCase" Target="Action" Bounds="169.25311110451,-30.84,124.952423844823,136.912411596146" />
+    <Link Source="TestCase" Target="Controller" Bounds="117.96590685134,-30.84,162.779560449352,83.4925333542387" />
+  </Links>
+  <Categories>
+    <Category Id="Comment" Label="Comment" Description="Represents a user defined comment on the diagram" CanBeDataDriven="True" IsProviderRoot="False" NavigationActionLabel="Comments" />
+  </Categories>
+  <Properties>
+    <Property Id="Bounds" DataType="System.Windows.Rect" />
+    <Property Id="CanBeDataDriven" Label="CanBeDataDriven" Description="CanBeDataDriven" DataType="System.Boolean" />
+    <Property Id="Expression" DataType="System.String" />
+    <Property Id="GraphDirection" DataType="Microsoft.VisualStudio.Diagrams.Layout.LayoutOrientation" />
+    <Property Id="GroupLabel" DataType="System.String" />
+    <Property Id="IsEnabled" DataType="System.Boolean" />
+    <Property Id="IsProviderRoot" Label="IsProviderRoot" Description="IsProviderRoot" DataType="System.Boolean" />
+    <Property Id="Label" Label="Label" Description="Displayable label of an Annotatable object" DataType="System.String" />
+    <Property Id="Layout" DataType="System.String" />
+    <Property Id="NavigationActionLabel" Label="NavigationActionLabel" Description="NavigationActionLabel" DataType="System.String" />
+    <Property Id="TargetType" DataType="System.Type" />
+    <Property Id="UseManualLocation" DataType="System.Boolean" />
+    <Property Id="Value" DataType="System.String" />
+    <Property Id="ValueLabel" DataType="System.String" />
+    <Property Id="ZoomLevel" DataType="System.String" />
+  </Properties>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="Comment" ValueLabel="Has comment">
+      <Condition Expression="HasCategory('Comment')" />
+      <Setter Property="Background" Value="#FFFFFACD" />
+      <Setter Property="Stroke" Value="#FFE5C365" />
+      <Setter Property="StrokeThickness" Value="1" />
+      <Setter Property="NodeRadius" Value="2" />
+      <Setter Property="MaxWidth" Value="250" />
+    </Style>
+  </Styles>
+</DirectedGraph>

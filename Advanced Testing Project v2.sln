@@ -61,6 +61,11 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "EquipApps.Shared", "src\Sha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EquipApps.WorkBench.WPF.MaterialDesign", "src\WorkBench\Wpf.MaterialDesign\src\EquipApps.WorkBench.WPF.MaterialDesign.csproj", "{1C4A942A-3E84-4878-B251-2E0641D19C9C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0179A542-F07F-4D5B-9C62-4B8B2994674C}"
+	ProjectSection(SolutionItems) = preProject
+		ApplicationGraph.dgml = ApplicationGraph.dgml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\Shared\src\EquipApps.Shared\EquipApps.Shared.projitems*{34c9b411-6946-4a89-b76a-eeaf231e8126}*SharedItemsImports = 5
