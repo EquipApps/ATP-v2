@@ -19,7 +19,7 @@ namespace B.EK.ViewModels
     /// <summary>
     /// Модель представление ввода данных.  
     /// </summary>
-    public class OptionsViewModel : FlyoutSettingsViewModelBase, IActionDescriptorChangeProvider
+    public class OptionsViewModel : FlyoutSettingsViewModelBase
     {
         /// <summary>
         /// Конструктор

@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EquipApps.Mvc.Infrastructure
+namespace EquipApps.Mvc.Abstractions
 {
     /// <summary>
-    /// A cached collection of <see cref="ActionDescriptor" />.
+    /// Кешированная коллекция <see cref="ActionDescriptor" /> элементов.
     /// </summary>
     public class ActionDescriptorCollection
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ActionDescriptorCollection"/>.
-        /// </summary>
-        /// <param name="items">The result of action discovery</param>
-        /// <param name="version">The unique version of discovered actions.</param>
+        /// Создает новый экземпляр <see cref="ActionDescriptorCollection"/>.
+        /// </summary>        
         public ActionDescriptorCollection(IReadOnlyList<ActionDescriptor> items, int version)
         {
             if (items == null)
@@ -25,12 +23,12 @@ namespace EquipApps.Mvc.Infrastructure
         }
 
         /// <summary>
-        /// Returns the cached <see cref="IReadOnlyList{ActionDescriptor}"/>.
+        /// Возвращает кэш <see cref="IReadOnlyList{ActionDescriptor}"/>.
         /// </summary>
         public IReadOnlyList<ActionDescriptor> Items { get; }
 
         /// <summary>
-        /// Returns the unique version of the currently cached items.
+        /// Возвращает версию кэша.
         /// </summary>
         public int Version { get; }
     }

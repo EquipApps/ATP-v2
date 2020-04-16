@@ -1,9 +1,6 @@
-﻿// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿using Microsoft.Extensions.Primitives;
 
-using Microsoft.Extensions.Primitives;
-
-namespace EquipApps.Mvc.Infrastructure
+namespace EquipApps.Mvc.Abstractions
 {
     /// <summary>
     /// A base class for <see cref="IActionDescriptorCollectionProvider"/> which also provides an <see cref="IChangeToken"/>

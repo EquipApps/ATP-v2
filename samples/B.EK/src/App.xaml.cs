@@ -88,7 +88,7 @@ namespace B.EK
             serviceCollection.AddTransient<IMahAppsService, MahAppsService>();
 
             serviceCollection.AddSingleton<OptionsViewModel>();
-            serviceCollection.AddSingleton<IActionDescriptorChangeProvider>(x => x.GetService<OptionsViewModel>());
+            
 
 
             serviceCollection.AddTransient<ForDebugDevice>();

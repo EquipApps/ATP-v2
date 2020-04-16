@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EquipApps.Mvc.Infrastructure
+﻿namespace EquipApps.Mvc.Abstractions
 {
     /// <summary>
     /// Provides the currently cached collection of <see cref="Abstractions.ActionDescriptor"/>.
@@ -16,7 +12,7 @@ namespace EquipApps.Mvc.Infrastructure
     ///<para>
     /// To be reactively notified of changes, downcast to <see cref="ActionDescriptorCollectionProvider"/> and
     /// subscribe to the change token returned from <see cref="ActionDescriptorCollectionProvider.GetChangeToken"/>
-    /// using <see cref="ChangeToken.OnChange(System.Func{IChangeToken}, System.Action)"/>.
+    /// using <see cref="ChangeToken.OnChange(Func{IChangeToken}, Action)"/>.
     /// </para>
     /// <para>
     /// Default consumers of this service, are aware of the version and will recache

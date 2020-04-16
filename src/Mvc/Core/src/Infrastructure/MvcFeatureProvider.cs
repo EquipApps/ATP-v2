@@ -1,7 +1,6 @@
 ﻿using EquipApps.Mvc.Abstractions;
 using EquipApps.Testing.Features;
 using Microsoft.Extensions.Options;
-using NLib.AtpNetCore.Testing.Mvc.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,7 @@ using System.Linq;
 namespace EquipApps.Mvc.Infrastructure
 {
     /// <summary>
-    /// Создает и сохраняет <see cref="MvcFeature"/>
+    /// Создает <see cref="IMvcFeature"/> и сохранаяте в <see cref="IFeatureCollection"/>.
     /// </summary>
     public class MvcFeatureProvider : IFeatureProvider
     {

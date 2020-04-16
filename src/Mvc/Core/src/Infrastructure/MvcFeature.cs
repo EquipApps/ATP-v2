@@ -1,25 +1,22 @@
-﻿using EquipApps.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace NLib.AtpNetCore.Testing.Mvc.Internal
+namespace EquipApps.Mvc.Infrastructure
 {
-    /// <summary>
-    /// Расширение.. 
-    /// Доступно через <see cref="EquipApps.Testing.Features.IFeatureCollection"/>.
-    /// Позволяет получить доступ к <see cref="ActionDescriptor"/>
-    /// </summary>
-    public class MvcFeature : IDisposable, IMvcFeature
+    public class MvcFeature : IMvcFeature, IDisposable
     {
+        /// <inheritdoc/>
         public IReadOnlyList<ActionDescriptor> ActionDescriptors { get; set; }
 
         public void Dispose()
         {
-            foreach (var actionDescriptor in ActionDescriptors)
-            {
-                actionDescriptor.Dispose();
-            }
-
+            /*
+             * Обнуляем ссылку.
+             * Данный метод вызывается по премя вызова ITest.Dispose
+             * 
+             * ВАЖНО. Не ВЫЗЫВАТЬ Dispose для каждого ActionDescriptor.
+             * Т.к ActionDescriptor кеширован. Могут возникнуть баги.
+             */
             ActionDescriptors = null;
         }
     }

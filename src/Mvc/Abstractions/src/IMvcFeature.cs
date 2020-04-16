@@ -1,14 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using EquipApps.Testing.Features;
+using System.Collections.Generic;
 
 namespace EquipApps.Mvc
 {
     /// <summary>
     /// Расширение.. 
-    /// Доступно через <see cref="Testing.Features.IFeatureCollection"/>.
-    /// Позволяет получить доступ к <see cref="ActionDescriptor"/>
+    /// Доступно через <see cref="IFeatureCollection"/>.
+    /// Позволяет получить доступ к <see cref="ActionDescriptor"/>.
     /// </summary>
     public interface IMvcFeature
     {
+        /// <summary>
+        /// Возвращает Список
+        /// </summary>
         IReadOnlyList<ActionDescriptor> ActionDescriptors { get; set; }
     }
 }
