@@ -66,7 +66,7 @@ namespace EquipApps.Mvc.ApplicationModels
                         foreach (var testStep in GetTestSteps(testCase, action))
                         {
                             testCase.TestSteps.Add(testStep);
-                            testStep.Parent = testStep;
+                            testStep.Parent = testCase;
 
                             FillTitle(_modelBinderFactory, action, testStep);
 
