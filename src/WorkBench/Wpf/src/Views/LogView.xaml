@@ -174,13 +174,13 @@
                                 <Image  x:Name="Image" />
                             </Grid>
                             <DataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding LogLevel}" Value="fail">
+                                <DataTrigger Binding="{Binding Level}" Value="fail">
                                     <Setter TargetName="Image" Property="Source" Value="/EquipApps.WorkBench.WPF;component/Images/icon-error.png"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding LogLevel}" Value="warn">
+                                <DataTrigger Binding="{Binding Level}" Value="warn">
                                     <Setter TargetName="Image" Property="Source" Value="/EquipApps.WorkBench.WPF;component/Images/icon-warning.png" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding LogLevel}" Value="info">
+                                <DataTrigger Binding="{Binding Level}" Value="info">
                                     <Setter TargetName="Image" Property="Source" Value="/EquipApps.WorkBench.WPF;component/Images/icon-info.png"/>
                                 </DataTrigger>                                
                             </DataTemplate.Triggers>
