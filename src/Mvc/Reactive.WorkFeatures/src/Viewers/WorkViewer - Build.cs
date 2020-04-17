@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace EquipApps.WorkBench.ViewModels
 {
-    public partial class WorkViewerViewModel
+    public partial class WorkViewer
     {
         private volatile ITest test;
 

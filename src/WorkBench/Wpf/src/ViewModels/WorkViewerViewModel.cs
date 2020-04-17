@@ -3,20 +3,22 @@ using EquipApps.Testing;
 
 namespace EquipApps.WorkBench.ViewModels
 {
-    public partial class WorkViewerViewModel : ToolViewModel
+    public class WorkViewerViewModel : ToolViewModel
     {
-        public WorkViewerViewModel(ITestFactory testFactory,
-            
-            IRuntimeService runtimeService)
+        public WorkViewerViewModel(WorkViewer workViewer)
             :base("Панель управления")
         {
-            ctor(runtimeService, testFactory);
+            
 
             ContentId = "WorkViewer";
 
             CanClose = false;
             CanFloat = true;
             CanHide  = false;
+
+            Viewer = workViewer;
         }
+
+        public WorkViewer Viewer { get; }
     }
 }

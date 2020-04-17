@@ -10,17 +10,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Controller.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Interactions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IShellContentService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewForExt.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ActionsByResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ActionsByResultViewer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SettingsViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewModelBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WorkViewerViewModel - Build.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WorkViewerViewModel - Exe.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WorkViewerViewModel - Property.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WorkViewerViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkBenchException.cs" />
   </ItemGroup>
 </Project>

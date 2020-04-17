@@ -35,10 +35,10 @@ namespace EquipApps.WorkBench
             base.ConfigureServiceCollectionDefault(serviceCollection);
 
             //TODO: Перенеси как расширение в Core
-            //-------------------------------------------------------------
-            serviceCollection.AddViewer();
+            //-------------------------------------------------------------            
             serviceCollection.AddLogs();
-
+            serviceCollection.AddViewer();
+            serviceCollection.AddWorker();
             //-------------------------------------------------------------
             serviceCollection.AddTransient<LogViewModel>();
             serviceCollection.AddTransient<TestExplorerViewModel>();

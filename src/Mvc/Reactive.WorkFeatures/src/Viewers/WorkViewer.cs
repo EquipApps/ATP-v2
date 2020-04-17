@@ -1,15 +1,12 @@
 ﻿using EquipApps.Testing;
 using EquipApps.Mvc.Runtime;
-using EquipApps.WorkBench.Services;
 using ReactiveUI;
 using System;
 using System.Reactive.Linq;
-using EquipApps.Mvc.Reactive.ViewFeatures.Services;
 
 namespace EquipApps.WorkBench.ViewModels
 {
-    //TODO: Рефракторинг
-    public partial class WorkViewerViewModel
+    public partial class WorkViewer
     {
         private IDisposable _cleanUp;
         private ITestFactory testFactory;
@@ -23,7 +20,7 @@ namespace EquipApps.WorkBench.ViewModels
 
         public static volatile int Countter = 0;
 
-        private void ctor(
+        public WorkViewer(
             IRuntimeService runtimeService,
             ITestFactory testFactory)
         {

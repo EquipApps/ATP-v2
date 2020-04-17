@@ -17,39 +17,39 @@ namespace EquipApps.WorkBench.Views
             {
 
                 //-- Test Build Binding
-                this.BindCommand(this.ViewModel, x => x.TestCreate, x => x.TestBuild)
+                this.BindCommand(this.ViewModel, x => x.Viewer.TestCreate, x => x.TestBuild)
                     .DisposeWith(disposable);
-                this.BindCommand(this.ViewModel, x => x.TestClean, x => x.TestClean)
+                this.BindCommand(this.ViewModel, x => x.Viewer.TestClean, x => x.TestClean)
                     .DisposeWith(disposable);
 
                 //-- Test Start Binding
-                this.BindCommand(this.ViewModel, x => x.TestStart, x => x.TestStart)
+                this.BindCommand(this.ViewModel, x => x.Viewer.TestStart, x => x.TestStart)
                     .DisposeWith(disposable);
-                this.BindCommand(this.ViewModel, x => x.TestStop, x => x.TestStop)
+                this.BindCommand(this.ViewModel, x => x.Viewer.TestStop, x => x.TestStop)
                     .DisposeWith(disposable);
 
                 //-- Test mode Binding
-                this.BindCommand(this.ViewModel, x => x.TestPause, x => x.TestPause)
+                this.BindCommand(this.ViewModel, x => x.Viewer.TestPause, x => x.TestPause)
                     .DisposeWith(disposable);
-                this.Bind(this.ViewModel, x => x.IsPauseEnabled, x => x.TestPause.IsChecked)
-                    .DisposeWith(disposable);
-
-                this.BindCommand(this.ViewModel, x => x.TestRepeat, x => x.TestRepeat)
-                    .DisposeWith(disposable);
-                this.Bind(this.ViewModel, x => x.IsRepeatEnabled, x => x.TestRepeat.IsChecked)
+                this.Bind(this.ViewModel, x => x.Viewer.IsPauseEnabled, x => x.TestPause.IsChecked)
                     .DisposeWith(disposable);
 
-                this.BindCommand(this.ViewModel, x => x.TestRepeatOnce, x => x.TestRepeatOnce)
+                this.BindCommand(this.ViewModel, x => x.Viewer.TestRepeat, x => x.TestRepeat)
                     .DisposeWith(disposable);
-                this.Bind(this.ViewModel, x => x.IsRepeatOnceEnabled, x => x.TestRepeatOnce.IsChecked)
+                this.Bind(this.ViewModel, x => x.Viewer.IsRepeatEnabled, x => x.TestRepeat.IsChecked)
+                    .DisposeWith(disposable);
+
+                this.BindCommand(this.ViewModel, x => x.Viewer.TestRepeatOnce, x => x.TestRepeatOnce)
+                    .DisposeWith(disposable);
+                this.Bind(this.ViewModel, x => x.Viewer.IsRepeatOnceEnabled, x => x.TestRepeatOnce.IsChecked)
                     .DisposeWith(disposable);
 
                 //-- Test navigation Binding
                 //this.BindCommand(this.ViewModel, x => x.TestPrevious, x => x.TestPrevious)
                 //    .DisposeWith(disposable);
-                this.BindCommand(this.ViewModel, x => x.TestReplay, x => x.TestReplay)
+                this.BindCommand(this.ViewModel, x => x.Viewer.TestReplay, x => x.TestReplay)
                     .DisposeWith(disposable);
-                this.BindCommand(this.ViewModel, x => x.TestNext, x => x.TestNext)
+                this.BindCommand(this.ViewModel, x => x.Viewer.TestNext, x => x.TestNext)
                     .DisposeWith(disposable);
 
 

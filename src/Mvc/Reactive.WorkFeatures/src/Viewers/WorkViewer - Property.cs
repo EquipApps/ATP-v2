@@ -6,7 +6,7 @@ using System.Windows.Input;
 namespace EquipApps.WorkBench.ViewModels
 {
     //TODO: Рефракторинг
-    public partial class WorkViewerViewModel
+    public partial class WorkViewer
     {
         /// <summary>
         /// 
