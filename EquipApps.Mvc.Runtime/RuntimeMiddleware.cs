@@ -19,7 +19,7 @@ namespace EquipApps.Mvc.Runtime
         private readonly IEnumerable<IActionInvokerProvider> _actionInvokerProviders;
 
         private ActionInvokerFactory actionFactory;
-        private ActionDescriptorEnumerator actionEnumerator;
+        private ActionObjectEnumerator actionEnumerator;
 
         public RuntimeMiddleware(
             DefaultRuntimeSynchService synchService,
@@ -37,10 +37,10 @@ namespace EquipApps.Mvc.Runtime
         private void Run(TestContext testContext)
         {
             //-- 1) Извлечение дескриптеров действий
-            var actionDescriptors = testContext.GetActionDescriptors();
+            var actionObjects = testContext.GetActionObjects();
 
             //-- 2) Создаем временные ресурсы (будут уничтожены после окончения проверки)
-            using (actionEnumerator = new ActionDescriptorEnumerator(actionDescriptors))
+            using (actionEnumerator = new ActionObjectEnumerator(actionObjects))
             using (actionFactory = new ActionInvokerFactory(_actionInvokerProviders))
             {
                 //-- Создаем контекст. (контекст не должен уничтожать ресурсы, он только передает к ним доступ)
@@ -97,15 +97,15 @@ namespace EquipApps.Mvc.Runtime
                 case RuntimeState.Begin:
                     {
                         //
-                        // Получаем текущий элемент actionDescriptor
+                        // Получаем текущий элемент ActionObjecct
                         //
-                        var descriptor = actionEnumerator.Current;
-                        Debug.Assert(descriptor != null, "Descriptor are equal NULL");
+                        var action = actionEnumerator.Current;
+                        Debug.Assert(action != null, "ActionObjecct are equal NULL");
 
                         //
                         // Если флаг не установлен, то данная проверка будет пропущенна
                         //
-                        if (!descriptor.IsCheck)
+                        if (!action.IsCheck)
                         {
                             goto case RuntimeState.Move;                          
                         }
@@ -113,7 +113,7 @@ namespace EquipApps.Mvc.Runtime
                         //
                         // Если флаг не установлен, то переходим к выполнению
                         //
-                        if (!descriptor.IsBreak)
+                        if (!action.IsBreak)
                         {
                             goto case RuntimeState.Invoke;
                         }
@@ -124,9 +124,9 @@ namespace EquipApps.Mvc.Runtime
                          * ЧТОБЫ БЫЛА ВОЗМОЖНОСТЬ ПРЕРВАТЬ ПРОВЕРКУ!
                          */
                         
-                        descriptor.SetState(State.BreakPoint);  //-- Изменяем состояние ОСТАНОВКА
+                        action.SetState(ActionObjectState.BreakPoint);  //-- Изменяем состояние ОСТАНОВКА
                         _synchService.Pause();
-                        descriptor.SetState(State.Empy);        //-- Изменяем состояние
+                        action.SetState(ActionObjectState.Empy);        //-- Изменяем состояние
 
                         next = RuntimeState.Invoke;             //-- Следующее состояние по умолчанию
                         break;
@@ -134,15 +134,15 @@ namespace EquipApps.Mvc.Runtime
                 case RuntimeState.Invoke:
                     {
                         //
-                        // Получаем текущий элемент actionDescriptor
+                        // Получаем текущий элемент ActionObjecct
                         //
-                        var descriptor = actionEnumerator.Current;
-                        Debug.Assert(descriptor != null, "Descriptor are equal NULL");
+                        var action = actionEnumerator.Current;
+                        Debug.Assert(action != null, "ActionObjecct are equal NULL");
 
                         //
-                        // Создаем ActionContext для текущего ActionDescriptor
+                        // Создаем ActionContext для текущего ActionObjecct
                         //
-                        var actionContext = new ActionContext(context, descriptor);
+                        var actionContext = new ActionContext(context, action);
 
                         //
                         // Создаем IActionInvoker для текущего ActionContext
@@ -183,14 +183,11 @@ namespace EquipApps.Mvc.Runtime
                         //
                         // Получаем текущий элемент actionDescriptor
                         //
-                        var descriptor = actionEnumerator.Current;
-                        if (descriptor == null)
-                        {
-                            throw new ArgumentNullException(nameof(descriptor));
-                        }
-
+                        var action = actionEnumerator.Current;
+                        Debug.Assert(action != null, "ActionObjecct are equal NULL");
+                       
                         //-- Изменяем состояние ПАУЗА
-                        descriptor.SetState(State.Pause);
+                        action.SetState(ActionObjectState.Pause);
 
                         switch (_synchService.Pause())
                         {
@@ -210,7 +207,7 @@ namespace EquipApps.Mvc.Runtime
                         }
 
                         //-- Изменяем состояние
-                        descriptor.SetState(State.Empy);
+                        action.SetState(ActionObjectState.Empy);
 
                         return;
                     }

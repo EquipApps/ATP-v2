@@ -24,7 +24,7 @@ namespace EquipApps.Mvc.Infrastructure
             }
             finally
             {
-                actionService.Update(actionContext.ActionDescriptor);
+                actionService.Update(actionContext.ActionObject);
             }
             
         }

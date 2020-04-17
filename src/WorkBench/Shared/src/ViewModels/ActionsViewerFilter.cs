@@ -8,7 +8,7 @@ using System.Reactive.Linq;
 namespace EquipApps.WorkBench.ViewModels
 {
     /// <summary>
-    /// Филтр для <see cref="ActionDescriptor"/>.
+    /// Филтр для <see cref="ActionObject"/>.
     /// </summary>
     public class ActionsViewerFilter : ReactiveObject
     {
@@ -37,7 +37,7 @@ namespace EquipApps.WorkBench.ViewModels
         /// <summary>
         /// Предоставляет подписку на обновление Фильтра
         /// </summary>
-        public IObservable<Func<ActionDescriptor, bool>> ObservableFilter { get; }
+        public IObservable<Func<ActionObject, bool>> ObservableFilter { get; }
 
         /// <summary>
         /// Флаг.
@@ -66,17 +66,17 @@ namespace EquipApps.WorkBench.ViewModels
             ShowNotRun = true;
         }
 
-        private Func<ActionDescriptor, bool> UpdateFilter((bool showPassed, bool showFailed, bool showNotRun) arg)
+        private Func<ActionObject, bool> UpdateFilter((bool showPassed, bool showFailed, bool showNotRun) arg)
         {
-            return (actionDescriptor) =>
+            return (actionObject) =>
             {
-                switch (actionDescriptor.Result.Type)
+                switch (actionObject.Result.Type)
                 {
-                    case Mvc.Abstractions.ActionDescriptorResultType.NotRun:
+                    case ActionObjectResultType.NotRun:
                         return arg.showNotRun;
-                    case Mvc.Abstractions.ActionDescriptorResultType.Passed:
+                    case ActionObjectResultType.Passed:
                         return arg.showPassed;
-                    case Mvc.Abstractions.ActionDescriptorResultType.Failed:
+                    case ActionObjectResultType.Failed:
                         return arg.showFailed;
                     default:
                         return false;

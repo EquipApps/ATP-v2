@@ -25,7 +25,7 @@ namespace EquipApps.Mvc.Runtime
         /// Переход на <see cref="ActionDescriptor"/>.
         /// </summary>
         /// 
-        /// <param name="actionDescriptor">
+        /// <param name="actionObject">
         /// Действие на которое произойдет переход
         /// </param>
         /// 
@@ -33,7 +33,7 @@ namespace EquipApps.Mvc.Runtime
         /// true    - переход возможен;
         /// false   - переход не возможен;
         /// </returns>        
-        public abstract bool JumpTo(ActionDescriptor actionDescriptor);
+        public abstract bool JumpTo(ActionObject actionObject);
 
         /// <summary>
         /// Переход на <see cref="RuntimeState"/>.

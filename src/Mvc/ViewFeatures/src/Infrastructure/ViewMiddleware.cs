@@ -1,5 +1,4 @@
-﻿using EquipApps.Mvc.Abstractions;
-using EquipApps.Mvc.Services;
+﻿using EquipApps.Mvc.Services;
 using EquipApps.Testing;
 using System;
 using System.Collections.Generic;
@@ -31,15 +30,15 @@ namespace EquipApps.Mvc.Infrastructure
         private void Run(TestContext testContext)
         {
             //-- 1) Извлечение дескриптеров действий
-            var actionDescriptors = testContext.GetActionDescriptors();
+            var actionObjects = testContext.GetActionObjects();
 
             //-- 2) Обновляем состояние.
-            foreach (var actionDescriptor in actionDescriptors)
+            foreach (var actionDescriptor in actionObjects)
             {
-                actionDescriptor.SetResult(ActionDescriptorResultType.NotRun);
+                actionDescriptor.SetResult(ActionObjectResultType.NotRun);
             }
 
-            _actionService.Update(actionDescriptors);
+            _actionService.Update(actionObjects);
         }
     }
 }

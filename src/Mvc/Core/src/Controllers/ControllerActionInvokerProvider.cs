@@ -57,7 +57,7 @@ namespace EquipApps.Mvc.Infrastructure
 
         public void OnProvidersExecuting(ActionInvokerProviderContext context)
         {
-            if (context.ActionContext.ActionDescriptor is ControllerActionDescriptor)
+            if (context.ActionContext.ActionObject.ActionDescriptor is ControllerActionDescriptor)
             {
                 //-- 
                 var controllerContext = new ControllerContext(context.ActionContext);

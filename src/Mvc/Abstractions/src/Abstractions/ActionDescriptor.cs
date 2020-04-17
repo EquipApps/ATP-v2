@@ -7,31 +7,8 @@ namespace EquipApps.Mvc
     /// <summary>
     /// Дескриптер действия
     /// </summary>
-    public abstract partial class ActionDescriptor : IDisposable
+    public abstract partial class ActionDescriptor
     {
-        private readonly ISubject<State> _stateChangedSubject = new ReplaySubject<State>();
-
-        public IObservable<State> StateObservable => _stateChangedSubject;
-
-        public void SetState(State state)
-        {
-            _stateChangedSubject.OnNext(state);
-        }
-
-        /// <summary>
-        /// Возвращает <see cref="Abstractions.ActionDescriptorResult"/>
-        /// </summary>
-        public ActionDescriptorResult Result { get; private set; }
-
-        
-
-        public void SetResult(
-            ActionDescriptorResultType resultType,
-            Exception exception = null)
-        {
-            Result = new ActionDescriptorResult(resultType, exception);
-        }
-
 
         public ActionDescriptor(ActionDescriptorObject testCase, ActionDescriptorObject testStep)
             :this()
@@ -39,7 +16,7 @@ namespace EquipApps.Mvc
             TestCase = testCase ?? throw new ArgumentNullException(nameof(testCase));
             TestStep = testStep ?? throw new ArgumentNullException(nameof(testStep));
 
-            Result = new ActionDescriptorResult(ActionDescriptorResultType.NotRun);
+            
         }
 
         /// <summary>
@@ -66,29 +43,5 @@ namespace EquipApps.Mvc
             }
         }
         public virtual Number Number { get; set; }
-
-       
-
-        /// <summary>
-        /// Флаг. Указывает будет ли элемент участвовать в проверке.
-        /// </summary>
-        public bool IsCheck { get; set; } = true;
-
-        /// <summary>
-        /// Флаг. Точки остановки
-        /// </summary>
-        public bool IsBreak { get; set; } = false;
-
-
-
-
-
-
-
-        public void Dispose()
-        {
-            //TODO: Должна удаляться при очистке кеша!
-            _stateChangedSubject.OnCompleted();
-        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using EquipApps.Hardware;
 using EquipApps.Mvc;
-using EquipApps.Mvc.Abstractions;
 using EquipApps.Testing;
 using Microsoft.Extensions.Logging;
 using NLib.AtpNetCore.Mvc;
@@ -56,14 +55,14 @@ namespace EquipApps.WorkBench
         [NonAction]
         public virtual void ErrorOK()   
         {
-            this.ControllerContext.ActionDescriptor.SetResult(ActionDescriptorResultType.Failed,
+            this.ControllerContext.ActionObject.SetResult(ActionObjectResultType.Failed,
                                                               WorkBenchException.ErrorOK);
         }
 
         [NonAction]
         public virtual void ErrorAAP()  
         {
-            this.ControllerContext.ActionDescriptor.SetResult(ActionDescriptorResultType.Failed,
+            this.ControllerContext.ActionObject.SetResult(ActionObjectResultType.Failed,
                                                               WorkBenchException.ErrorAAP);
         }
 

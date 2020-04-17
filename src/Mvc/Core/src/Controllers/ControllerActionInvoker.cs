@@ -1,5 +1,4 @@
-﻿using EquipApps.Mvc.Abstractions;
-using EquipApps.Mvc.ModelBinding;
+﻿using EquipApps.Mvc.ModelBinding;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
 using System;
@@ -48,14 +47,14 @@ namespace EquipApps.Mvc.Infrastructure
 
                 if (exception is OperationCanceledException)
                 {
-                    controllerContext.ActionDescriptor.SetResult(
-                        ActionDescriptorResultType.NotRun,
+                    controllerContext.ActionObject.SetResult(
+                        ActionObjectResultType.NotRun,
                         exception);
                 }
                 else
                 {
-                    controllerContext.ActionDescriptor.SetResult(
-                        ActionDescriptorResultType.Failed,
+                    controllerContext.ActionObject.SetResult(
+                        ActionObjectResultType.Failed,
                         exception);
                 }
             }

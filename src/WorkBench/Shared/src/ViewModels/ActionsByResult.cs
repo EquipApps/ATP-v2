@@ -1,7 +1,6 @@
 ﻿using DynamicData;
 using DynamicData.Aggregation;
 using EquipApps.Mvc;
-using EquipApps.Mvc.Abstractions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
@@ -13,7 +12,7 @@ namespace EquipApps.WorkBench.ViewModels
     {
         private readonly IDisposable _cleanUp;
 
-        public ActionsByResult(IGroup<ActionDescriptor, string, ActionDescriptorResultType> group)
+        public ActionsByResult(IGroup<ActionObject, string, ActionObjectResultType> group)
         {
             Result = group?.Key ?? throw new ArgumentNullException(nameof(group));
 
@@ -23,7 +22,7 @@ namespace EquipApps.WorkBench.ViewModels
 
         }
 
-        public ActionDescriptorResultType Result { get; }
+        public ActionObjectResultType Result { get; }
 
         [Reactive] public int Count     { get; private set; }
 

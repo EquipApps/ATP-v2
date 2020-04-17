@@ -1,5 +1,4 @@
-﻿using EquipApps.Mvc.Abstractions;
-using EquipApps.Testing;
+﻿using EquipApps.Testing;
 using Microsoft.Extensions.Logging;
 using NLib.AtpNetCore.Mvc;
 using NLib.AtpNetCore.Mvc.ModelBinding;
@@ -121,14 +120,14 @@ namespace EquipApps.Mvc
         /// </summary>
         /// 
         /// <remarks>
-        /// Устанавливает результат проверки как <see cref="ActionDescriptorResultType.Passed"/>
+        /// Устанавливает результат проверки как <see cref="ActionObjectResultType.Passed"/>
         /// если <see cref="ActionDescriptor.Result"/> не установлен.      
         /// </remarks>
         protected virtual void Finaly_PassedIfNotExecutedAndNullException()
         {
-            if (ControllerContext.ActionDescriptor.Result.IsEmpty) 
+            if (ControllerContext.ActionObject.Result.IsEmpty) 
             {
-                ControllerContext.ActionDescriptor.SetResult(ActionDescriptorResultType.Passed);
+                ControllerContext.ActionObject.SetResult(ActionObjectResultType.Passed);
             }
         }
 

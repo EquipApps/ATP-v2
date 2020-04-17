@@ -6,10 +6,10 @@ using System.Collections.Generic;
 namespace EquipApps.Mvc.Runtime
 {
     /// <summary>
-    /// Реализация <see cref="IActionDescriptorEnumerator"/>.
+    /// Реализация <see cref="IActionObjectEnumerator"/>.
     /// НЕ потоко безопасна!
     /// </summary>
-    public class ActionDescriptorEnumerator : IActionDescriptorEnumerator, IDisposable
+    public class ActionObjectEnumerator : IActionObjectEnumerator, IDisposable
     {
         private const int indexDefault = -1;
         private int indexCurrent = -1;
@@ -18,17 +18,17 @@ namespace EquipApps.Mvc.Runtime
 
         private bool disposedValue = false;
 
-        private IReadOnlyList<ActionDescriptor> _actions;
+        private IReadOnlyList<ActionObject> _actions;
 
 
-        public ActionDescriptorEnumerator(IReadOnlyList<ActionDescriptor> actions)
+        public ActionObjectEnumerator(IReadOnlyList<ActionObject> actions)
         {
             _actions = actions ?? throw new ArgumentNullException(nameof(actions));
         }
 
-        public ActionDescriptor Current { get; private set; } = null;
+        public ActionObject Current { get; private set; } = null;
 
-        public bool JumpTo(ActionDescriptor actionDescriptor)
+        public bool JumpTo(ActionObject actionObject)
         {
             IsDisposed();
 
@@ -38,7 +38,7 @@ namespace EquipApps.Mvc.Runtime
             //-- Поиск
             for (int i = 0; i < _actions.Count; i++)
             {
-                if (_actions[i] == actionDescriptor)
+                if (_actions[i] == actionObject)
                 {
                     jumpIndex = i;
                     break;

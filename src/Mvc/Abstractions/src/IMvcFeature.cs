@@ -13,6 +13,6 @@ namespace EquipApps.Mvc
         /// <summary>
         /// Возвращает Список
         /// </summary>
-        IReadOnlyList<ActionDescriptor> ActionDescriptors { get; set; }
+        IReadOnlyList<ActionObject> ActionObjects { get; set; }
     }
 }

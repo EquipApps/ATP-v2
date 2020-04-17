@@ -18,7 +18,7 @@ namespace EquipApps.Mvc.Infrastructure
         public ViewFeature(IActionService actionService, IMvcFeature mvcFechure)
         {
             this.actionService = actionService;
-            this.actionService.Update(mvcFechure.ActionDescriptors);
+            this.actionService.Update(mvcFechure.ActionObjects);
         }
 
         /// <summary>

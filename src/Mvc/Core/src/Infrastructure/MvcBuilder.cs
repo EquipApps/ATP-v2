@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NLib.AtpNetCore.Testing.Mvc.Infrastructure;
 using System;
 
-namespace NLib.AtpNetCore.Testing.Mvc.Internal
+namespace EquipApps.Mvc.Infrastructure
 {
     public class MvcBuilder : IMvcBuilder
     {

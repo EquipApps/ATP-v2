@@ -11,7 +11,7 @@ namespace EquipApps.Mvc
     {
         public ActionContext(ActionContext actionContext)
             : this(actionContext.RuntimeContext,
-                   actionContext.ActionDescriptor)
+                   actionContext.ActionObject)
         {
             if (actionContext == null)
             {
@@ -20,16 +20,18 @@ namespace EquipApps.Mvc
         }
 
         public ActionContext(RuntimeContext runtimeContext,
-                             ActionDescriptor actionDescriptor)
+                             ActionObject actionObject)
         {
-            RuntimeContext   = runtimeContext   ?? throw new ArgumentNullException(nameof(runtimeContext));
-            ActionDescriptor = actionDescriptor ?? throw new ArgumentNullException(nameof(actionDescriptor));
+            RuntimeContext  = runtimeContext   ?? throw new ArgumentNullException(nameof(runtimeContext));
+            ActionObject    = actionObject     ?? throw new ArgumentNullException(nameof(actionObject));
         }
 
         /// <summary>
-        /// Возвращает <see cref="ActionDescriptor"/>
+        /// Возвращает <see cref="ActionObject"/>
         /// </summary>
-        public ActionDescriptor ActionDescriptor { get; }
+        public ActionObject ActionObject { get; }
+
+        public ActionDescriptor ActionDescriptor => ActionObject.ActionDescriptor;
 
         /// <summary>
         /// Возвращает <see cref="Runtime.RuntimeContext"/>

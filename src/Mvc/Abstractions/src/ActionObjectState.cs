@@ -1,9 +1,9 @@
-﻿namespace EquipApps.Mvc.Abstractions
+﻿namespace EquipApps.Mvc
 {
     /// <summary>
     /// Состояние
     /// </summary>
-    public enum State : byte
+    public enum ActionObjectState : byte
     {
         /// <summary>
         /// 

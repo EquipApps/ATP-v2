@@ -11,19 +11,19 @@ namespace EquipApps.Mvc.Services
         /// <summary>
         /// 
         /// </summary>
-        IObservableCache<ActionDescriptor, string> Observable { get; }
+        IObservableCache<ActionObject, string> Observable { get; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="actionDescriptors"></param>
-        void Update(IEnumerable<ActionDescriptor> actionDescriptors);
+        void Update(IEnumerable<ActionObject> actionDescriptors);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="actionDescriptor"></param>
-        void Update(ActionDescriptor actionDescriptor);
+        void Update(ActionObject actionDescriptor);
 
         /// <summary>
         /// 

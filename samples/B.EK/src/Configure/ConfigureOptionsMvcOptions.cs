@@ -41,8 +41,8 @@ namespace B.EK.Configure
             //-- Реализация фильра
             if (executingMode == Settings.ExecutingMode_Operate)
             {
-                feature.ActionDescriptors = feature.ActionDescriptors
-                    .Where(x => x.Area == null ? false : x.Area.Contains(Areas.Operate))
+                feature.ActionObjects = feature.ActionObjects
+                    .Where(x => x.ActionDescriptor.Area == null ? false : x.ActionDescriptor.Area.Contains(Areas.Operate))
                     .ToList();
 
                 return;
@@ -51,8 +51,8 @@ namespace B.EK.Configure
             //-- Реализация фильра
             if (executingMode == Settings.ExecutingMode_Power)
             {
-                feature.ActionDescriptors = feature.ActionDescriptors
-                    .Where(x => x.Area == null ? false : x.Area.Contains(Areas.Power))
+                feature.ActionObjects = feature.ActionObjects
+                    .Where(x => x.ActionDescriptor.Area == null ? false : x.ActionDescriptor.Area.Contains(Areas.Power))
                     .ToList();
 
                 return;
@@ -61,8 +61,8 @@ namespace B.EK.Configure
             if (executingMode == Settings.ExecutingMode_Main)
             {
                 //-- Реализация фильра для 
-                feature.ActionDescriptors = feature.ActionDescriptors
-                       .Where(x => x.Area == null)
+                feature.ActionObjects = feature.ActionObjects
+                       .Where(x => x.ActionDescriptor.Area == null)
                        .ToList();
 
                 return;

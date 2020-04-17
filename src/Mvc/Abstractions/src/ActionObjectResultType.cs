@@ -1,9 +1,9 @@
-﻿namespace EquipApps.Mvc.Abstractions
+﻿namespace EquipApps.Mvc
 {
     // <summary>
     /// Результат
     /// </summary>
-    public enum ActionDescriptorResultType : byte
+    public enum ActionObjectResultType : byte
     {
         /// <summary>
         /// Не выполненно

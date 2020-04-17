@@ -6,18 +6,18 @@ namespace EquipApps.Mvc.Runtime
 {
     public class DefaultRuntimeContext : RuntimeContext
     {
-        private readonly IActionDescriptorEnumerator runtimeActionEnumerator;
+        private readonly IActionObjectEnumerator actionObjectEnumerator;
 
         public DefaultRuntimeContext(TestContext testContext,
-                                     IActionDescriptorEnumerator runtimeActionEnumerator)
+                                     IActionObjectEnumerator actionObjectEnumerator)
             :base(testContext)
         {
-            this.runtimeActionEnumerator = runtimeActionEnumerator;
+            this.actionObjectEnumerator = actionObjectEnumerator;
         }
 
-        public override bool JumpTo(ActionDescriptor actionDescriptor)
+        public override bool JumpTo(ActionObject actionObject)
         {
-            return runtimeActionEnumerator.JumpTo(actionDescriptor);
+            return actionObjectEnumerator.JumpTo(actionObject);
         }
 
         public override bool JumpTo(RuntimeState runtimeState)

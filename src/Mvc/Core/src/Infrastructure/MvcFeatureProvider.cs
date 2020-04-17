@@ -40,7 +40,7 @@ namespace EquipApps.Mvc.Infrastructure
             var feature = new MvcFeature();
 
             //-- 2) Конфигурируем фичу
-            feature.ActionDescriptors = GetActionDescriptors();
+            feature.ActionObjects = GetActionDescriptors();
 
             foreach (var convention in _conventions)
             {
@@ -51,9 +51,18 @@ namespace EquipApps.Mvc.Infrastructure
             context.Collection.Set<IMvcFeature>(feature);
         }
 
-        private IReadOnlyList<ActionDescriptor> GetActionDescriptors()
+        private IReadOnlyList<ActionObject> GetActionDescriptors()
         {
-            return _collectionProvider.ActionDescriptors.Items.OrderBy(x => x.Number).ToArray();
+            /*
+             * 1) Извлеает дескриптеры рействий.
+             * 2) Сортирует
+             * 3) Сбрасывает в исходное состояние.
+             */
+
+            return _collectionProvider.ActionDescriptors.Items
+                .OrderBy(x => x.Number)
+                .Select(x => new ActionObject(x))
+                .ToArray();
         }
 
         public void OnProvidersExecuted(FeatureProviderContext context)

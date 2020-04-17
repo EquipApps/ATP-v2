@@ -7,30 +7,30 @@ namespace EquipApps.Mvc
 {
     public static class TestContextEx
     {
-        public static IReadOnlyList<ActionDescriptor> GetActionDescriptors(this TestContext testContext)
+        public static IReadOnlyList<ActionObject> GetActionObjects(this TestContext testContext)
         {
             //-- 1) Извлечение
-            return testContext.TestFeatures.GetActionDescriptors();
+            return testContext.TestFeatures.GetActionObjects();
         }
 
-        public static IReadOnlyList<ActionDescriptor> GetActionDescriptors(this IFeatureCollection Features)
+        public static IReadOnlyList<ActionObject> GetActionObjects(this IFeatureCollection Features)
         {
             //-- 1) Извлечение
-            var actionDescriptorFeature = Features.Get<IMvcFeature>();
-            if (actionDescriptorFeature == null)
+            var feature = Features.Get<IMvcFeature>();
+            if (feature == null)
             {
                 throw new InvalidOperationException(
                    string.Format("{0} не содержит {1}", nameof(TestContext), nameof(IMvcFeature)));
             }
 
-            var actionDescriptors = actionDescriptorFeature.ActionDescriptors;
-            if (actionDescriptors == null || actionDescriptors.Count == 0)
+            var actionObjects = feature.ActionObjects;
+            if (actionObjects == null || actionObjects.Count == 0)
             {
                 throw new InvalidOperationException(
-                    string.Format("{0} не содержит {1}", nameof(IMvcFeature), nameof(ActionDescriptor)));
+                    string.Format("{0} не содержит {1}", nameof(IMvcFeature), nameof(ActionObject)));
             }
 
-            return actionDescriptors;
+            return actionObjects;
         }
     }
 }

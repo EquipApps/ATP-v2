@@ -1,5 +1,4 @@
 ﻿using EquipApps.Mvc;
-using EquipApps.Mvc.Abstractions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
@@ -10,14 +9,14 @@ namespace EquipApps.WorkBench.ViewModels
 {
     public class ActionHost : ReactiveObject, IDisposable
     {
-        private ActionDescriptor _model;
+        private ActionObject _model;
         private IDisposable _cleanUp;
 
-        public ActionHost(ActionDescriptor model)
+        public ActionHost(ActionObject model)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
 
-            State = State.Empy;
+            State = ActionObjectState.Empy;
 
             //-- Подписываемя на обновление состояня модели
 
@@ -31,13 +30,13 @@ namespace EquipApps.WorkBench.ViewModels
             });
         }
 
-        public Number Number    => _model.Number;
-        public string TestCase  => _model.TestCase.Title;
-        public string TestStep  => _model.TestStep.Title;
+        public Number Number    => _model.ActionDescriptor.Number;
+        public string TestCase  => _model.ActionDescriptor.TestCase.Title;
+        public string TestStep  => _model.ActionDescriptor.TestStep.Title;
         public Exception Exception => _model.Result.Exception;
-        public ActionDescriptorResultType Result => _model.Result.Type;
+        public ActionObjectResultType Result => _model.Result.Type;
 
-        [Reactive] public State State { get; private set; }
+        [Reactive] public ActionObjectState State { get; private set; }
 
         public bool IsBreak
         {
@@ -63,7 +62,7 @@ namespace EquipApps.WorkBench.ViewModels
         }
 
 
-        private void NotifyProperty(State state)
+        private void NotifyProperty(ActionObjectState state)
         {
             State = state;
         }

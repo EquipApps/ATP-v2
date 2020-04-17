@@ -66,6 +66,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ApplicationGraph.dgml = ApplicationGraph.dgml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EquipApps.Mvc.Runtime", "EquipApps.Mvc.Runtime\EquipApps.Mvc.Runtime.csproj", "{3EF7F76C-A54B-4590-84AC-9A8DDF4722AD}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\Shared\src\EquipApps.Shared\EquipApps.Shared.projitems*{34c9b411-6946-4a89-b76a-eeaf231e8126}*SharedItemsImports = 5
@@ -145,6 +147,10 @@ Global
 		{1C4A942A-3E84-4878-B251-2E0641D19C9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C4A942A-3E84-4878-B251-2E0641D19C9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C4A942A-3E84-4878-B251-2E0641D19C9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EF7F76C-A54B-4590-84AC-9A8DDF4722AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF7F76C-A54B-4590-84AC-9A8DDF4722AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EF7F76C-A54B-4590-84AC-9A8DDF4722AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EF7F76C-A54B-4590-84AC-9A8DDF4722AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -177,6 +183,7 @@ Global
 		{26B50B69-6DB4-44BE-93C3-9BFB170343A3} = {3E1A9720-FB34-43D1-9BBA-E7E36138CBB0}
 		{D2614BB7-1EA9-4084-9F6F-B2520B7D7E5D} = {26B50B69-6DB4-44BE-93C3-9BFB170343A3}
 		{1C4A942A-3E84-4878-B251-2E0641D19C9C} = {F4F5D2F7-5C6D-41B5-8693-52A29537AAA9}
+		{3EF7F76C-A54B-4590-84AC-9A8DDF4722AD} = {135838B4-4F28-4B6E-B8BF-EAD73B1DC0C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5541298D-733B-43FF-81EF-6CC5EDD40E71}

@@ -1,7 +1,6 @@
 ﻿using DynamicData;
 using DynamicData.Aggregation;
 using EquipApps.Mvc;
-using EquipApps.Mvc.Abstractions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
@@ -17,7 +16,7 @@ namespace EquipApps.WorkBench.ViewModels
     {
         private IDisposable _cleanUp;
 
-        public ActionsViewerCounter(IObservable<IChangeSet<ActionDescriptor, string>> source)
+        public ActionsViewerCounter(IObservable<IChangeSet<ActionObject, string>> source)
         {
             var totalDisposable
                 = source.Count()
@@ -25,19 +24,19 @@ namespace EquipApps.WorkBench.ViewModels
                         .Subscribe(value => Total = value);
 
             var passedDisposable
-                = source.Filter(x => x.Result.Type == ActionDescriptorResultType.Passed)
+                = source.Filter(x => x.Result.Type == ActionObjectResultType.Passed)
                         .Count()
                         .ObserveOn(RxApp.MainThreadScheduler)
                         .Subscribe(value => Passed = value);
 
             var failedDisposable
-                = source.Filter(x => x.Result.Type == ActionDescriptorResultType.Failed)
+                = source.Filter(x => x.Result.Type == ActionObjectResultType.Failed)
                         .Count()
                         .ObserveOn(RxApp.MainThreadScheduler)
                         .Subscribe(value => Failed = value);
 
             var notRunDisposable
-                = source.Filter(x => x.Result.Type == ActionDescriptorResultType.NotRun)
+                = source.Filter(x => x.Result.Type == ActionObjectResultType.NotRun)
                         .Count()
                         .ObserveOn(RxApp.MainThreadScheduler)
                         .Subscribe(value => NotRun = value);

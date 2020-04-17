@@ -5,13 +5,13 @@ namespace EquipApps.Mvc.Infrastructure
     /// <summary>
     /// Интератор с возможностью перехода
     /// </summary>
-    public interface IActionDescriptorEnumerator : IEnumerator<ActionDescriptor>
+    public interface IActionObjectEnumerator : IEnumerator<ActionObject>
     {
         /// <summary>
-        /// Переход на <see cref="ActionDescriptor"/>.
+        /// Переход на <see cref="ActionObject"/>.
         /// </summary>
         /// 
-        /// <param name="actionDescriptor">
+        /// <param name="actionObject">
         /// Действие на которое произойдет переход
         /// </param>
         /// 
@@ -24,6 +24,6 @@ namespace EquipApps.Mvc.Infrastructure
         /// Переход произойдет после вызова функции MoveNext;
         /// </remarks>
         /// 
-        bool JumpTo(ActionDescriptor actionDescriptor);
+        bool JumpTo(ActionObject actionObject);
     }
 }
