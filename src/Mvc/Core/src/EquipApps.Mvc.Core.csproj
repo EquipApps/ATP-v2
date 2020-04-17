@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\EquipApps.Mvc.Runtime\EquipApps.Mvc.Runtime.csproj" />
     <ProjectReference Include="..\..\Abstractions\src\EquipApps.Mvc.Abstractions.csproj" />
   </ItemGroup>
 

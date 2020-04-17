@@ -1,4 +1,5 @@
 ﻿using EquipApps.Mvc;
+using EquipApps.Mvc.LogFeatures;
 using EquipApps.Testing;
 using Microsoft.Extensions.Options;
 

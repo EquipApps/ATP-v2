@@ -1,4 +1,4 @@
-﻿using EquipApps.Mvc.Viewers;
+﻿using EquipApps.Mvc.Reactive.LogsFeatures.Viewers;
 using System;
 
 namespace EquipApps.WorkBench.ViewModels

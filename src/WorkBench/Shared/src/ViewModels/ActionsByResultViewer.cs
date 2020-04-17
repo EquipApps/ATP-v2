@@ -1,6 +1,6 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
-using EquipApps.Mvc.Services;
+using EquipApps.Mvc.Reactive.ViewFeatures.Services;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;

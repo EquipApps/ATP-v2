@@ -1,6 +1,6 @@
 ﻿using B.EK.Configure;
-using EquipApps.Mvc;
 using EquipApps.Mvc.Infrastructure;
+using EquipApps.Mvc.Reactive;
 using EquipApps.Testing;
 using EquipApps.WorkBench.ViewModels;
 using Microsoft.Extensions.Options;

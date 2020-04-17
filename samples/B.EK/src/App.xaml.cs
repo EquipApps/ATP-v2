@@ -5,9 +5,7 @@ using B.EK.Models;
 using B.EK.Services;
 using B.EK.ViewModels;
 using EquipApps.Builder;
-using EquipApps.Mvc;
-using EquipApps.Mvc.Infrastructure;
-using EquipApps.Mvc.Services;
+using EquipApps.Mvc.Reactive.LogsFeatures.Services;
 using EquipApps.Testing;
 using EquipApps.WorkBench;
 using EquipApps.WorkBench.Services;
@@ -18,7 +16,6 @@ using Microsoft.Extensions.Logging;
 using NLib.AtpNetCore.Testing;
 using Serilog;
 using Splat;
-using System.Linq;
 using System.Reflection;
 using System.Windows;
 
@@ -54,7 +51,7 @@ namespace B.EK
             var ttt = this.ServiceProvider.GetServices<EquipApps.Testing.Features.IFeatureProvider>();
 
             var vm1 = this.ServiceProvider.GetRequiredService<LogViewModel>();
-            var vm2 = this.ServiceProvider.GetRequiredService<ActionsViewer>();
+            var vm2 = this.ServiceProvider.GetRequiredService<TestExplorerViewModel>();
             var vm3 = this.ServiceProvider.GetRequiredService<WorkViewerViewModel>();
 
 
@@ -77,8 +74,6 @@ namespace B.EK
             loggingBuilder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
 
             loggingBuilder.AddSerilog(Logger);           
-            loggingBuilder.Services.AddSingleton<ILoggerProvider, ViewLoggerProvider>();
-
         }
 
         protected override void ConfigureServiceCollection(IServiceCollection serviceCollection)
@@ -125,13 +120,15 @@ namespace B.EK
                 context.TestLogger.LogCritical(ex, "Необработанное исключение");
                 throw ex;
             });
-           
-            builder.Use(async (TestContext context) =>
-            {
-                //-- Очищаем список ошибок
-                var logService = context.TestServices.GetService<ILogService>();
-                await logService.CleanAsync();
 
+            //-- Очистка области протокола.
+            builder.UseLogsClean();
+
+            //-- Обновление состояний проверки.
+            builder.UseViewUpdate();
+
+            builder.Use((TestContext context) =>
+            {
                 //-- Выводим информацию в протокол
                 context.TestLogger.LogInformation("Проверка");
                 context.TestLogger.LogInformation(context.TestOptions.ProductName);
@@ -145,8 +142,6 @@ namespace B.EK
 
             //-- Инициализация устройств
             builder.UseHardware();
-
-            builder.UseView();
 
             //-- Основная проверка
             builder.UseMvc();

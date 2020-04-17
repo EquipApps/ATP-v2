@@ -1,4 +1,5 @@
-﻿using EquipApps.Testing.Wpf;
+﻿using EquipApps.Mvc.Reactive.ViewFeatures.Viewers;
+using EquipApps.Testing.Wpf;
 using EquipApps.WorkBench.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -36,11 +37,11 @@ namespace EquipApps.WorkBench
             //TODO: Перенеси как расширение в Core
             //-------------------------------------------------------------
             serviceCollection.AddViewer();
-
+            serviceCollection.AddLogs();
 
             //-------------------------------------------------------------
             serviceCollection.AddTransient<LogViewModel>();
-           
+            serviceCollection.AddTransient<TestExplorerViewModel>();
             serviceCollection.AddTransient<WorkViewerViewModel>();
 
 

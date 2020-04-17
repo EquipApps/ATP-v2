@@ -9,7 +9,7 @@ namespace EquipApps.WorkBench.Views
     /// <summary>
     /// Interaction logic for TestView.xaml
     /// </summary>
-    public partial class TestExplorerToolView : ReactiveUserControl<ActionsViewer>
+    public partial class TestExplorerToolView : ReactiveUserControl<TestExplorerViewModel>
     {
 
         public TestExplorerToolView()
@@ -19,42 +19,42 @@ namespace EquipApps.WorkBench.Views
             this.WhenActivated(disposable =>
             {
                 //-- Привязка счетчика
-                this.ViewModel.WhenAnyValue(x => x.Filter.ShowFailed,
-                                            x => x.CountTotal.Failed)
+                this.ViewModel.WhenAnyValue(x => x.Actions.Filter.ShowFailed,
+                                            x => x.Actions.CountTotal.Failed)
                               .Select(ToStringFomat)
                               .BindTo(this, x => x.TotalFailed.Text)
                               .DisposeWith(disposable);
 
-                this.ViewModel.WhenAnyValue(x => x.Filter.ShowNotRun,
-                                            x => x.CountTotal.NotRun)
+                this.ViewModel.WhenAnyValue(x => x.Actions.Filter.ShowNotRun,
+                                            x => x.Actions.CountTotal.NotRun)
                               .Select(ToStringFomat)
                               .BindTo(this, x => x.TotalNotRun.Text)
                               .DisposeWith(disposable);
 
-                this.ViewModel.WhenAnyValue(x => x.Filter.ShowPassed,
-                                            x => x.CountTotal.Passed)
+                this.ViewModel.WhenAnyValue(x => x.Actions.Filter.ShowPassed,
+                                            x => x.Actions.CountTotal.Passed)
                               .Select(ToStringFomat)
                               .BindTo(this, x => x.TotalPassed.Text)
                               .DisposeWith(disposable);
 
-                this.ViewModel.WhenAnyValue(x => x.Filter.ShowFailed,
-                                            x => x.Filter.ShowNotRun,
-                                            x => x.Filter.ShowPassed,
-                                            x => x.CountTotal.Failed,
-                                            x => x.CountTotal.NotRun,
-                                            x => x.CountTotal.Passed,
-                                            x => x.CountTotal.Total)
+                this.ViewModel.WhenAnyValue(x => x.Actions.Filter.ShowFailed,
+                                            x => x.Actions.Filter.ShowNotRun,
+                                            x => x.Actions.Filter.ShowPassed,
+                                            x => x.Actions.CountTotal.Failed,
+                                            x => x.Actions.CountTotal.NotRun,
+                                            x => x.Actions.CountTotal.Passed,
+                                            x => x.Actions.CountTotal.Total)
                               .Select(ToStringFomat)
                               .BindTo(this, x => x.TotalTotal.Text)
                               .DisposeWith(disposable);
 
                 //-- Привязка фильтра
-                this.Bind(this.ViewModel, x => x.Filter.ShowFailed, x => x.FilterFailed.IsChecked).DisposeWith(disposable);
-                this.Bind(this.ViewModel, x => x.Filter.ShowNotRun, x => x.FilterNotRun.IsChecked).DisposeWith(disposable);
-                this.Bind(this.ViewModel, x => x.Filter.ShowPassed, x => x.FilterPassed.IsChecked).DisposeWith(disposable);
+                this.Bind(this.ViewModel, x => x.Actions.Filter.ShowFailed, x => x.FilterFailed.IsChecked).DisposeWith(disposable);
+                this.Bind(this.ViewModel, x => x.Actions.Filter.ShowNotRun, x => x.FilterNotRun.IsChecked).DisposeWith(disposable);
+                this.Bind(this.ViewModel, x => x.Actions.Filter.ShowPassed, x => x.FilterPassed.IsChecked).DisposeWith(disposable);
 
                 //-- Привязка Команды
-                this.BindCommand(ViewModel, x => x.Filter.Clear, x => x.FilterClear).DisposeWith(disposable);
+                this.BindCommand(ViewModel, x => x.Actions.Filter.Clear, x => x.FilterClear).DisposeWith(disposable);
 
 
 
@@ -66,11 +66,11 @@ namespace EquipApps.WorkBench.Views
 
 
                 //-- Привязка Скрывает Column_BreakPoint 
-                this.OneWayBind(this.ViewModel, x => x.IsEnabledBreakPoint, x => x.Column_BreakPoint.Visibility, ToVisibility)
+                this.OneWayBind(this.ViewModel, x => x.Actions.IsEnabledBreakPoint, x => x.Column_BreakPoint.Visibility, ToVisibility)
                     .DisposeWith(disposable);
 
                 //-- Привязка Скрывает Column_BreakPoint 
-                this.OneWayBind(this.ViewModel, x => x.IsEnabledBreakPoint, x => x.Column_CheckPoint.Visibility, ToVisibility)
+                this.OneWayBind(this.ViewModel, x => x.Actions.IsEnabledBreakPoint, x => x.Column_CheckPoint.Visibility, ToVisibility)
                     .DisposeWith(disposable);
 
 
@@ -78,15 +78,15 @@ namespace EquipApps.WorkBench.Views
 
 
                 //-- Привязка поллекции
-                this.OneWayBind(this.ViewModel, x => x.Data, x => x.dataGrid.ItemsSource)
+                this.OneWayBind(this.ViewModel, x => x.Actions.Data, x => x.dataGrid.ItemsSource)
                     .DisposeWith(disposable);
 
                 //-- Привязка выбранного элемента
-                this.Bind(this.ViewModel, x => x.SelectedItem, x => x.dataGrid.SelectedItem)
+                this.Bind(this.ViewModel, x => x.Actions.SelectedItem, x => x.dataGrid.SelectedItem)
                     .DisposeWith(disposable);
 
                 //-- Привязка Команды фильтрации
-                this.BindCommand(this.ViewModel, x => x.FilterLogs, x => x.dataGrid_cm_FilterButton)
+                this.BindCommand(this.ViewModel, x => x.Actions.FilterLogs, x => x.dataGrid_cm_FilterButton)
                     .DisposeWith(disposable);
             });
         }

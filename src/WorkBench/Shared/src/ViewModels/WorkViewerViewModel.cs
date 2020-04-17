@@ -4,7 +4,7 @@ using EquipApps.WorkBench.Services;
 using ReactiveUI;
 using System;
 using System.Reactive.Linq;
-using EquipApps.Mvc.Services;
+using EquipApps.Mvc.Reactive.ViewFeatures.Services;
 
 namespace EquipApps.WorkBench.ViewModels
 {
@@ -14,8 +14,8 @@ namespace EquipApps.WorkBench.ViewModels
         private IDisposable _cleanUp;
         private ITestFactory testFactory;
       
-        private IActionService testService;
-        private ILogService logsService;
+        
+       
 
 
         private IRuntimeService runtimeService;
@@ -25,13 +25,9 @@ namespace EquipApps.WorkBench.ViewModels
 
         private void ctor(
             IRuntimeService runtimeService,
-            ITestFactory testFactory,
-            IActionService actionDescripterService,
-            ILogService logEntryService)
+            ITestFactory testFactory)
         {
             this.testFactory = testFactory        ?? throw new ArgumentNullException(nameof(testFactory));
-            testService = actionDescripterService ?? throw new ArgumentNullException(nameof(actionDescripterService));
-            logsService = logEntryService         ?? throw new ArgumentNullException(nameof(logEntryService));
             this.runtimeService = runtimeService  ?? throw new ArgumentNullException(nameof(runtimeService));
 
 
