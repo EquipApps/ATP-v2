@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EquipApps.WorkBench.ViewModels
+namespace EquipApps.Mvc.Reactive.WorkFeatures.Viewers
 {
     public partial class WorkViewer
     {

@@ -5,7 +5,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
-namespace EquipApps.WorkBench
+namespace EquipApps.Mvc.Reactive
 {
     public static class Interactions
     {

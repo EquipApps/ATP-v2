@@ -91,8 +91,10 @@ namespace B.EK
 
             serviceCollection.ConfigureOptions<ConfigureOptionsHardwareOptions>();
             serviceCollection.ConfigureOptions<ConfigureOptionsLogOptions>();
-            serviceCollection.ConfigureOptions<ConfigureOptionsTestOptions>();
-            serviceCollection.ConfigureOptions<ConfigureOptionsMvcOptions>();
+            serviceCollection.ConfigureOptions<ConfigureOptionsTestOptions>();           
+            serviceCollection.ConfigureOptions<ConfigureOptionsRuntimeOptions>();
+
+            serviceCollection.AddTransientMvcFeatureConvetion<MvcFeatureConvetion>();
 
             //-- MVC
             serviceCollection.AddMvc();

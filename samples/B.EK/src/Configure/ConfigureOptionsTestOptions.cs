@@ -14,9 +14,9 @@ namespace B.EK.Configure
             options.Version         = new Version(1,0,0,0);
 
             //-- Устанавливаем режим работы по умолчанию
-            options.SetWorkingMode (Settings.WorkingMode_ZI);
+            options.SetWorkingMode  (Settings.WorkingMode_ZI);
             options.SetExecutingMode(Settings.ExecutingMode_Main);
-            options.SetPowerMode(Settings.PowerMode_NOM);
+            options.SetPowerMode    (Settings.PowerMode_NOM);
         }
     }
 }

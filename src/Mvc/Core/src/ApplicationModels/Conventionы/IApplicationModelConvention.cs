@@ -7,7 +7,7 @@ namespace EquipApps.Mvc.ApplicationModels
     /// Allows customization of the <see cref="ApplicationModel"/>.
     /// </summary>
     /// <remarks>
-    /// Implementations of this interface can be registered in <see cref="MvcOptions.ApplicationConventions"/>
+    /// Implementations of this interface can be registered in <see cref="MvcOptions.Conventions"/>
     /// to customize metadata about the application.
     ///
     /// <see cref="IApplicationModelConvention"/> run before other types of customizations to the

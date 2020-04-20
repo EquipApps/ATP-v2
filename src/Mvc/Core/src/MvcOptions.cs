@@ -10,8 +10,8 @@ namespace EquipApps.Mvc
     {
         public MvcOptions()
         {
-            ApplicationConventions = new List<IApplicationModelConvention>();
-            FeatureConvetions      = new List<IMvcFeatureConvetion>();
+            Conventions = new List<IApplicationModelConvention>();
+            
 
 
             BindingProviders = new List<IBinderProvider>();
@@ -29,13 +29,9 @@ namespace EquipApps.Mvc
         /// Возращает список <see cref="IApplicationModelConvention"/>.
         /// Используются во время создания <see cref="ApplicationModel"/>.
         /// </summary>
-        public IList<IApplicationModelConvention> ApplicationConventions { get; }
+        public IList<IApplicationModelConvention> Conventions { get; }
 
-        /// <summary>
-        /// Возращает список <see cref="IMvcFeatureConvetion"/>.
-        /// Используются во время создания <see cref="IMvcFeature"/>.
-        /// </summary>
-        public IList<IMvcFeatureConvetion> FeatureConvetions { get; }
+        
 
 
 

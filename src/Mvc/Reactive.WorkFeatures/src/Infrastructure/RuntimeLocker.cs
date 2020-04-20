@@ -1,5 +1,4 @@
-﻿using EquipApps.Mvc.Runtime;
-using System;
+﻿using System;
 using System.Reactive.Subjects;
 using System.Threading;
 

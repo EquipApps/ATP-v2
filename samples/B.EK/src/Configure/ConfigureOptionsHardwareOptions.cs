@@ -34,7 +34,7 @@ namespace B.EK.Configure
             //-- Релейный контроль
             options.RegisterHardware<DigitalBehavior>("F{0}", 17, 1);
           
-
+            //--
             options.RegisterMapping<ForDebugDevice, ForDebugDeviceAdapter>("DEBUG_DEVICE");
         }
     }

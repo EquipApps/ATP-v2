@@ -1,5 +1,6 @@
-﻿using EquipApps.Mvc.Runtime;
-using EquipApps.WorkBench.ViewModels;
+﻿using EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure;
+using EquipApps.Mvc.Reactive.WorkFeatures.Services;
+using EquipApps.Mvc.Reactive.WorkFeatures.Viewers;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

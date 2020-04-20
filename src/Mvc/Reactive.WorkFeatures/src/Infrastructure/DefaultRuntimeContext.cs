@@ -1,8 +1,8 @@
-﻿using EquipApps.Mvc.Infrastructure;
+﻿using EquipApps.Mvc.Runtime;
 using EquipApps.Testing;
 using System;
 
-namespace EquipApps.Mvc.Runtime
+namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
 {
     public class DefaultRuntimeContext : RuntimeContext
     {
@@ -10,7 +10,7 @@ namespace EquipApps.Mvc.Runtime
 
         public DefaultRuntimeContext(TestContext testContext,
                                      IActionObjectEnumerator actionObjectEnumerator)
-            :base(testContext)
+            : base(testContext)
         {
             this.actionObjectEnumerator = actionObjectEnumerator;
         }

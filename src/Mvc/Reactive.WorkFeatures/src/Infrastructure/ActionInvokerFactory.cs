@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EquipApps.Mvc.Runtime
+namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
 {
     /// <summary>
     /// Создает <see cref="IActionInvoker"/> используя <see cref="IActionInvokerProvider"/>

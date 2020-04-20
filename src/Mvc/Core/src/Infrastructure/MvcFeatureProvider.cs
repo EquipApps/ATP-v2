@@ -12,24 +12,21 @@ namespace EquipApps.Mvc.Infrastructure
     /// </summary>
     public class MvcFeatureProvider : IFeatureProvider
     {
-        IActionDescriptorCollectionProvider          _collectionProvider;
-        private readonly IList<IMvcFeatureConvetion> _conventions;
+        IActionDescriptorCollectionProvider   _collectionProvider;
+        private readonly IMvcFeatureConvetion _convention;
 
         public MvcFeatureProvider(
-            IActionDescriptorCollectionProvider collectionProvider, IOptions<MvcOptions> options)
+            IActionDescriptorCollectionProvider collectionProvider,
+            IMvcFeatureConvetion mvcFeatureConvetion = null)
         {
             if (collectionProvider == null)
             {
                 throw new ArgumentNullException(nameof(collectionProvider));
             }
 
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
             _collectionProvider = collectionProvider;
-            _conventions = options.Value.FeatureConvetions;
+            _convention = mvcFeatureConvetion;
+           
         }
 
         public int Order => 0;
@@ -42,10 +39,7 @@ namespace EquipApps.Mvc.Infrastructure
             //-- 2) Конфигурируем фичу
             feature.ActionObjects = GetActionDescriptors();
 
-            foreach (var convention in _conventions)
-            {
-                convention.Apply(feature);
-            }
+            _convention?.Apply(feature);
 
             //-- 3) Сохраняем
             context.Collection.Set<IMvcFeature>(feature);

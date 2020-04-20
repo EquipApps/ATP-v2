@@ -1,9 +1,8 @@
-﻿using EquipApps.Mvc.Infrastructure;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace EquipApps.Mvc.Runtime
+namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
 {
     /// <summary>
     /// Реализация <see cref="IActionObjectEnumerator"/>.

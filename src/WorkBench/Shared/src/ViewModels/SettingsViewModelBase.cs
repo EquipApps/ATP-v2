@@ -1,4 +1,5 @@
-﻿using EquipApps.Testing;
+﻿using EquipApps.Mvc.Reactive;
+using EquipApps.Testing;
 using Microsoft.Extensions.Options;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;

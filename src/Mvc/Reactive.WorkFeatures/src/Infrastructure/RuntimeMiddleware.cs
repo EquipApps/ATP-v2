@@ -1,12 +1,14 @@
 ﻿using EquipApps.Mvc.Abstractions;
-using EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure;
+using EquipApps.Mvc.Reactive.WorkFeatures.Services;
+using EquipApps.Mvc.Runtime;
 using EquipApps.Testing;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace EquipApps.Mvc.Runtime
+namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
 {
     /// <summary>
     /// DependencyInjection (Singleton).
@@ -18,24 +20,27 @@ namespace EquipApps.Mvc.Runtime
     {
         private readonly IEnumerable<IActionInvokerProvider> _actionInvokerProviders;
 
+        private readonly RuntimeOptions _options;
         private readonly RuntimeRepeat repeat;
         private readonly RuntimeRepeat repeatOnce;
         private readonly RuntimeLocker locker;
 
         private volatile bool _isEnabledPause = false;
 
-        private ActionInvokerFactory   actionFactory;
+        private ActionInvokerFactory actionFactory;
         private ActionObjectEnumerator actionEnumerator;
 
         IObservable<bool> IRuntimeService.ObservablePause => locker.ObservableLocker;
 
-        public RuntimeMiddleware(IEnumerable<IActionInvokerProvider> actionInvokerProviders)
+        public RuntimeMiddleware(IEnumerable<IActionInvokerProvider> actionInvokerProviders,
+                                 IOptions<RuntimeOptions> options)
         {
             _actionInvokerProviders = actionInvokerProviders ?? throw new ArgumentNullException(nameof(actionInvokerProviders));
+            _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
 
-            repeat       = new RuntimeRepeat();
-            repeatOnce   = new RuntimeRepeat();
-            locker       = new RuntimeLocker();
+            repeat = new RuntimeRepeat();
+            repeatOnce = new RuntimeRepeat();
+            locker = new RuntimeLocker();
         }
 
         public Task RunAsync(TestContext testContext)
@@ -116,7 +121,7 @@ namespace EquipApps.Mvc.Runtime
                         //
                         if (!action.IsCheck)
                         {
-                            goto case RuntimeState.Move;                          
+                            goto case RuntimeState.Move;
                         }
 
                         //
@@ -132,7 +137,7 @@ namespace EquipApps.Mvc.Runtime
                          * ПОСЛЕ ОБРБОТКИ ПАУЗЫ НУЖНО ВЫЙТИ ИЗ ФУНКЦИИ.
                          * ЧТОБЫ БЫЛА ВОЗМОЖНОСТЬ ПРЕРВАТЬ ПРОВЕРКУ!
                          */
-                        
+
                         action.SetState(ActionObjectState.BreakPoint);  //-- Изменяем состояние ОСТАНОВКА
                         locker.CaseAwite();
                         action.SetState(ActionObjectState.Empy);        //-- Изменяем состояние
@@ -192,7 +197,7 @@ namespace EquipApps.Mvc.Runtime
                         //-- Получаем текущий элемент ActionObjecct                        
                         var action = actionEnumerator.Current;
                         Debug.Assert(action != null, "ActionObjecct are equal NULL");
-                       
+
                         //-- Изменяем состояние ПАУЗА
                         action.SetState(ActionObjectState.Pause);
 
@@ -277,17 +282,27 @@ namespace EquipApps.Mvc.Runtime
 
         private void Sleep()
         {
-            System.Threading.Thread.Sleep(100);
+            var timeOut = _options.RepetTimeout;
+            if (timeOut > 0)
+            {
+                System.Threading.Thread.Sleep(timeOut);
+            }
         }
 
-        void IRuntimeService.EnabledRepeat(bool isRepeatEnabled)
+        void IRuntimeService.EnabledRepeat(bool isEnabled)
         {
-            repeat.Enabled(isRepeatEnabled);
+            var count = isEnabled ? _options.RepetCount : 0;
+
+            //---
+            repeat.SetCounter(count);
         }
 
-        void IRuntimeService.EnabledRepeatOnce(bool isRepeatOnceEnabled)
+        void IRuntimeService.EnabledRepeatOnce(bool isEnabled)
         {
-            repeatOnce.Enabled(isRepeatOnceEnabled);
+            var count = isEnabled ? _options.RepetCount : 0;
+
+            //---
+            repeatOnce.SetCounter(count);
         }
 
         void IRuntimeService.EnabledPause(bool isPauseEnabled)

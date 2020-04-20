@@ -36,6 +36,26 @@ namespace NLib.AtpNetCore.Testing
             return builder;
         }
 
+
+        //--MvcFeatureConvetion
+        public static void AddTransientMvcFeatureConvetion<TConvetion>(this IServiceCollection services)
+           where TConvetion : class, IMvcFeatureConvetion
+        {
+            services.AddTransient<IMvcFeatureConvetion, TConvetion>();
+        }
+        public static void AddSingletonMvcFeatureConvetion<TConvetion>(this IServiceCollection services)
+           where TConvetion : class, IMvcFeatureConvetion
+        {
+            services.AddSingleton<IMvcFeatureConvetion, TConvetion>();
+        }
+
+
+
+
+
+
+
+
         //-- ModelProvider
         public static void AddMvcModelProvider<TModel, TProvider>(this IServiceCollection services)
            where TModel : class

@@ -1,4 +1,4 @@
-﻿namespace EquipApps.Mvc.Runtime
+﻿namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
 {
     public enum RuntimeLockerCase
     {

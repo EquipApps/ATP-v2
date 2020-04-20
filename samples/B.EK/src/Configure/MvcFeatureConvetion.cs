@@ -2,26 +2,13 @@
 using EquipApps.Testing;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace B.EK.Configure
 {
-    public class ConfigureOptionsMvcOptions : IConfigureOptions<MvcOptions>
-    {
-        private IOptions<TestOptions> testOptions;
-
-        public ConfigureOptionsMvcOptions(IOptions<TestOptions> options)
-        {
-            this.testOptions = options;
-        }
-
-        public void Configure(MvcOptions options)
-        {
-            options.FeatureConvetions.Add(new MvcFeatureConvetion(testOptions));
-        }
-    }
-
-
     /// <summary>
     /// Фильрация алгоритма проверки
     /// </summary>

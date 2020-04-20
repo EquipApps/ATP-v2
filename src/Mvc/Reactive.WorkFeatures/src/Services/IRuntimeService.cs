@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EquipApps.Mvc.Runtime
+namespace EquipApps.Mvc.Reactive.WorkFeatures.Services
 {
     /// <summary>
     /// DependencyInjection (Singleton).

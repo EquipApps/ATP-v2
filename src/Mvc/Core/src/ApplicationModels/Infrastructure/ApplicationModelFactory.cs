@@ -27,7 +27,7 @@ namespace EquipApps.Mvc.ApplicationModels.Infrastructure
             }
 
             _applicationModelProviders = applicationModelProviders.OrderBy(p => p.Order).ToArray();
-            _conventions = options.Value.ApplicationConventions;
+            _conventions = options.Value.Conventions;
         }
 
         public ApplicationModel CreateApplicationModel(IEnumerable<TypeInfo> controllerTypes)

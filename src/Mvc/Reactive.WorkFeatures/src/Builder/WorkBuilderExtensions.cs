@@ -1,4 +1,4 @@
-﻿using EquipApps.Mvc.Runtime;
+﻿using EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 

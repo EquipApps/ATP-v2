@@ -1,12 +1,12 @@
 ﻿using EquipApps.Testing;
-using EquipApps.Mvc.Runtime;
 using ReactiveUI;
 using System;
 using System.Reactive.Linq;
 using ReactiveUI.Fody.Helpers;
 using System.Reactive;
+using EquipApps.Mvc.Reactive.WorkFeatures.Services;
 
-namespace EquipApps.WorkBench.ViewModels
+namespace EquipApps.Mvc.Reactive.WorkFeatures.Viewers
 {
     public partial class WorkViewer : ReactiveObject
     {

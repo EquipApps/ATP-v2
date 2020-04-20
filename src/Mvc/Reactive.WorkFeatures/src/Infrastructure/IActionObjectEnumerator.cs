@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EquipApps.Mvc.Infrastructure
+namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
 {
     /// <summary>
     /// Интератор с возможностью перехода

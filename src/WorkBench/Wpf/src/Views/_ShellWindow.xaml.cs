@@ -1,4 +1,5 @@
-﻿using EquipApps.WorkBench.Services;
+﻿using EquipApps.Mvc.Reactive;
+using EquipApps.WorkBench.Services;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using ReactiveUI;
