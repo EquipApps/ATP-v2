@@ -183,16 +183,7 @@ namespace NLib.AtpNetCore.Testing
             services.AddTransientFeatureProvider<MvcFeatureProvider>();
             services.AddSingleton<IActionDescriptorCollectionProvider, DefaultActionDescriptorCollectionProvider>();
             services.AddTransientActionDescriptorProvider<ControllerActionDescriptorProvider>();
-            
-            // ----------------------------------------------------------------------------------------
-            // Middleware
-            //
-            // 
-            //
-            services.AddSingleton<RuntimeMiddleware>();
-            services.AddSingleton<DefaultRuntimeSynchService>();
-            services.AddSingleton<IRuntimeService>(x => x.GetService<DefaultRuntimeSynchService>());
-            
+  
             // ----------------------------------------------------------------------------------------
             // IActionInvokerProvider
             //      ControllerActionInvokerProvider

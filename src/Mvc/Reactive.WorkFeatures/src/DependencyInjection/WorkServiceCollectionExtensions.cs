@@ -1,4 +1,5 @@
-﻿using EquipApps.WorkBench.ViewModels;
+﻿using EquipApps.Mvc.Runtime;
+using EquipApps.WorkBench.ViewModels;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -7,14 +8,14 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddWorker(this IServiceCollection services)
         {
             //-- Middleware
-            //services.AddSingleton<ViewMiddleware>();
+            services.AddSingleton<RuntimeMiddleware>();
 
             //-- Extentions
-            //services.AddTransientFeatureProvider<ViewFeatureProvider>();
-            //services.AddTransientActionInvokerProvider<ViewActionInvokerProvider>();
+
 
             //-- Service
-            //services.AddSingleton<IActionService, ActionService>();
+            services.AddSingleton<IRuntimeService>(x => x.GetService<RuntimeMiddleware>());
+
 
             //-- Viewer
             services.AddTransient<WorkViewer>();

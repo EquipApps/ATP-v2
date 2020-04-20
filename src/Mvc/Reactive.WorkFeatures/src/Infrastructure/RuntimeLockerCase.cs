@@ -1,6 +1,6 @@
 ﻿namespace EquipApps.Mvc.Runtime
 {
-    public enum RuntimeCase
+    public enum RuntimeLockerCase
     {
         /// <summary>
         /// Шаг назад

@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Reactive.WorkFeatures\src\EquipApps.Mvc.Reactive.WorkFeatures.csproj" />
     <ProjectReference Include="..\src\EquipApps.Mvc.Core.csproj" />
   </ItemGroup>
 

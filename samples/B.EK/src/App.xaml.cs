@@ -144,7 +144,7 @@ namespace B.EK
             builder.UseHardware();
 
             //-- Основная проверка
-            builder.UseMvc();
+            builder.UseRuntime();
 
             //-- Выводим информацию в протокол
             builder.Use((TestContext context) =>

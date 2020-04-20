@@ -4,22 +4,21 @@ using System;
 
 namespace EquipApps.Testing
 {
-    public static class MvcBuilderExtensions
+    public static class WorkBuilderExtensions
     {
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="application"></param>
-        public static void UseMvc(this ITestBuilder application)
+        public static void UseRuntime(this ITestBuilder application)
         {
             if (application == null)
                 throw new ArgumentNullException(nameof(application));
 
-            var mvcMiddleware = application.ApplicationServices.GetService<RuntimeMiddleware>();
-            if (mvcMiddleware == null)
+            var middleware = application.ApplicationServices.GetService<RuntimeMiddleware>();
+            if (middleware == null)
                 throw new Exception(nameof(RuntimeMiddleware));
 
-            application.Use(mvcMiddleware.RunAsync);
+            application.Use(middleware.RunAsync);
         }
     }
 }

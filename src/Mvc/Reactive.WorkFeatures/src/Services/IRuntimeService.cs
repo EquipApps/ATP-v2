@@ -8,25 +8,21 @@ namespace EquipApps.Mvc.Runtime
     /// </summary>
     public interface IRuntimeService
     {
-        // <summary>
+        /// <summary>
         /// Разрешить / запретить цикл всех действий
         /// </summary>
-        bool IsEnabledRepeat { get; set; }
+        void EnabledRepeat(bool isRepeatEnabled);
 
         // <summary>
         /// Разрешить / запретить цикл одного действия
         /// </summary>
-        bool IsEnabledRepeatOnce { get; set; }
+        void EnabledRepeatOnce(bool isRepeatOnceEnabled);
 
         // <summary>
         /// Разрешить / запретить пошаговый режим
         /// </summary>
-        bool IsEnabledPause { get; set; }
+        void EnabledPause(bool isPauseEnabled);
 
-        /// <summary>
-        /// 
-        /// </summary>        
-        int MillisecondsTimeout { get; set; }
 
 
         /// <summary>

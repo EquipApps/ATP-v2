@@ -1,4 +1,5 @@
 ﻿using EquipApps.Mvc.Abstractions;
+using EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure;
 using EquipApps.Testing;
 using System;
 using System.Collections.Generic;
@@ -13,20 +14,28 @@ namespace EquipApps.Mvc.Runtime
     /// Отвечает за извлечение и обработку <see cref="ActionDescriptor"/>.
     /// </summary>
     /// 
-    public class RuntimeMiddleware
+    public class RuntimeMiddleware : IRuntimeService
     {
-        private readonly DefaultRuntimeSynchService _synchService;
         private readonly IEnumerable<IActionInvokerProvider> _actionInvokerProviders;
 
-        private ActionInvokerFactory actionFactory;
+        private readonly RuntimeRepeat repeat;
+        private readonly RuntimeRepeat repeatOnce;
+        private readonly RuntimeLocker locker;
+
+        private volatile bool _isEnabledPause = false;
+
+        private ActionInvokerFactory   actionFactory;
         private ActionObjectEnumerator actionEnumerator;
 
-        public RuntimeMiddleware(
-            DefaultRuntimeSynchService synchService,
-            IEnumerable<IActionInvokerProvider> actionInvokerProviders)
+        IObservable<bool> IRuntimeService.ObservablePause => locker.ObservableLocker;
+
+        public RuntimeMiddleware(IEnumerable<IActionInvokerProvider> actionInvokerProviders)
         {
-            _synchService = synchService ?? throw new ArgumentNullException(nameof(synchService));
             _actionInvokerProviders = actionInvokerProviders ?? throw new ArgumentNullException(nameof(actionInvokerProviders));
+
+            repeat       = new RuntimeRepeat();
+            repeatOnce   = new RuntimeRepeat();
+            locker       = new RuntimeLocker();
         }
 
         public Task RunAsync(TestContext testContext)
@@ -50,7 +59,7 @@ namespace EquipApps.Mvc.Runtime
                  * Регистрация действия Next по умолчанию при запросе на прерывание проверки..
                  * Позволяет прерывать проверку погда конвеер состояний находиться в состоянии паузы.
                  */
-                testContext.TestAborted.Register(_synchService.Next);
+                testContext.TestAborted.Register(locker.Next);
 
                 // `next
                 var next = RuntimeState.Reset;
@@ -125,7 +134,7 @@ namespace EquipApps.Mvc.Runtime
                          */
                         
                         action.SetState(ActionObjectState.BreakPoint);  //-- Изменяем состояние ОСТАНОВКА
-                        _synchService.Pause();
+                        locker.CaseAwite();
                         action.SetState(ActionObjectState.Empy);        //-- Изменяем состояние
 
                         next = RuntimeState.Invoke;             //-- Следующее состояние по умолчанию
@@ -176,32 +185,31 @@ namespace EquipApps.Mvc.Runtime
                     }
                 case RuntimeState.Pause:
                     {
-                        // Если пауза не включина идем далее..
-                        if (!_synchService.IsEnabledPause)
+                        //-- Если пауза не включина идем далее..
+                        if (!_isEnabledPause)
                             goto case RuntimeState.RepeatOnce;
 
-                        //
-                        // Получаем текущий элемент actionDescriptor
-                        //
+                        //-- Получаем текущий элемент ActionObjecct                        
                         var action = actionEnumerator.Current;
                         Debug.Assert(action != null, "ActionObjecct are equal NULL");
                        
                         //-- Изменяем состояние ПАУЗА
                         action.SetState(ActionObjectState.Pause);
 
-                        switch (_synchService.Pause())
+                        //-- 
+                        switch (locker.CaseAwite())
                         {
-                            case RuntimeCase.Next:
+                            case RuntimeLockerCase.Next:
                                 {
                                     next = RuntimeState.RepeatOnce;
                                     break;
                                 }
-                            case RuntimeCase.Replay:
+                            case RuntimeLockerCase.Replay:
                                 {
                                     next = RuntimeState.Begin;
                                     break;
                                 }
-                            case RuntimeCase.Previous: //TODO: Когданибудь реализовать
+                            case RuntimeLockerCase.Previous: //TODO: Когданибудь реализовать
                             default:
                                 throw new NotImplementedException();
                         }
@@ -213,13 +221,16 @@ namespace EquipApps.Mvc.Runtime
                     }
                 case RuntimeState.RepeatOnce:
                     {
-                        if (_synchService.IsEnabledRepeatOnce)
+                        if (repeatOnce.TryRepeat())
                         {
-                            _synchService.RepeatOnce();
-                            goto case RuntimeState.Begin;
+                            Sleep();
+
+                            next = RuntimeState.Begin;
                         }
                         else
-                            goto case RuntimeState.Move;
+                            next = RuntimeState.Move;
+
+                        break;
                     }
                 case RuntimeState.Move:
                     {
@@ -243,13 +254,16 @@ namespace EquipApps.Mvc.Runtime
                     }
                 case RuntimeState.Repeat:
                     {
-                        if (_synchService.IsEnabledRepeat)
+                        if (repeat.TryRepeat())
                         {
-                            _synchService.Repeat();
-                            goto case RuntimeState.Reset;
+                            Sleep();
+
+                            next = RuntimeState.Reset;
                         }
                         else
-                            goto case RuntimeState.End;
+                            next = RuntimeState.End;
+
+                        break;
                     }
                 case RuntimeState.End:
                     {
@@ -259,6 +273,41 @@ namespace EquipApps.Mvc.Runtime
                 default:
                     throw new InvalidOperationException();
             }
+        }
+
+        private void Sleep()
+        {
+            System.Threading.Thread.Sleep(100);
+        }
+
+        void IRuntimeService.EnabledRepeat(bool isRepeatEnabled)
+        {
+            repeat.Enabled(isRepeatEnabled);
+        }
+
+        void IRuntimeService.EnabledRepeatOnce(bool isRepeatOnceEnabled)
+        {
+            repeatOnce.Enabled(isRepeatOnceEnabled);
+        }
+
+        void IRuntimeService.EnabledPause(bool isPauseEnabled)
+        {
+            _isEnabledPause = isPauseEnabled;
+        }
+
+        void IRuntimeService.Next()
+        {
+            locker.Next();
+        }
+
+        void IRuntimeService.Replay()
+        {
+            locker.Replay();
+        }
+
+        void IRuntimeService.Previous()
+        {
+            locker.Previous();
         }
     }
 }
