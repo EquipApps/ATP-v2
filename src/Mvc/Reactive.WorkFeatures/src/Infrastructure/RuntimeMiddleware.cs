@@ -30,7 +30,7 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
         private ActionInvokerFactory actionFactory;
         private ActionObjectEnumerator actionEnumerator;
 
-        IObservable<bool> IRuntimeService.ObservablePause => locker.ObservableLocker;
+        
 
         public RuntimeMiddleware(IEnumerable<IActionInvokerProvider> actionInvokerProviders,
                                  IOptions<RuntimeOptions> options)
@@ -38,9 +38,9 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
             _actionInvokerProviders = actionInvokerProviders ?? throw new ArgumentNullException(nameof(actionInvokerProviders));
             _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
 
-            repeat = new RuntimeRepeat();
-            repeatOnce = new RuntimeRepeat();
-            locker = new RuntimeLocker();
+            repeat      = new RuntimeRepeat();
+            repeatOnce  = new RuntimeRepeat();
+            locker      = new RuntimeLocker();
         }
 
         public Task RunAsync(TestContext testContext)
@@ -62,7 +62,7 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
 
                 /*
                  * Регистрация действия Next по умолчанию при запросе на прерывание проверки..
-                 * Позволяет прерывать проверку погда конвеер состояний находиться в состоянии паузы.
+                 * Позволяет прерывать проверку когда конвеер состояний находиться в состоянии паузы.
                  */
                 testContext.TestAborted.Register(locker.Next);
 
@@ -289,6 +289,16 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
             }
         }
 
+        /// <inheritdoc/>        
+        IObservable<bool> IRuntimeService.ObservablePause => locker.ObservableLocker;
+
+        /// <inheritdoc/>  
+        IObservable<int> IRuntimeService.ObservableCountRepeat => repeat.ObservableCount;
+
+        /// <inheritdoc/>  
+        IObservable<int> IRuntimeService.ObservableCountRepeatOnce => repeatOnce.ObservableCount;
+
+        /// <inheritdoc/>  
         void IRuntimeService.EnabledRepeat(bool isEnabled)
         {
             var count = isEnabled ? _options.RepetCount : 0;
@@ -297,6 +307,7 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
             repeat.SetCounter(count);
         }
 
+        /// <inheritdoc/>  
         void IRuntimeService.EnabledRepeatOnce(bool isEnabled)
         {
             var count = isEnabled ? _options.RepetCount : 0;
@@ -305,21 +316,25 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
             repeatOnce.SetCounter(count);
         }
 
+        /// <inheritdoc/>  
         void IRuntimeService.EnabledPause(bool isPauseEnabled)
         {
             _isEnabledPause = isPauseEnabled;
         }
 
+        /// <inheritdoc/>  
         void IRuntimeService.Next()
         {
             locker.Next();
         }
 
+        /// <inheritdoc/>  
         void IRuntimeService.Replay()
         {
             locker.Replay();
         }
 
+        /// <inheritdoc/>  
         void IRuntimeService.Previous()
         {
             locker.Previous();

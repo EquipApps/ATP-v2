@@ -15,8 +15,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLib.AtpNetCore.Testing;
 using Serilog;
+using Serilog.Events;
+using Serilog.Filters;
 using Splat;
+using System;
 using System.Reflection;
+using System.Runtime.Remoting.Contexts;
 using System.Windows;
 
 namespace B.EK
@@ -33,16 +37,18 @@ namespace B.EK
             Logger = CreateLogger();
         }
 
+       
+
         private Serilog.ILogger CreateLogger()
         {
             var log = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
-                .WriteTo.Console()//outputTemplate: "[{Properties}{NewLine}{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+                .Filter.ByIncludingOnly(Matching.FromSource(typeof(TestContext).FullName))
+                .WriteTo.File("Log.txt")
                 .CreateLogger();
 
             return log;
         }
-
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -72,7 +78,6 @@ namespace B.EK
         protected override void Configure(ILoggingBuilder loggingBuilder)
         {
             loggingBuilder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-
             loggingBuilder.AddSerilog(Logger);           
         }
 
@@ -121,6 +126,26 @@ namespace B.EK
             {
                 context.TestLogger.LogCritical(ex, "Необработанное исключение");
                 throw ex;
+            });
+
+            builder.Use((main) =>
+            {
+                return async context =>
+                {
+                    try
+                    {
+                       
+                        //-- Тут мы создаем новый протокол
+                        var logManager = context.TestServices.GetService<ILogManager>();
+
+                        await main(context);
+                    }
+                    finally
+                    {
+                        //-- Тут мы сохряняем протокол
+                        Log.CloseAndFlush();
+                    }
+                };
             });
 
             //-- Очистка области протокола.

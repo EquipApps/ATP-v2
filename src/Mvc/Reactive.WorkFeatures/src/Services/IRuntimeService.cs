@@ -13,7 +13,7 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Services
         /// </summary>
         void EnabledRepeat(bool isRepeatEnabled);
 
-        // <summary>
+        /// <summary>
         /// Разрешить / запретить цикл одного действия
         /// </summary>
         void EnabledRepeatOnce(bool isRepeatOnceEnabled);
@@ -23,11 +23,38 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Services
         /// </summary>
         void EnabledPause(bool isPauseEnabled);
 
-
+        /// <summary>
+        /// Позволяет подписаться на события счетчика циклов  всех действий
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// -1 -> Вкл. Бесконечный цикл.
+        ///  0 -> Выкл.
+        ///  1 -> Вкл. Счетчик.
+        /// </remarks>
+        /// 
+        IObservable<int> ObservableCountRepeat { get; }
 
         /// <summary>
-        /// Позволчят подписаться на события изменения состояния паузы
+        /// Позволяет подписаться на события счетчика циклов одного действия
         /// </summary>
+        /// 
+        /// <remarks>
+        /// -1 -> Вкл. Бесконечный цикл.
+        ///  0 -> Выкл.
+        ///  1 -> Вкл. Счетчик.
+        /// </remarks>
+        /// 
+        IObservable<int> ObservableCountRepeatOnce { get; }
+
+        /// <summary>
+        /// Позволяет подписаться на события изменения состояния паузы
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Может возникать как в пошаговом режиме, так и во время точек остоновок
+        /// </remarks>
+        /// 
         IObservable<bool> ObservablePause { get; }
 
         /// <summary>

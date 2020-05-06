@@ -5,10 +5,12 @@ using System.Reactive.Linq;
 using ReactiveUI.Fody.Helpers;
 using System.Reactive;
 using EquipApps.Mvc.Reactive.WorkFeatures.Services;
+using System.Diagnostics;
+using System.Reactive.Disposables;
 
 namespace EquipApps.Mvc.Reactive.WorkFeatures.Viewers
 {
-    public partial class WorkViewer : ReactiveObject
+    public partial class WorkViewer : ReactiveObject, IDisposable
     {
         private IDisposable _cleanUp;
         private ITestFactory testFactory;
@@ -24,10 +26,6 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Viewers
             this.testFactory = testFactory        ?? throw new ArgumentNullException(nameof(testFactory));
             this.runtimeService = runtimeService  ?? throw new ArgumentNullException(nameof(runtimeService));
 
-
-            //-- ПОДПИСЫВАЕМСЯ
-            var pausedRefresher = runtimeService.ObservablePause.ObserveOn(RxApp.MainThreadScheduler)
-                                                                .Subscribe(isPaued => IsPausing = isPaued);
 
             var canTestBuild = this.WhenAnyValue(x => x.IsBuilding,
                                                  x => x.IsTesting,
@@ -68,8 +66,29 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Viewers
             TestPrevious    = ReactiveCommand.Create(OnTestPreviousTask, canTestNext);
             TestReplay      = ReactiveCommand.Create(OnTestReplayTask, canTestNext);
             TestNext        = ReactiveCommand.Create(OnTestNextTask, canTestNext);
-        }
 
+
+
+
+
+
+            //-- ПОДПИСЫВАЕМСЯ
+            var pausedRefresher = runtimeService.ObservablePause.ObserveOn(RxApp.MainThreadScheduler)
+                                                                .Subscribe(isPaued => IsPausing = isPaued);
+
+            var repeatRefresher = runtimeService.ObservableCountRepeat.ObserveOn(RxApp.MainThreadScheduler)
+                                                                      .Subscribe(OnCountRepeat);
+
+            var repeatOnceRefresher = runtimeService.ObservableCountRepeatOnce.ObserveOn(RxApp.MainThreadScheduler)
+                                                                              .Subscribe(OnCountRepeatOnce);
+
+
+            _cleanUp = new CompositeDisposable(pausedRefresher,
+                                               repeatRefresher,
+                                               repeatOnceRefresher);
+
+
+        }
 
         /// <summary>
         /// 
@@ -85,8 +104,6 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Viewers
         /// 
         /// </summary>
         [Reactive] public bool IsRepeatOnceEnabled { get; set; } = false;
-
-
 
         /// <summary>
         /// Флаг. Тест создан
@@ -182,6 +199,41 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Viewers
         private void OnTestPreviousTask()
         {
             runtimeService.Previous();
+        }
+
+        private void OnCountRepeatOnce(int count)
+        {
+            Debug.Assert(count >= -1);
+
+            switch (count)
+            {
+                case -1:
+                    break;
+                case 0:
+                    IsRepeatOnceEnabled = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void OnCountRepeat(int count)
+        {
+            Debug.Assert(count >= -1);
+
+            switch (count)
+            {
+                case -1:
+                    break;
+                case 0:
+                    IsRepeatEnabled = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+        public void Dispose()
+        {
+            _cleanUp.Dispose();
         }
     }
 }

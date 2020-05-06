@@ -38,6 +38,21 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure.Tests
         }
 
         [TestMethod()]
+        public void TryRepeatTest2_1()
+        {
+            //-- Создали модуль
+            var repeatModule = new RuntimeRepeat();
+            repeatModule.SetCounter(-10);
+
+            //-- Можно повторять хоть сколько
+            for (int i = 0; i < 1000; i++)
+            {
+                Assert.IsTrue(repeatModule.TryRepeat());
+            }
+        }
+
+
+        [TestMethod()]
         public void TryRepeatTest3()
         {
             //-- Создали модуль

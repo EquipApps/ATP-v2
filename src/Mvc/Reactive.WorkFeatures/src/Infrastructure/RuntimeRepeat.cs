@@ -6,7 +6,7 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
 {
     public class RuntimeRepeat : IDisposable
     {
-        private readonly ISubject<Unit> countDownFinalSubject = new ReplaySubject<Unit>(1);
+        private readonly ISubject<int> countSubject = new ReplaySubject<int>(1);
         private readonly object locker = new object();
 
         private volatile bool _isEnabled;
@@ -31,9 +31,9 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
         /// <summary>
         /// Позволяет подписаться на конец счетчика
         /// </summary>
-        public IObservable<Unit> ObservableCountDownFinal
+        public IObservable<int> ObservableCount
         {
-            get => countDownFinalSubject;
+            get => countSubject;
         }
 
         /// <summary>
@@ -41,6 +41,9 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
         /// </summary>
         public void SetCounter(int count = 0)
         {
+            //-- Ограничитель
+            if (count < 0) count = -1;
+
             lock (locker)
             {
                 switch (count)
@@ -65,6 +68,8 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
                         }    
                 }
                 _count = count;
+
+                countSubject.OnNext(_count);
             }
         }
 
@@ -92,34 +97,30 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
                     return false;
                 }
 
-                //-- true - Если разрешен счетчик
+                //-- true - Если не включен счетчик
                 if (!_isEnabledCount)
                 {
                     return true;
                 }
 
-                //-- true - Счктчик еще не сброшен
-
-                if (_count-- != 0)
+                //-- true - Счетчик еще не сброшен
+                if (_count-- == 0)
                 {
+                    //-- Изменяем состояние блокировщика!
+                    _isEnabled      = false;
+                    _isEnabledCount = false;
+                   
+                    countSubject.OnNext(_count);
+
+                    return false;
+                }
+                else
+                {
+                    countSubject.OnNext(_count);
+
                     return true;
                 }
-
-                //-- Изменяем состояние блокировщика!
-
-                _isEnabled      = false;
-                _isEnabledCount = false;
-                _count          = -1;
             }
-
-            /*
-             * Оповещаем о конце обратного отсчета.
-             * ВАЖНО: Не включать в lock(locker). 
-             *        Для исключения ситуации взаимной блокировки
-             */
-            countDownFinalSubject.OnNext(Unit.Default);
-
-            return false;
         }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
         /// </summary>
         public void Dispose()
         {
-            countDownFinalSubject.OnCompleted();
+            countSubject.OnCompleted();
         }
     }
 }

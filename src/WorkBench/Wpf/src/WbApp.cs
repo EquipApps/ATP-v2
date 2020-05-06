@@ -26,13 +26,12 @@ namespace EquipApps.WorkBench
             var resolver = Locator.CurrentMutable;
                 resolver.InitializeSplat();             //-- Splat
                 resolver.InitializeReactiveUI();        //-- ReactiveUI
-                                                        //-- Теперь Splat пише в Extensions.Logging
-                resolver.RegisterConstant(new FuncLogManager(FuncLogFactory), typeof(ILogManager));
+                
+            //-- Теперь Splat пише в Extensions.Logging
+            resolver.RegisterConstant(new FuncLogManager(FuncLogFactory), typeof(ILogManager));
 
-                resolver.RegisterViewsForViewModels(typeof(WbApp).Assembly);
-
-            //-- Вызываем баззовую функцию конфигурации
-            base.ConfigureServiceCollectionDefault(serviceCollection);
+            //-- Регистрируем все IViewFor
+            resolver.RegisterViewsForViewModels(typeof(WbApp).Assembly);
 
             //TODO: Перенеси как расширение в Core
             //-------------------------------------------------------------            
@@ -50,6 +49,13 @@ namespace EquipApps.WorkBench
 
             //-- Viewers
             serviceCollection.AddTransient<ActionsViewer>();
+
+
+            //-------------------------------------------------------------
+            //-- ВАЖНО: Вызывать в конце.
+            //--        1) Позволяет очистить ILoggerProvider
+            //-- Вызываем баззовую функцию конфигурации
+            base.ConfigureServiceCollectionDefault(serviceCollection);
 
         }
 
