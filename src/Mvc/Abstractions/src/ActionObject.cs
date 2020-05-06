@@ -20,8 +20,10 @@ namespace EquipApps.Mvc
             Result = new ActionObjectResult(ActionObjectResultType.NotRun);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string Id => ActionDescriptor.Id;
-
 
         /// <summary>
         /// 

@@ -37,7 +37,7 @@ namespace EquipApps.Mvc.Infrastructure
             var feature = new MvcFeature();
 
             //-- 2) Конфигурируем фичу
-            feature.ActionObjects = GetActionDescriptors();
+            feature.ActionObjects = GetActionObjects();
 
             _convention?.Apply(feature);
 
@@ -45,7 +45,7 @@ namespace EquipApps.Mvc.Infrastructure
             context.Collection.Set<IMvcFeature>(feature);
         }
 
-        private IReadOnlyList<ActionObject> GetActionDescriptors()
+        private IReadOnlyList<ActionObject> GetActionObjects()
         {
             /*
              * 1) Извлеает дескриптеры рействий.

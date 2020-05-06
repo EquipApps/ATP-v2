@@ -6,7 +6,7 @@ namespace EquipApps.Mvc
     /// <summary>
     /// Расширение.. 
     /// Доступно через <see cref="IFeatureCollection"/>.
-    /// Позволяет получить доступ к <see cref="ActionDescriptor"/>.
+    /// Позволяет получить доступ к <see cref="ActionObject"/>.
     /// </summary>
     public interface IMvcFeature
     {

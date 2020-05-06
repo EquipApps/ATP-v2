@@ -11,7 +11,6 @@ namespace EquipApps.Mvc.Infrastructure
         /*
          * Вызывает Dispose для каждого ActionObject
          * Данный метод вызывается во премя вызова ITest.Dispose
-         * 
          */
         public void Dispose()
         {
