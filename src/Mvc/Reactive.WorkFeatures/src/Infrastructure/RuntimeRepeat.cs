@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reactive;
 using System.Reactive.Subjects;
 
@@ -102,6 +103,11 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
                 {
                     return true;
                 }
+
+                /*
+                 * Проверка счетчика. Отладка.
+                 */
+                Debug.Assert(_count >= 0);
 
                 //-- true - Счетчик еще не сброшен
                 if (_count-- == 0)
