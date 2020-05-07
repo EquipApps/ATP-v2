@@ -41,7 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WorkBench", "WorkBench", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EquipApps.WorkBench.CoreTests", "src\WorkBench\Core\test\EquipApps.WorkBench.CoreTests.csproj", "{597B83BF-CD5E-4993-A6BD-D570F08A9998}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "EquipApps.WorkBench.Shared", "src\WorkBench\Shared\src\EquipApps.WorkBench.Shared.shproj", "{A1A2AD04-237D-46F4-96AC-C66B07B54414}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "EquipApps.WorkBench.WPF.Shared", "src\WorkBench\Shared\src\EquipApps.WorkBench.WPF.Shared.shproj", "{A1A2AD04-237D-46F4-96AC-C66B07B54414}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EquipApps.WorkBench.WPF", "src\WorkBench\Wpf\src\EquipApps.WorkBench.WPF.csproj", "{FE3EF98A-7867-40F0-B2CF-D2FDA60185C2}"
 EndProject
