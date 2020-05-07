@@ -73,20 +73,22 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Viewers
 
 
             //-- ПОДПИСЫВАЕМСЯ
-            var pausedRefresher = runtimeService.ObservablePause.ObserveOn(RxApp.MainThreadScheduler)
-                                                                .Subscribe(isPaued => IsPausing = isPaued);
+            var pausedRefresher = runtimeService.ObservablePause
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(isPaued => IsPausing = isPaued);
 
-            var repeatRefresher = runtimeService.ObservableCountRepeat.ObserveOn(RxApp.MainThreadScheduler)
-                                                                      .Subscribe(OnCountRepeat);
+            var repeatRefresher = runtimeService.ObservableCountRepeat
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(OnCountRepeat);
 
-            var repeatOnceRefresher = runtimeService.ObservableCountRepeatOnce.ObserveOn(RxApp.MainThreadScheduler)
-                                                                              .Subscribe(OnCountRepeatOnce);
+            var repeatOnceRefresher = runtimeService.ObservableCountRepeatOnce
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(OnCountRepeatOnce);
 
-
+            //-- Очистка
             _cleanUp = new CompositeDisposable(pausedRefresher,
                                                repeatRefresher,
                                                repeatOnceRefresher);
-
 
         }
 
