@@ -67,6 +67,11 @@ namespace EquipApps.WorkBench.ViewModels
         [Reactive] public SettingResult? Result { get; private set; } = SettingResult.Cancel;
 
         /// <summary>
+        /// Индикатор отображенния. Flyout Control 
+        /// </summary>
+        [Reactive] public bool IsOpen { get; set; } = false;
+
+        /// <summary>
         /// По умолчанию очищает подписку
         /// </summary>
         public virtual void Dispose()
@@ -131,13 +136,19 @@ namespace EquipApps.WorkBench.ViewModels
         /// Отобразить
         /// </summary>
         /// <param name="options"></param>
-        protected abstract void Show();
+        protected virtual void Show()
+        {
+            IsOpen = true;
+        }
 
         /// <summary>
         /// Скрыть
         /// </summary>
         /// <param name="options"></param>
-        protected abstract void Hide();
+        protected virtual void Hide()
+        {
+            IsOpen = false;
+        }
 
         /// <summary>
         /// Функция загрузки опций.

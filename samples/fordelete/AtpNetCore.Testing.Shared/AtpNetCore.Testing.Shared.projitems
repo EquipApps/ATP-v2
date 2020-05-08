@@ -15,4 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\RelayViewer\RelayViewerViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\RelayViewer\RelayViewModel.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)ApplicationGraph.dgml" />
+  </ItemGroup>
 </Project>

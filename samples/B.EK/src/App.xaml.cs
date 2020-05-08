@@ -5,23 +5,16 @@ using B.EK.Models;
 using B.EK.Services;
 using B.EK.ViewModels;
 using EquipApps.Builder;
-using EquipApps.Mvc.Reactive.LogsFeatures.Services;
 using EquipApps.Testing;
 using EquipApps.WorkBench;
 using EquipApps.WorkBench.Services;
-using EquipApps.WorkBench.ViewModels;
-using EquipApps.WorkBench.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLib.AtpNetCore.Testing;
 using Serilog;
-using Serilog.Events;
 using Serilog.Filters;
 using Splat;
-using System;
 using System.Reflection;
-using System.Runtime.Remoting.Contexts;
-using System.Windows;
 
 namespace B.EK
 {
@@ -35,9 +28,9 @@ namespace B.EK
         public App()
         {
             Logger = CreateLogger();
-        }
 
-       
+            
+        }
 
         private Serilog.ILogger CreateLogger()
         {
@@ -48,31 +41,6 @@ namespace B.EK
                 .CreateLogger();
 
             return log;
-        }
-
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-
-            var ttt = this.ServiceProvider.GetServices<EquipApps.Testing.Features.IFeatureProvider>();
-
-            var vm1 = this.ServiceProvider.GetRequiredService<LogViewModel>();
-            var vm2 = this.ServiceProvider.GetRequiredService<TestExplorerViewModel>();
-            var vm3 = this.ServiceProvider.GetRequiredService<WorkViewerViewModel>();
-
-
-            //var vm4 = this.ServiceProvider.GetRequiredService<ActionsByResultTool>();
-
-            Workspace.This.Tools.Add(vm1);
-            Workspace.This.Tools.Add(vm3);
-            //Workspace.This.Tools.Add(vm4);
-
-
-            Workspace.This.Files.Add(vm2);
-
-
-            var shell = new ShellWindow();
-                shell.Show();
         }
 
         protected override void Configure(ILoggingBuilder loggingBuilder)

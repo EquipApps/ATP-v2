@@ -14,5 +14,5 @@ using System.Windows.Markup;
 [assembly: ComVisible(false)]
 
 [assembly: XmlnsPrefix(@"http://workbench.equipapps.com/xaml/controls", "wb")]
-[assembly: XmlnsDefinition(@"http://workbench.equipapps.com/xaml/app",      "EquipApps.WorkBench")]
+[assembly: XmlnsDefinition(@"http://workbench.equipapps.com/xaml/app",  "EquipApps.WorkBench")]
 

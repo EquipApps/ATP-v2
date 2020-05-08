@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 using System.Windows;
 
 namespace EquipApps.Testing.Wpf
@@ -29,6 +30,13 @@ namespace EquipApps.Testing.Wpf
             ConfigureServiceCollection          (serviceCollection);
 
             ServiceProvider = GetServiceProvider(serviceCollection);
+
+            //-- Создаем оболочку.
+            var shell = ServiceProvider.GetService<IShell>();
+
+            Debug.Assert(shell != null);
+
+                shell.Show();
         }
 
         /// <summary>
@@ -74,8 +82,6 @@ namespace EquipApps.Testing.Wpf
         /// Конфигурация тестовой проверки
         /// </summary>
         protected abstract void Configure(ITestBuilder builder);
-
-
 
 
         IServiceProvider IStartup.GetServiceProvider()

@@ -1,4 +1,4 @@
-﻿using EquipApps.WorkBench.ViewModels;
+﻿using EquipApps.WorkBench.Docking;
 using System;
 using System.Windows.Data;
 

@@ -1,0 +1,193 @@
+﻿<reactiveUI:ReactiveUserControl x:Class="EquipApps.WorkBench.DockingTestExplorer.TestExplorerView"
+                                x:TypeArguments="local:TestExplorerViewModel"
+                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                                xmlns:local="clr-namespace:EquipApps.WorkBench.DockingTestExplorer"
+                                xmlns:reactiveUI="http://reactiveui.net"                                
+                                xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                                mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <ToolBar Grid.Row="0">
+
+            <Button x:Name="FilterClear" Style="{DynamicResource MahApps.Styles.Button.ToolBarVS}">                
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="FilterRemove" />
+                    <TextBlock x:Name="TotalTotal"  Margin="1,0,1,0" />                   
+                </StackPanel>
+            </Button>
+
+            <ToggleButton x:Name="FilterPassed" Style="{DynamicResource MahApps.Styles.ToggleButton.ToolBarVS}" >
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="16" Width="16"  Margin="0,0,1,0" Source="/EquipApps.WorkBench.WPF.MahApps;component/Images/TestCompleted.png" />
+                    <TextBlock x:Name="TotalPassed"  Margin="1,0,1,0" />                    
+                </StackPanel>
+            </ToggleButton>
+
+            <ToggleButton x:Name="FilterFailed" Style="{DynamicResource MahApps.Styles.ToggleButton.ToolBarVS}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="16" Width="16"  Margin="0,0,1,0" Source="/EquipApps.WorkBench.WPF.MahApps;component/Images/TestFailed.png" />
+                    <TextBlock x:Name="TotalFailed"  Margin="1,0,1,0" />                    
+                </StackPanel>
+            </ToggleButton>
+
+            <ToggleButton x:Name="FilterNotRun" Style="{DynamicResource MahApps.Styles.ToggleButton.ToolBarVS}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="16" Width="16" Margin="0,0,1,0"   Source="/EquipApps.WorkBench.WPF.MahApps;component/Images/TestInitialize.png" />
+                    <TextBlock x:Name="TotalNotRun" Margin="0,0,1,0"/>                    
+                </StackPanel>
+            </ToggleButton>
+
+            <Separator/>
+
+        </ToolBar>
+
+
+
+        <DataGrid x:Name="dataGrid" Grid.Row="1"
+                  SelectionMode             ="Single"
+                  AutoGenerateColumns       ="False"
+                  
+                  EnableColumnVirtualization="True"
+                  EnableRowVirtualization   ="True"  
+                  VirtualizingPanel.IsContainerVirtualizable="True"
+                  VirtualizingPanel.IsVirtualizing="True"
+                  VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                  HorizontalScrollBarVisibility ="Visible"
+                  VerticalScrollBarVisibility   ="Visible"
+                  >
+
+            <DataGrid.Columns>
+
+                <DataGridCheckBoxColumn x:Name="Column_BreakPoint" 
+                                        Binding             ="{Binding Path=IsBreak, Mode=TwoWay}"
+                                        ElementStyle        ="{DynamicResource MahApps.Styles.CheckBox.DataGrid}"
+                                        EditingElementStyle ="{DynamicResource MahApps.Styles.CheckBox.DataGrid}"                                         
+                                        CanUserResize="False" CanUserReorder="False" CanUserSort="False" />
+
+                <DataGridCheckBoxColumn x:Name="Column_CheckPoint" 
+                                        Binding             ="{Binding Path=IsCheck, Mode=TwoWay}"
+                                        ElementStyle        ="{DynamicResource MahApps.Styles.CheckBox.DataGrid}"
+                                        EditingElementStyle ="{DynamicResource MahApps.Styles.CheckBox.DataGrid}"                                         
+                                        CanUserResize="False" CanUserReorder="False" CanUserSort="False" />
+
+                <DataGridTemplateColumn CanUserResize="False" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Width="16" Height="16">
+                                <Image  x:Name="Image"/>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Result}" Value="NotExecuted">
+                                    <Setter TargetName="Image" 
+                                            Property="Source" 
+                                            Value="/EquipApps.WorkBench.WPF.MahApps;component/Images/TestInitialize.png"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding Result}" Value="Passed">
+                                    <Setter TargetName="Image" 
+                                            Property="Source" 
+                                            Value="/EquipApps.WorkBench.WPF.MahApps;component/Images/TestCompleted.png"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding Result}" Value="NotImplemented">
+                                    <Setter TargetName="Image" 
+                                            Property="Source" 
+                                            Value="/EquipApps.WorkBench.WPF.MahApps;component/Images/TestFailed.png"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding Result}" Value="Inconclusive">
+                                    <Setter TargetName="Image" 
+                                            Property="Source" 
+                                            Value="/EquipApps.WorkBench.WPF.MahApps;component/Images/TestAborted.png"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding Result}" Value="Failed">
+                                    <Setter TargetName="Image" 
+                                            Property="Source" 
+                                            Value="/EquipApps.WorkBench.WPF.MahApps;component/Images/TestFailed.png"/>
+                                </DataTrigger>
+
+
+                                <DataTrigger Binding="{Binding State}" Value="Invoke">
+                                    <Setter TargetName="Image" 
+                                            Property="Source" 
+                                            Value="/EquipApps.WorkBench.WPF.MahApps;component/Images/TestInProgress.png"/>
+                                </DataTrigger>
+
+
+
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="Номер" 
+                                    IsReadOnly="True" 
+                                    MinWidth="100"
+                                    Binding="{Binding Number}"/>
+
+                <DataGridTextColumn Header="Test Case"
+                                    MinWidth="250"
+                                    IsReadOnly="True"                                     
+                                    Binding="{Binding TestCase}"/>
+
+                <DataGridTextColumn Header="Test Step" 
+                                    MinWidth="300"
+                                    IsReadOnly="True"
+                                    Width="*"
+                                    Binding="{Binding TestStep}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+
+
+            </DataGrid.Columns>
+
+            <DataGrid.RowStyle>
+                <Style BasedOn="{StaticResource MahApps.Styles.DataGridRow}" TargetType="{x:Type DataGridRow}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=State}" Value="Invoke">
+                            <Setter Property="BorderBrush"     Value="Orange" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=State}" Value="Pause">
+                            <Setter Property="BorderBrush"     Value="Blue" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=State}" Value="BreakPoint">
+                            <Setter Property="BorderBrush"     Value="Red" />
+                        </DataTrigger>
+                    </Style.Triggers>
+
+                    <Style.Setters>
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <TextBlock Text="{Binding Path=Exception}" />
+                            </Setter.Value>
+                        </Setter>
+                    </Style.Setters>
+
+                </Style>
+            </DataGrid.RowStyle>
+
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Фильт" x:Name="dataGrid_cm_FilterButton"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+            
+    </Grid>
+</reactiveUI:ReactiveUserControl>
