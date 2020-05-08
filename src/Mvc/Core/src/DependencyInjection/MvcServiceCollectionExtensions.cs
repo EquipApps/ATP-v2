@@ -9,14 +9,12 @@ using EquipApps.Mvc.Infrastructure;
 using EquipApps.Mvc.ModelBinding;
 using EquipApps.Mvc.ModelBinding.Metadata;
 using EquipApps.Mvc.ModelBinding.Property;
-using EquipApps.Mvc.Runtime;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using NLib.AtpNetCore.Mvc.ModelBinding;
 using NLib.AtpNetCore.Mvc.ModelBinding.Properties;
-using NLib.AtpNetCore.Testing.Mvc.Infrastructure;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -25,172 +23,14 @@ namespace NLib.AtpNetCore.Testing
 {
     public static class MvcServiceCollectionExtensions
     {
-        public static IMvcBuilder AddMvc(this IServiceCollection services)
+        public static void AddMvc(this IServiceCollection services)
         {
             var manager = GetApplicationPartManager(services);
             ConfigureApplicationFeatureProviders(manager);
-            var builder = new MvcBuilder(services, manager);
 
             ConfigureDefaultServices(services);
 
-            return builder;
         }
-
-
-        //--MvcFeatureConvetion
-        public static void AddTransientMvcFeatureConvetion<TConvetion>(this IServiceCollection services)
-           where TConvetion : class, IMvcFeatureConvetion
-        {
-            services.AddTransient<IMvcFeatureConvetion, TConvetion>();
-        }
-        public static void AddSingletonMvcFeatureConvetion<TConvetion>(this IServiceCollection services)
-           where TConvetion : class, IMvcFeatureConvetion
-        {
-            services.AddSingleton<IMvcFeatureConvetion, TConvetion>();
-        }
-
-
-
-
-
-
-
-
-        //-- ModelProvider
-        public static void AddMvcModelProvider<TModel, TProvider>(this IServiceCollection services)
-           where TModel : class
-           where TProvider : class, IModelProvider<TModel>
-        {
-            services.AddSingleton<IModelProvider<TModel>, TProvider>();
-        }
-        public static void AddMvcModelProvider<TModel>(this IServiceCollection services, Type provider)
-            where TModel : class
-        {
-            services.AddSingleton(typeof(IModelProvider<TModel>), provider);
-        }
-        public static void AddMvcModelProvider<TModel>(this IServiceCollection services, IModelProvider<TModel> provider)
-           where TModel : class
-        {
-            services.AddSingleton(provider);
-        }
-
-        //-- ModelProvider
-        public static void AddMvcAssemply(this IServiceCollection services, Assembly assembly)
-        {
-            AssemblyPart assemblyPart = new AssemblyPart(assembly);
-
-            GetApplicationPartManager(services)
-                .ApplicationParts
-                .Add(assemblyPart);
-        }
-
-        
-
-
-
-
-
-
-
-
-
-
-        #region AddMvc Assemply
-
-        public static IMvcBuilder AddAssemply(this IMvcBuilder builder, Assembly assembly)
-        {
-            AssemblyPart assemblyPart = new AssemblyPart(assembly);
-
-            builder
-                .AppPartManager
-                .ApplicationParts
-                .Add(assemblyPart);
-
-            return builder;
-        }
-        public static IMvcBuilder AddAssemply<T>(this IMvcBuilder builder)
-            where T : class
-        {
-            return builder.AddAssemply(typeof(T).Assembly);
-        }
-
-        #endregion
-
-        #region AddMvc Configure
-
-        public static IMvcBuilder ConfigureApplicationPartManager(this IMvcBuilder builder, Action<ApplicationPartManager> configureApplicationPartManager)
-        {
-            if (configureApplicationPartManager == null)
-            {
-                throw new ArgumentNullException(nameof(configureApplicationPartManager));
-            }
-
-            configureApplicationPartManager(builder.AppPartManager);
-
-            return builder;
-        }
-
-        #endregion
-
-
-        /// <summary>
-        /// Action Descriptor Provider.
-        /// Transient
-        /// </summary>       
-        public static IMvcBuilder AddActionDescriptorProvider<TProvider>(this IMvcBuilder builder)
-            where TProvider : class, IActionDescriptorProvider
-        {
-            builder.Services.AddTransientActionDescriptorProvider<TProvider>();
-           
-
-            return builder;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        #region ApplicationPartManager
-
-        private static ApplicationPartManager GetApplicationPartManager(IServiceCollection services)
-        {
-            var manager = GetServiceFromCollection<ApplicationPartManager>(services);
-
-            if (manager == null)
-            {
-                manager = new ApplicationPartManager();
-                services.TryAddSingleton(manager);
-            }
-
-            return manager;
-        }
-
-        private static void ConfigureApplicationFeatureProviders(ApplicationPartManager manager)
-        {
-            if (!manager.FeatureProviders.OfType<ControllerFeatureProvider>().Any())
-            {
-                manager.FeatureProviders.Add(new ControllerFeatureProvider());
-            }
-        }
-
-        #endregion
 
         private static void ConfigureDefaultServices(IServiceCollection services)
         {
@@ -203,7 +43,7 @@ namespace NLib.AtpNetCore.Testing
             services.AddTransientFeatureProvider<MvcFeatureProvider>();
             services.AddSingleton<IActionDescriptorCollectionProvider, DefaultActionDescriptorCollectionProvider>();
             services.AddTransientActionDescriptorProvider<ControllerActionDescriptorProvider>();
-  
+
             // ----------------------------------------------------------------------------------------
             // IActionInvokerProvider
             //      ControllerActionInvokerProvider
@@ -211,7 +51,6 @@ namespace NLib.AtpNetCore.Testing
             //            
 
             services.AddTransientActionInvokerProvider<ControllerActionInvokerProvider>();
-
             services.AddSingleton<ControllerActionInvokerCache>();
 
 
@@ -255,7 +94,7 @@ namespace NLib.AtpNetCore.Testing
             //
             services.TryAddEnumerable(
               ServiceDescriptor.Transient<IApplicationModelProvider, DefaultApplicationModelProvider>());
-           
+
 
 
             // ----------------------------------------------------------------------------------------
@@ -266,7 +105,7 @@ namespace NLib.AtpNetCore.Testing
 
 
             services.AddSingleton<IPropertyProvider, PropertyProvider>();
-            
+
 
 
 
@@ -278,11 +117,79 @@ namespace NLib.AtpNetCore.Testing
 
         }
 
+
+        #region ApplicationPartManager
+
+        private static ApplicationPartManager GetApplicationPartManager(IServiceCollection services)
+        {
+            var manager = GetServiceFromCollection<ApplicationPartManager>(services);
+
+            if (manager == null)
+            {
+                manager = new ApplicationPartManager();
+                services.TryAddSingleton(manager);
+            }
+
+            return manager;
+        }
+
+        private static void ConfigureApplicationFeatureProviders(ApplicationPartManager manager)
+        {
+            if (!manager.FeatureProviders.OfType<ControllerFeatureProvider>().Any())
+            {
+                 manager.FeatureProviders.Add(new ControllerFeatureProvider());
+            }
+        }
+
         private static T GetServiceFromCollection<T>(IServiceCollection services)
         {
             return (T)services
                 .LastOrDefault(d => d.ServiceType == typeof(T))
                 ?.ImplementationInstance;
         }
+
+        #endregion
+
+
+        //-- Mvc_FeatureConvetion
+        public static void AddTransientMvcFeatureConvetion<TConvetion>(this IServiceCollection services)
+           where TConvetion : class, IMvcFeatureConvetion
+        {
+            services.AddTransient<IMvcFeatureConvetion, TConvetion>();
+        }
+        public static void AddSingletonMvcFeatureConvetion<TConvetion>(this IServiceCollection services)
+           where TConvetion : class, IMvcFeatureConvetion
+        {
+            services.AddSingleton<IMvcFeatureConvetion, TConvetion>();
+        }
+
+        //-- Mvc_ModelProvider
+        public static void AddSingletonMvcModelProvider<TModel, TProvider>(this IServiceCollection services)
+           where TModel : class
+           where TProvider : class, IModelProvider<TModel>
+        {
+            services.AddSingleton<IModelProvider<TModel>, TProvider>();
+        }
+        public static void AddSingletonMvcModelProvider<TModel>(this IServiceCollection services, Type provider)
+            where TModel : class
+        {
+            services.AddSingleton(typeof(IModelProvider<TModel>), provider);
+        }
+        public static void AddSingletonMvcModelProvider<TModel>(this IServiceCollection services, IModelProvider<TModel> provider)
+           where TModel : class
+        {
+            services.AddSingleton(provider);
+        }
+
+        //-- Assemply
+        public static void AddMvcAssemply(this IServiceCollection services, Assembly assembly)
+        {
+            AssemblyPart assemblyPart = new AssemblyPart(assembly);
+
+            GetApplicationPartManager(services)
+                .ApplicationParts
+                .Add(assemblyPart);
+        }
+        
     }
 }

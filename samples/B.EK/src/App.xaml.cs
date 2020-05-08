@@ -75,7 +75,7 @@ namespace B.EK
             serviceCollection.AddMvcAssemply(Assembly.GetEntryAssembly());
             
 
-            serviceCollection.AddMvcModelProvider<Command, CommandProvider>();
+            serviceCollection.AddSingletonMvcModelProvider<Command, CommandProvider>();
 
 
             //-- Hardware
