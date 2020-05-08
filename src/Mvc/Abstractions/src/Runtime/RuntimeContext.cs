@@ -22,7 +22,7 @@ namespace EquipApps.Mvc.Runtime
         public TestContext TestContext { get; }
 
         /// <summary>
-        /// Переход на <see cref="ActionDescriptor"/>.
+        /// Переход на <see cref="ActionObject"/>.
         /// </summary>
         /// 
         /// <param name="actionObject">
@@ -34,6 +34,20 @@ namespace EquipApps.Mvc.Runtime
         /// false   - переход не возможен;
         /// </returns>        
         public abstract bool JumpTo(ActionObject actionObject);
+
+        /// <summary>
+        /// Переход на <see cref="ActionObject"/>.
+        /// </summary>
+        /// 
+        /// <param name="actionObject">
+        /// Действие на которое произойдет переход
+        /// </param>
+        /// 
+        /// <returns>
+        /// true    - переход возможен;
+        /// false   - переход не возможен;
+        /// </returns>        
+        public abstract bool JumpTo(ActionDescriptor actionDescriptor);
 
         /// <summary>
         /// Переход на <see cref="RuntimeState"/>.

@@ -27,9 +27,12 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
 
         public ActionObject Current { get; private set; } = null;
 
-        public bool JumpTo(ActionObject actionObject)
+        public bool JumpTo(Predicate<ActionObject> predicate)
         {
             IsDisposed();
+
+            if (predicate == null)               
+                    throw new ArgumentNullException(nameof(predicate));
 
             //-- Устанавливаем индекс перехода по умолчанию
             int jumpIndex = indexDefault;
@@ -37,7 +40,7 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
             //-- Поиск
             for (int i = 0; i < _actions.Count; i++)
             {
-                if (_actions[i] == actionObject)
+                if (predicate(_actions[i]))
                 {
                     jumpIndex = i;
                     break;

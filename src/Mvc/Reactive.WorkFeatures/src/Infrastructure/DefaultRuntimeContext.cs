@@ -1,6 +1,7 @@
 ﻿using EquipApps.Mvc.Runtime;
 using EquipApps.Testing;
 using System;
+using System.Linq.Expressions;
 
 namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
 {
@@ -15,15 +16,40 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
             this.actionObjectEnumerator = actionObjectEnumerator;
         }
 
-        public override bool JumpTo(ActionObject actionObject)
-        {
-            return actionObjectEnumerator.JumpTo(actionObject);
-        }
 
+        /// <inheritdoc/>  
         public override bool JumpTo(RuntimeState runtimeState)
         {
             //TODO: Реализовать функцию
             throw new NotImplementedException(nameof(JumpTo));
+        }
+
+        /// <inheritdoc/>        
+        public override bool JumpTo(ActionObject actionObject)
+        {
+            if (actionObject == null)
+            {
+                throw new ArgumentNullException(nameof(actionObject));
+            }
+
+            return actionObjectEnumerator.JumpTo(actionObj =>
+            {
+                return actionObject.Equals(actionObj);
+            });
+        }
+
+        /// <inheritdoc/>  
+        public override bool JumpTo(ActionDescriptor actionDescriptor)
+        {
+            if(actionDescriptor == null)
+            {
+                throw new ArgumentNullException(nameof(actionDescriptor));
+            }
+
+            return actionObjectEnumerator.JumpTo(actionObj =>
+            {
+                return actionDescriptor.Equals(actionObj.ActionDescriptor);
+            });
         }
     }
 }

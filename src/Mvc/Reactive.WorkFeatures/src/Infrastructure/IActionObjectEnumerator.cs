@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
 {
@@ -24,6 +25,6 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Infrastructure
         /// Переход произойдет после вызова функции MoveNext;
         /// </remarks>
         /// 
-        bool JumpTo(ActionObject actionObject);
+        bool JumpTo(Predicate<ActionObject> predicate);
     }
 }
