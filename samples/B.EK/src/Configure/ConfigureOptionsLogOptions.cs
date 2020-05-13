@@ -12,18 +12,18 @@ namespace B.EK.Configure
 
         public void Configure(LogOptions options)
         {
-            options.GroupCollection.Add(gk_All, new GroupInfo()
-            {
-                ShowManyContext = true,
-                ShowNullContext = true,
-                Title = "Отладка",
-            });
-
             options.GroupCollection.Add(gk_Test, new GroupInfo()
             {
                 ShowManyContext = false,
                 ShowNullContext = false,
-                Title = "Проверка",
+                Title = "Краткий",
+            });
+
+            options.GroupCollection.Add(gk_All, new GroupInfo()
+            {
+                ShowManyContext = true,
+                ShowNullContext = true,
+                Title = "Полный",
             });
 
 
