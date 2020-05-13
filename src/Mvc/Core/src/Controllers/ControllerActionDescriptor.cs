@@ -21,7 +21,10 @@ namespace EquipApps.Mvc.Controllers
         public ControllerActionDescriptor(ControllerTestCase testCase, ControllerTestStep testStep)
             : base(testCase, testStep)
         {
-            TestStep.ActionDescriptor = this;
+            // Установка зависимостей. (Нужно для навигации?)
+            testCase.TestSteps.Add(testStep);
+            testStep.Parent = testCase;
+            testStep.ActionDescriptor = this;
         }
 
         public new ControllerTestCase TestCase

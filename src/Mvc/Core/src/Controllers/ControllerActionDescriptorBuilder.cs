@@ -91,10 +91,6 @@ namespace EquipApps.Mvc.ApplicationModels
                     {
                         foreach (var testStep in GetTestSteps(testCase, action))
                         {
-                            // Установка зависимостей. (Нужно для навигации?)
-                            testCase.TestSteps.Add(testStep);
-                            testStep.Parent = testCase;
-
                             FillTitle(_modelBinderFactory, action, testStep);
 
                             var result = ControllerActionDescriptorBuilder.Flattener(
