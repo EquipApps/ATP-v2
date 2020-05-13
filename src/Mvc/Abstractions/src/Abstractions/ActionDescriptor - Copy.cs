@@ -36,16 +36,6 @@ namespace EquipApps.Mvc
         public IDictionary<string, string> RouteValues { get; set; }
 
         /// <summary>
-        /// The set of parameters associated with this action.
-        /// </summary>
-        public IList<ParameterDescriptor> Parameters { get; set; }
-
-        /// <summary>
-        /// The set of properties which are model bound.
-        /// </summary>
-        public IList<ParameterDescriptor> BoundProperties { get; set; }
-
-        /// <summary>
         /// A friendly name for this action.
         /// </summary>
         public virtual string DisplayName { get; set; }

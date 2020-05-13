@@ -414,9 +414,6 @@ namespace EquipApps.Mvc.ApplicationModels
 
             actionDescriptor.ControllerName = controller.ControllerName;
             actionDescriptor.ControllerTypeInfo = controller.ControllerType;
-            AddControllerPropertyDescriptors(actionDescriptor, controller);
-
-            AddParameterDescriptors(actionDescriptor, action);
 
             AddRouteValues(actionDescriptor, controller, action);
             AddOrderValues(actionDescriptor, controller, action, testCase, testStep);
@@ -431,50 +428,6 @@ namespace EquipApps.Mvc.ApplicationModels
 
             return actionDescriptor;
         }
-
-        private static void AddControllerPropertyDescriptors(ActionDescriptor actionDescriptor, ControllerModel controller)
-        {
-            actionDescriptor.BoundProperties = controller.ControllerProperties
-                .Where(p => p.BindingInfo != null)
-                .Select(CreateParameterDescriptor)
-                .ToList();
-        }
-        private static void AddParameterDescriptors(ActionDescriptor actionDescriptor, ActionModel action)
-        {
-            var parameterDescriptors = new List<ParameterDescriptor>();
-            foreach (var parameter in action.Parameters)
-            {
-                var parameterDescriptor = CreateParameterDescriptor(parameter);
-                parameterDescriptors.Add(parameterDescriptor);
-            }
-
-            actionDescriptor.Parameters = parameterDescriptors;
-        }
-        private static ParameterDescriptor CreateParameterDescriptor(ParameterModel parameterModel)
-        {
-            var parameterDescriptor = new ControllerParameterDescriptor()
-            {
-                Name = parameterModel.ParameterName,
-                ParameterType = parameterModel.ParameterInfo.ParameterType,
-                BindingInfo = parameterModel.BindingInfo,
-                ParameterInfo = parameterModel.ParameterInfo,
-            };
-
-            return parameterDescriptor;
-        }
-        private static ParameterDescriptor CreateParameterDescriptor(PropertyModel propertyModel)
-        {
-            var parameterDescriptor = new ControllerBoundPropertyDescriptor()
-            {
-                BindingInfo = propertyModel.BindingInfo,
-                Name = propertyModel.PropertyName,
-                ParameterType = propertyModel.PropertyInfo.PropertyType,
-                PropertyInfo = propertyModel.PropertyInfo,
-            };
-
-            return parameterDescriptor;
-        }
-
 
         private static void AddProperties(
            ControllerActionDescriptor actionDescriptor,

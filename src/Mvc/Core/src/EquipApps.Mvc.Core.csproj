@@ -6,11 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Abstractions\src\EquipApps.Mvc.Abstractions.csproj" />
+    <Compile Remove="Ordering\**" />
+    <EmbeddedResource Remove="Ordering\**" />
+    <None Remove="Ordering\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Ordering\" />
+    <ProjectReference Include="..\..\Abstractions\src\EquipApps.Mvc.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

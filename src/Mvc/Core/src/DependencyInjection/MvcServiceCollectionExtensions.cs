@@ -37,12 +37,32 @@ namespace NLib.AtpNetCore.Testing
             // ----------------------------------------------------------------------------------------
             // IFeatureProvider
             //      MvcFeatureProvider
-            //      Action Descriptor Provider
+            //      Action Descriptor Collection Provider
             // 
             // 
             services.AddTransientFeatureProvider<MvcFeatureProvider>();
             services.AddSingleton<IActionDescriptorCollectionProvider, DefaultActionDescriptorCollectionProvider>();
+            //
+            // ----------------------------------------------------------------------------------------
+            //  Controller ActionDescriptor Provider
+            //  Infrostructure
+            // 
             services.AddTransientActionDescriptorProvider<ControllerActionDescriptorProvider>();
+            services.AddTransient<ControllerActionDescriptorBuilder>();
+            //
+            //  Application Model Factory           
+            //
+            services.AddSingleton<ApplicationModelFactory>();
+            services.AddTransient<IApplicationModelProvider, DefaultApplicationModelProvider>();
+            //
+            // ----------------------------------------------------------------------------------------
+            
+
+
+
+
+
+
 
             // ----------------------------------------------------------------------------------------
             // IActionInvokerProvider
@@ -82,18 +102,7 @@ namespace NLib.AtpNetCore.Testing
 
 
 
-            // ----------------------------------------------------------------------------------------
-            // Application Model Service
-            // Singleton
-            // 
-            services.AddSingleton<ApplicationModelFactory>();
-            services.AddSingleton<ControllerActionDescriptorBuilder>();
-
-            //
-            // Action Descriptor Provider
-            //
-            services.TryAddEnumerable(
-              ServiceDescriptor.Transient<IApplicationModelProvider, DefaultApplicationModelProvider>());
+           
 
 
 
