@@ -1,16 +1,17 @@
 ﻿using EquipApps.Mvc.Abstractions;
+using EquipApps.Mvc.Infrastructure;
 using Microsoft.Extensions.Internal;
 using System;
 using System.Collections.Concurrent;
 
-namespace EquipApps.Mvc.Infrastructure
+namespace EquipApps.Mvc.Controllers
 {
     internal class ControllerActionInvokerCache
     {
         private volatile InnerCache _currentCache;
         private IActionDescriptorCollectionProvider _collectionProvider;
 
-        
+
 
         public ControllerActionInvokerCache(
             IActionDescriptorCollectionProvider collectionProvider)
@@ -48,7 +49,7 @@ namespace EquipApps.Mvc.Infrastructure
                     var parameterDefaultValues = ParameterDefaultValues
                         .GetParameterDefaultValues(actionDescriptor.MethodInfo);
 
-                    var objectMethodExecutor = ObjectMethodExecutor.Create(                        
+                    var objectMethodExecutor = ObjectMethodExecutor.Create(
                         actionDescriptor.MethodInfo,
                         actionDescriptor.ControllerTypeInfo,
                         parameterDefaultValues);

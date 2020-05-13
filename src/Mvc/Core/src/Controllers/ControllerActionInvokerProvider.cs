@@ -1,10 +1,9 @@
 ﻿using EquipApps.Mvc.Abstractions;
-using EquipApps.Mvc.Controllers;
 using EquipApps.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace EquipApps.Mvc.Infrastructure
+namespace EquipApps.Mvc.Controllers
 {
     internal class ControllerActionInvokerProvider : IActionInvokerProvider
     {
@@ -30,7 +29,7 @@ namespace EquipApps.Mvc.Infrastructure
 
             _logger = loggerFactory.CreateLogger<ControllerActionInvoker>();
 
-            
+
         }
 
         private ControlleFactoryDelegate controllerFactory
@@ -49,7 +48,7 @@ namespace EquipApps.Mvc.Infrastructure
         }
 
         public int Order => 0;
-        
+
         public void OnDisposeExecuted()
         {
             _controllerCache = null;

@@ -1,6 +1,4 @@
-﻿using EquipApps.Mvc.Controllers;
-
-namespace EquipApps.Mvc
+﻿namespace EquipApps.Mvc.Controllers
 {
     public class ControllerContext : ActionContext
     {

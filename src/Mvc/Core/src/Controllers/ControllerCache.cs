@@ -1,9 +1,8 @@
-﻿using EquipApps.Mvc.Controllers;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Concurrent;
 
-namespace EquipApps.Mvc.Infrastructure
+namespace EquipApps.Mvc.Controllers
 {
     /// <summary>
     /// Кеш контроллеров. 
@@ -11,8 +10,8 @@ namespace EquipApps.Mvc.Infrastructure
     public class ControllerCache
     {
         private readonly Func<Type, ObjectFactory> _createFactory = (type) => ActivatorUtilities.CreateFactory(type, Type.EmptyTypes);
-        private readonly ConcurrentDictionary<Type, ObjectFactory>  _typeActivatorCache = new ConcurrentDictionary<Type, ObjectFactory>();
-        private readonly ConcurrentDictionary<Type, object>         _typeEntriesCache   = new ConcurrentDictionary<Type, object>();
+        private readonly ConcurrentDictionary<Type, ObjectFactory> _typeActivatorCache = new ConcurrentDictionary<Type, ObjectFactory>();
+        private readonly ConcurrentDictionary<Type, object> _typeEntriesCache = new ConcurrentDictionary<Type, object>();
         private readonly IServiceProvider _serviceProvider;
 
         private WeakReference<ControllerTestCase> weak_lastTestCase = new WeakReference<ControllerTestCase>(null);

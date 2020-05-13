@@ -1,5 +1,6 @@
 ﻿using EquipApps.Hardware;
 using EquipApps.Mvc;
+using EquipApps.Mvc.Controllers;
 using EquipApps.Testing;
 using Microsoft.Extensions.Logging;
 using NLib.AtpNetCore.Mvc;

@@ -60,10 +60,6 @@ namespace NLib.AtpNetCore.Testing
 
 
 
-
-
-
-
             // ----------------------------------------------------------------------------------------
             // IActionInvokerProvider
             //      ControllerActionInvokerProvider
@@ -71,7 +67,7 @@ namespace NLib.AtpNetCore.Testing
             //            
 
             services.AddTransientActionInvokerProvider<ControllerActionInvokerProvider>();
-            services.AddSingleton<ControllerActionInvokerCache>();
+            services.AddTransient<ControllerActionInvokerCache>();
 
 
 

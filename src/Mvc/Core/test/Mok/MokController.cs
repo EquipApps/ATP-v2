@@ -1,4 +1,4 @@
-﻿using EquipApps.Mvc;
+﻿using EquipApps.Mvc.Controllers;
 using NLib.AtpNetCore.Mvc.ModelBinding.Attribute;
 using System;
 

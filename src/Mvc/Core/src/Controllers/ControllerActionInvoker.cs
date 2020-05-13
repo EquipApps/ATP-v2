@@ -1,4 +1,5 @@
-﻿using EquipApps.Mvc.ModelBinding;
+﻿using EquipApps.Mvc.Controllers;
+using EquipApps.Mvc.ModelBinding;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
 using System;
@@ -30,7 +31,14 @@ namespace EquipApps.Mvc.Infrastructure
         {
             try
             {
-                InvokeInternel();
+                /*
+                 * Оборачиваем все сообщения внутри вызова.
+                 * Необходимо для поиска сообщений
+                 */
+                using (var scope = controllerContext.TestContext.TestLogger.BeginScope(controllerContext.ActionDescriptor.Number))
+                {
+                    InvokeInternel();
+                }
             }
             catch (Exception ex)
             {
@@ -62,7 +70,6 @@ namespace EquipApps.Mvc.Infrastructure
 
         private void InvokeInternel()
         {
-            //-- 
             var objectMethodExecutor = controllerActionCacheEntry.ObjectMethodExecutor;
             var actionMethodExecutor = controllerActionCacheEntry.ActionMethodExecutor;
 
@@ -83,27 +90,20 @@ namespace EquipApps.Mvc.Infrastructure
                 controllerBase.InitializeComponent();
             }
 
-            /*
-             * Оборачиваем все сообщения внутри вызова.
-             * Необходимо для поиска сообщений
-             */
-            using (var scope = controllerContext.TestContext.TestLogger.BeginScope(controllerContext.ActionDescriptor.Number))
+            //-- Выполняем Действие   
+            var result = actionMethodExecutor.Execute2(objectMethodExecutor, controller, arguments);
+
+            //-- Выполняем Результат        
+            if (result != null)
             {
-                //-- Выполняем Действие   
-                var result = actionMethodExecutor.Execute2(objectMethodExecutor, controller, arguments);
-
-                //-- Выполняем Результат        
-                if (result != null)
-                {
-                    result.ExecuteResult(controllerContext);
-                }
-
-                //-- Выполняем завершающую часть
-                if (controllerBase != null)
-                {
-                    controllerBase.Finally();
-                }
+                result.ExecuteResult(controllerContext);
             }
+
+            //-- Выполняем завершающую часть
+            if (controllerBase != null)
+            {
+                controllerBase.Finally();
+            }            
         }
 
 

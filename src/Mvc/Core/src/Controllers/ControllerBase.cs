@@ -4,7 +4,7 @@ using NLib.AtpNetCore.Mvc;
 using NLib.AtpNetCore.Mvc.ModelBinding;
 using System;
 
-namespace EquipApps.Mvc
+namespace EquipApps.Mvc.Controllers
 {
     [Controller]
     public abstract class ControllerBase
@@ -12,7 +12,7 @@ namespace EquipApps.Mvc
         private ControllerContext _controllerContext;
 
         /// <summary>
-        /// Возвращает <see cref="Mvc.ControllerContext"/>
+        /// Возвращает <see cref="Controllers.ControllerContext"/>
         /// </summary>         
         public ControllerContext ControllerContext
         {
@@ -94,7 +94,7 @@ namespace EquipApps.Mvc
         /// </summary>
         protected virtual void InitializeComponent_LogTestCaseInformation()
         {
-            
+
             Logger.LogInformation("{Number} - {Title}",
                                   ControllerContext.ActionDescriptor.TestCase.Number,
                                   ControllerContext.ActionDescriptor.TestCase.Title);
@@ -125,7 +125,7 @@ namespace EquipApps.Mvc
         /// </remarks>
         protected virtual void Finaly_PassedIfNotExecutedAndNullException()
         {
-            if (ControllerContext.ActionObject.Result.IsEmpty) 
+            if (ControllerContext.ActionObject.Result.IsEmpty)
             {
                 ControllerContext.ActionObject.SetResult(ActionObjectResultType.Passed);
             }

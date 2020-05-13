@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EquipApps.Mvc.Controllers;
+using System;
 using System.Linq;
 
 namespace EquipApps.Mvc
