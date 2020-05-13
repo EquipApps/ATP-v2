@@ -8,7 +8,7 @@ using System.Reflection;
 namespace EquipApps.Mvc.Infrastructure
 {
     [Obsolete("Реализовать валидацию модели и сохранение Состояние в controller context")]
-    public class ControllerActionInvoker : IActionInvoker
+    internal class ControllerActionInvoker : IActionInvoker
     {
         private ILogger logger;
         private ControllerContext controllerContext;

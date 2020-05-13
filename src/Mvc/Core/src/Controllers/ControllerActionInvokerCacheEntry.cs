@@ -2,7 +2,7 @@
 
 namespace EquipApps.Mvc.Infrastructure
 {
-    public class ControllerActionInvokerCacheEntry
+    internal class ControllerActionInvokerCacheEntry
     {
         public ControllerActionInvokerCacheEntry(
             ObjectMethodExecutor objectMethodExecutor,
@@ -14,8 +14,8 @@ namespace EquipApps.Mvc.Infrastructure
         }
 
 
-        public ObjectMethodExecutor ObjectMethodExecutor { get; }
+        internal ObjectMethodExecutor ObjectMethodExecutor { get; }
 
-        public ActionMethodExecutor ActionMethodExecutor { get; }
+        internal ActionMethodExecutor ActionMethodExecutor { get; }
     }
 }

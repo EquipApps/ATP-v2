@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.Internal
     /// FSharp.Core.dll, because non-F# applications wouldn't use it. So all the references
     /// to FSharp types have to be constructed dynamically at runtime.
     /// </remarks>
-    public static class ObjectMethodExecutorFSharpSupport
+    internal static class ObjectMethodExecutorFSharpSupport
     {
         private static object _fsharpValuesCacheLock = new object();
         private static Assembly _fsharpCoreAssembly;

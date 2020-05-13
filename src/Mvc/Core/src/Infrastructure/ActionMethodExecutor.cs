@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EquipApps.Mvc.Infrastructure
 {
-    public abstract class ActionMethodExecutor
+    internal abstract class ActionMethodExecutor
     {
         private static readonly ActionMethodExecutor[] Executors = new ActionMethodExecutor[]
         {

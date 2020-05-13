@@ -1,12 +1,11 @@
 ﻿using EquipApps.Mvc.Abstractions;
-using EquipApps.Mvc.ApplicationModels;
 using Microsoft.Extensions.Internal;
 using System;
 using System.Collections.Concurrent;
 
 namespace EquipApps.Mvc.Infrastructure
 {
-    public class ControllerActionInvokerCache
+    internal class ControllerActionInvokerCache
     {
         private volatile InnerCache _currentCache;
         private IActionDescriptorCollectionProvider _collectionProvider;

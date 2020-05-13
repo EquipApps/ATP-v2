@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Microsoft.Extensions.Internal
 {
-    public readonly struct CoercedAwaitableInfo
+    internal readonly struct CoercedAwaitableInfo
     {
         public AwaitableInfo AwaitableInfo { get; }
         public Expression CoercerExpression { get; }

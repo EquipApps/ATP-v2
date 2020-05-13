@@ -6,7 +6,7 @@ using System;
 
 namespace EquipApps.Mvc.Infrastructure
 {
-    public class ControllerActionInvokerProvider : IActionInvokerProvider
+    internal class ControllerActionInvokerProvider : IActionInvokerProvider
     {
         private ILogger _logger;
         private IServiceProvider _serviceProvider;
