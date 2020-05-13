@@ -29,7 +29,7 @@ namespace B.EK.Configure
             if (executingMode == Settings.ExecutingMode_Operate)
             {
                 feature.ActionObjects = feature.ActionObjects
-                    .Where(x => x.ActionDescriptor.Area == null ? false : x.ActionDescriptor.Area.Contains(Areas.Operate))
+                    .Where(x => RouteArea(x, Areas.Operate))
                     .ToList();
 
                 return;
@@ -39,7 +39,7 @@ namespace B.EK.Configure
             if (executingMode == Settings.ExecutingMode_Power)
             {
                 feature.ActionObjects = feature.ActionObjects
-                    .Where(x => x.ActionDescriptor.Area == null ? false : x.ActionDescriptor.Area.Contains(Areas.Power))
+                    .Where(x => RouteArea(x, Areas.Power))                   
                     .ToList();
 
                 return;
@@ -49,11 +49,16 @@ namespace B.EK.Configure
             {
                 //-- Реализация фильра для 
                 feature.ActionObjects = feature.ActionObjects
-                       .Where(x => x.ActionDescriptor.Area == null)
+                       .Where(x => RouteArea(x, null))                     
                        .ToList();
 
                 return;
             }
+        }
+
+        private bool RouteArea(ActionObject actionObject, string area)
+        {
+            return actionObject.ActionDescriptor.RouteValues["area"] == area;
         }
     }
 }
