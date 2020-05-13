@@ -47,24 +47,51 @@ namespace EquipApps.Mvc.ApplicationModels
         {
             var results = new List<ControllerActionDescriptor>();
 
+            /*
+             * Создаем привязки: 
+             *  для каждого свойства контроллера
+             *  для каждого парамета метода
+             *  
+             * Сохраняем привязки в свойствах. (как временный буфер)
+             * т.к модель приложения является времнной, то это допустимо.
+             * 
+             * Все свойства перенесуться в дескриптер действия!
+             * 
+             */
             foreach (var controller in application.Controllers)
             {
+                //-- Извлекаем привязку с свойствам
                 var boundBinderItem = GetPropertyBindingInfo(_modelBinderFactory, _modelMetadataProvider, controller);
-                var testCases       = GetTestCases(controller).ToList();
 
-                foreach (var testCase in testCases)
-                {
-                    FillTitle(_modelBinderFactory, controller, testCase);
-                }
+                //-- Сохраняем
+                controller.Properties.Add("bindPrope", boundBinderItem);
 
                 foreach (var action in controller.Actions)
                 {
+                    //-- Извлекаем привязку с параметрам
                     var binderItem = GetParameterBindingInfo(_modelBinderFactory, _modelMetadataProvider, action);
 
-                    foreach (var testCase in testCases)
+                    //-- Сохраняем
+                    action.Properties.Add("bindParam", binderItem);
+                }
+            }
+
+            /*
+             * Првязка к контроллеру создает -> TestCase
+             * Првязка к методку создает     -> TestStep
+             */
+            foreach (var controller in application.Controllers)
+            {
+                foreach (var testCase in GetTestCases(controller))
+                {
+                    //-- Формеруем заголовок
+                    FillTitle(_modelBinderFactory, controller, testCase);
+
+                    foreach (var action in controller.Actions)
                     {
                         foreach (var testStep in GetTestSteps(testCase, action))
                         {
+                            // Установка зависимостей. (Нужно для навигации?)
                             testCase.TestSteps.Add(testStep);
                             testStep.Parent = testCase;
 
@@ -73,14 +100,9 @@ namespace EquipApps.Mvc.ApplicationModels
                             var result = ControllerActionDescriptorBuilder.Flattener(
                                 application, controller, action, testCase, testStep);
 
-                                result.BoundBinderItem = boundBinderItem;
-                                result.BinderItem      = binderItem;
-
-
                             Debug.Assert(result != null);
-
-                            results.Add(result);
-                        }    
+                            results.Add (result);
+                        }
                     }
                 }
             }
@@ -88,11 +110,49 @@ namespace EquipApps.Mvc.ApplicationModels
             return results;
         }
 
+
+
+        private static BinderItem[] GetPropertyBindingInfo(
+            IModelBinderFactory modelBinderFactory,
+            IModelMetadataProvider modelMetadataProvider,
+            ControllerModel controllerModel)
+        {
+            //-- Выбираем свойства с привязкой
+            var properties = controllerModel.ControllerProperties
+                .Where(p => p.BindingInfo != null)
+                .ToList();
+
+            if (properties.Count == 0)
+            {
+                return null;
+            }
+
+            var propertyBindingInfo = new BinderItem[properties.Count];
+            var controllerType      = controllerModel.ControllerType;
+
+            for (var i = 0; i < properties.Count; i++)
+            {
+                var property = properties[i];
+                var metadata = modelMetadataProvider.GetMetadataForProperty(controllerType, property.Name);
+                var binder   = modelBinderFactory   .Create(property, property.BindingInfo);
+
+                Debug.Assert(binder != null,
+                    "Привязка не создана!",
+                    "Controller: {0};\nProperty: {1};", controllerModel.DisplayName, property.Name);
+
+                propertyBindingInfo[i] = new BinderItem(binder, metadata);
+            }
+
+            return propertyBindingInfo;
+
+        }
+
         private static BinderItem[] GetParameterBindingInfo(
             IModelBinderFactory modelBinderFactory,
             IModelMetadataProvider modelMetadataProvider,
             ActionModel actionModel)
         {
+            //-- Выбираем параметры с привязкой
             var parameters = actionModel.Parameters
                 .Where(p => p.BindingInfo != null)
                 .ToList();
@@ -123,7 +183,7 @@ namespace EquipApps.Mvc.ApplicationModels
                     metadata = modelMetadataProvider.GetMetadataForType(parameter.ParameterType);
                 }
 
-                var binder = modelBinderFactory.Create(parameter);
+                var binder = modelBinderFactory.Create(parameter, parameter.BindingInfo);
 
                 Debug.Assert(binder != null, $"{actionModel.DisplayName}; {parameter.Name};");
 
@@ -133,40 +193,7 @@ namespace EquipApps.Mvc.ApplicationModels
             return parameterBindingInfo;
         }
 
-        private static BinderItem[] GetPropertyBindingInfo(
-            IModelBinderFactory modelBinderFactory,
-            IModelMetadataProvider modelMetadataProvider, 
-            ControllerModel controllerModel)
-        {
-            var properties = controllerModel.ControllerProperties
-                .Where(p => p.BindingInfo != null)                
-                .ToList();
-
-            if (properties.Count == 0)
-            {
-                return null;
-            }
-
-            var propertyBindingInfo = new BinderItem[properties.Count];
-            var controllerType = controllerModel.ControllerType;
-
-            for (var i = 0; i < properties.Count; i++)
-            {
-                var property = properties[i];
-                var metadata = modelMetadataProvider.GetMetadataForProperty(controllerType, property.Name);
-                var binder   = modelBinderFactory.Create(property);
-
-                Debug.Assert(binder != null,
-                    "Привязка не создана!",
-                    "Controller: {0};\nProperty: {1};", controllerModel.DisplayName, property.Name);
-                  
-
-                propertyBindingInfo[i] = new BinderItem(binder, metadata);
-            }
-
-            return propertyBindingInfo;
-
-        }
+        
 
         internal static void FillTitle (
             IModelBinderFactory modelBinderFactory, 
@@ -214,16 +241,11 @@ namespace EquipApps.Mvc.ApplicationModels
             //    ?? (IndexSecond.HasValue ? string.Format("{0}.{1}", Index, IndexSecond.Value) : Index.ToString());
         }
 
-        
-
-
-
-
 
 
         private IEnumerable<ControllerTestCase> GetTestCases(ControllerModel controllerModel)
         {
-            var modelBinder = _modelBinderFactory.Create(controllerModel);
+            var modelBinder = _modelBinderFactory.CreateIf(controllerModel);
             if (modelBinder == null)
             {
                 yield return new ControllerTestCase();
@@ -305,10 +327,11 @@ namespace EquipApps.Mvc.ApplicationModels
                 yield return testCase;
             }
         }
+
         private IEnumerable<ControllerTestStep> GetTestSteps(ActionDescriptorObject testCase, ActionModel actionModel)
         {
            
-            var modelBinder = _modelBinderFactory.Create(actionModel);
+            var modelBinder = _modelBinderFactory.CreateIf(actionModel);
 
             //-- 1) Нету привязки? создаем одиночный TestStep
             if (modelBinder == null)
@@ -392,16 +415,7 @@ namespace EquipApps.Mvc.ApplicationModels
         }
 
 
-
-
-
-
-
-
-
-
-
-
+        
 
         public static ControllerActionDescriptor Flattener(ApplicationModel application, ControllerModel controller, ActionModel action,
                                                            ControllerTestCase testCase,  ControllerTestStep testStep)

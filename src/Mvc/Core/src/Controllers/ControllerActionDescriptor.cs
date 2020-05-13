@@ -62,7 +62,15 @@ namespace EquipApps.Mvc.Controllers
             }
         }
 
-        public BinderItem[] BoundBinderItem { get; internal set; }
-        public BinderItem[] BinderItem { get; internal set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public BinderItem[] BoundBinderItem => Properties["bindPrope"] as BinderItem[];      
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public BinderItem[] BinderItem      => Properties["bindParam"] as BinderItem[];
     }
 }

@@ -24,7 +24,7 @@ namespace EquipApps.Mvc
         public string Id { get; }
 
         // <summary>
-        /// Gets or sets the collection of route values that must be provided by routing
+        /// Gets or sets the collection of order values that must be provided by ordering
         /// for the action to be selected.
         /// </summary>
         public IDictionary<string, string> OrderValues { get; set; }

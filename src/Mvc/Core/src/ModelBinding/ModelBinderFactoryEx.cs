@@ -5,7 +5,7 @@ namespace EquipApps.Mvc.ModelBinding
 {
     internal static class ModelBinderFactoryEx
     {
-        public static IModelBinder Create(this IModelBinderFactory modelBindingFactory, IBindingModel bindingModel)
+        public static IModelBinder CreateIf(this IModelBinderFactory modelBindingFactory, IBindingModel bindingModel)
         {
             Debug.Assert(modelBindingFactory != null);
             Debug.Assert(bindingModel != null);
@@ -31,7 +31,7 @@ namespace EquipApps.Mvc.ModelBinding
 
             var bindingInfo = new BindingInfo()
             {
-                BindingSource = BindingSource.DataText,
+                BindingSource    = BindingSource.DataText,
                 BindingModelPath = format
             };
 
