@@ -110,7 +110,7 @@ namespace EquipApps.WorkBench.DockingTestExplorer
             return data == arg.total ? data.ToString() : $"{data}/{arg.total}";
         }
 
-        private static object ToStringFomat((bool show, int count) arg)
+        private static string ToStringFomat((bool show, int count) arg)
         {
             if (arg.show)
                 return arg.count.ToString();

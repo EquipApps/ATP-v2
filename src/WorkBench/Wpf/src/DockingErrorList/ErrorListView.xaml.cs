@@ -1,5 +1,6 @@
 ﻿using ReactiveUI;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace EquipApps.WorkBench.DockingErrorList
 {
@@ -14,13 +15,25 @@ namespace EquipApps.WorkBench.DockingErrorList
 
             this.WhenActivated(disposable =>
             {
-                this.OneWayBind(ViewModel, x => x.Viewer.CountTotal.CountFail, x => x.TotalFail.Text).DisposeWith(disposable);
-                this.OneWayBind(ViewModel, x => x.Viewer.CountTotal.CountWarn, x => x.TotalWarn.Text).DisposeWith(disposable);
-                this.OneWayBind(ViewModel, x => x.Viewer.CountTotal.CountInfo, x => x.TotalInfo.Text).DisposeWith(disposable);
+                //TODO: Проверить. Нужна ли задержка или нет?
 
-                this.OneWayBind(ViewModel, x => x.Viewer.CountFiltr.CountFail, x => x.CountFail.Text).DisposeWith(disposable);
-                this.OneWayBind(ViewModel, x => x.Viewer.CountFiltr.CountWarn, x => x.CountWarn.Text).DisposeWith(disposable);
-                this.OneWayBind(ViewModel, x => x.Viewer.CountFiltr.CountInfo, x => x.CountInfo.Text).DisposeWith(disposable);
+                this.ViewModel.WhenAnyValue(x => x.Viewer.CountFiltr.CountFail,
+                                            x => x.Viewer.CountTotal.CountFail)
+                              .Select(ToStringFomat)
+                              .BindTo(this, x => x.CountFail.Text)
+                              .DisposeWith(disposable);
+
+                this.ViewModel.WhenAnyValue(x => x.Viewer.CountFiltr.CountWarn,
+                                            x => x.Viewer.CountTotal.CountWarn)
+                              .Select(ToStringFomat)
+                              .BindTo(this, x => x.CountWarn.Text)
+                              .DisposeWith(disposable);
+
+                this.ViewModel.WhenAnyValue(x => x.Viewer.CountFiltr.CountInfo,
+                                            x => x.Viewer.CountTotal.CountInfo)
+                              .Select(ToStringFomat)
+                              .BindTo(this, x => x.CountInfo.Text)
+                              .DisposeWith(disposable);
 
                 this.Bind(ViewModel, x => x.Viewer.Filter.ShowFail, x => x.FilterFail.IsChecked).DisposeWith(disposable);
                 this.Bind(ViewModel, x => x.Viewer.Filter.ShowWarn, x => x.FilterWarn.IsChecked).DisposeWith(disposable);
@@ -38,6 +51,14 @@ namespace EquipApps.WorkBench.DockingErrorList
                 this.BindCommand(ViewModel, x => x.Viewer.Filter.Clear, x => x.FilterRemove).DisposeWith(disposable);
 
             });
+        }
+
+        private static string ToStringFomat((int filtr, int count) arg)
+        {
+            if (arg.filtr == arg.count)
+                return arg.filtr.ToString();
+
+            return $"{arg.filtr} из {arg.count}";
         }
     }
 }

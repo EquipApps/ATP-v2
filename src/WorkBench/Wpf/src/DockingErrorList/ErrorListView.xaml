@@ -20,9 +20,8 @@
             <ToolBar>
                 <ToggleButton x:Name="FilterFail" Style="{DynamicResource MahApps.Styles.ToggleButton.ToolBarVS}" >
                     <StackPanel Orientation="Horizontal">
-                        <Image Height="16" Width="16"  Margin="0,0,1,0" Source="/EquipApps.WorkBench.WPF.MahApps;component/Images/icon-error.png" />
-                        <TextBlock x:Name="TotalFail"  Margin="1,0,1,0" Text="3"/>
-                        <TextBlock x:Name="CountFail"  Margin="0,0,1,0" Text="3"/>
+                        <Image Height="16" Width="16"  Margin="0,0,2,0" Source="/EquipApps.WorkBench.WPF.MahApps;component/Images/icon-error.png" />                      
+                        <TextBlock x:Name="CountFail"  Margin="0,0,2,0" />
                         <TextBlock Text="Ошибок"       Margin="0,0,1,0"/>
                     </StackPanel>
                 </ToggleButton>
@@ -30,9 +29,8 @@
 
                 <ToggleButton x:Name="FilterWarn" Style="{DynamicResource MahApps.Styles.ToggleButton.ToolBarVS}">
                     <StackPanel Orientation="Horizontal">
-                        <Image Height="16" Width="16"  Margin="0,0,1,0" Source="/EquipApps.WorkBench.WPF.MahApps;component/Images/icon-warning.png" />
-                        <TextBlock x:Name="TotalWarn" Margin="0,0,1,0"/>
-                        <TextBlock x:Name="CountWarn" Margin="0,0,1,0"/>
+                        <Image Height="16" Width="16"  Margin="0,0,2,0" Source="/EquipApps.WorkBench.WPF.MahApps;component/Images/icon-warning.png" />                      
+                        <TextBlock x:Name="CountWarn" Margin="0,0,2,0"/>
                         <TextBlock Text="Предупреждений"/>
                     </StackPanel>
                 </ToggleButton>
@@ -40,9 +38,8 @@
 
                 <ToggleButton x:Name="FilterInfo" Style="{DynamicResource MahApps.Styles.ToggleButton.ToolBarVS}">
                     <StackPanel Orientation="Horizontal">
-                        <Image Height="16" Width="16" Margin="0,0,1,0"   Source="/EquipApps.WorkBench.WPF.MahApps;component/Images/icon-info.png" />
-                        <TextBlock x:Name="TotalInfo" Margin="0,0,1,0"/>
-                        <TextBlock x:Name="CountInfo" Margin="0,0,1,0" />
+                        <Image Height="16" Width="16" Margin="0,0,2,0"   Source="/EquipApps.WorkBench.WPF.MahApps;component/Images/icon-info.png" />                       
+                        <TextBlock x:Name="CountInfo" Margin="0,0,2,0" />
                         <TextBlock Text="Сообщений" />
                     </StackPanel>
                 </ToggleButton>
