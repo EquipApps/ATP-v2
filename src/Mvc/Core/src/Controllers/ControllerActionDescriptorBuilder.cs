@@ -1,6 +1,7 @@
 ﻿using EquipApps.Mvc.Abstractions;
 using EquipApps.Mvc.Controllers;
 using EquipApps.Mvc.ModelBinding;
+using EquipApps.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -429,11 +430,12 @@ namespace EquipApps.Mvc.ApplicationModels
             AddOrderValues(actionDescriptor, controller, action, testCase, testStep);
             AddProperties (actionDescriptor, action, controller, application);
 
+            //TODO: Проверить случай когда нету индексов
             actionDescriptor.Number = new TestNumberBuilder()
-                .Append(actionDescriptor.OrderValues["controller"])
-                .Append(actionDescriptor.OrderValues["controller_bind"])
-                .Append(actionDescriptor.OrderValues["action"])
-                .Append(actionDescriptor.OrderValues["action_bind"])
+                .Append(actionDescriptor.OrderValues[OrderKey.Controller1])
+                .Append(actionDescriptor.OrderValues[OrderKey.Controller2])
+                .Append(actionDescriptor.OrderValues[OrderKey.Action1])
+                .Append(actionDescriptor.OrderValues[OrderKey.Action2])
                 .Build();
 
             return actionDescriptor;

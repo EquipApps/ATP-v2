@@ -129,5 +129,23 @@ namespace B.EK.Controllers
                     ("Напряжение: {value} (В); Верх.граница: {hlim} (В)", voltage, voltagelimit);
             }
         }
+
+
+
+        [Title("Отключение всех ИП")]
+        [OrderController("5")]
+        public void Action()
+        {
+            //-- Удерживается до п. 5
+            this.RelayTransaction(RelayState.Disconnect,
+                "K0", "K1",
+                "K2", "K3",
+                "K4", "K5",
+
+                "K15", "K16",
+                "K22", "K23",
+                "K12");
+        }
+
     }
 }
