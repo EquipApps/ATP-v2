@@ -17,5 +17,6 @@
         public const string ExecutingMode_Operate = "Наработка";
         public const string ExecutingMode_Power = "10 Циклов подачи питания";
 
+
     }
 }

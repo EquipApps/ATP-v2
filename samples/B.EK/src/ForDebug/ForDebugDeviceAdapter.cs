@@ -1,4 +1,5 @@
 ﻿using EquipApps.Hardware;
+using EquipApps.Hardware.Behaviors.PowerSource;
 using EquipApps.WorkBench;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -120,12 +121,26 @@ namespace B.EK.ForDebug
             }
         }
 
+        private void RegisterPowerSourceBehavior()
+        {
+            logger.LogTrace($"{deviceName} - RegisterPowerSourceBehavior");
+
+            foreach (var virtualDefine in hardwareOptions.VirtualDefines.Where(x => x.BehaviorTypes.Contains(typeof(PowerSourceBehavior))))
+            {
+                var hardware = this.HardwareFeature.HardwareCollection[virtualDefine.Name];
+                var behavior = new PowerSourceBehavior();
+                behavior.ValueChange += PowerSourceBehavior_ValueChange;
 
 
+                hardware.Behaviors.AddOrUpdate(behavior);
+            }
+        }
 
-
-
-
+        private void PowerSourceBehavior_ValueChange(IValueBehavior<PowerSourceState> behavior, PowerSourceState value)
+        {
+            logger.LogTrace("{device}:{hardware} - {value}", deviceName, behavior.Hardware.Name, value);
+            behavior.SetValue(value);
+        }
 
         private void DigitalBehavior_ValueChange(IValueBehavior<DigitalState> behavior, DigitalState value)
         {

@@ -1,5 +1,6 @@
 ﻿using B.EK.ForDebug;
 using EquipApps.Hardware;
+using EquipApps.Hardware.Behaviors.PowerSource;
 using EquipApps.WorkBench;
 using Microsoft.Extensions.Options;
 
@@ -13,10 +14,10 @@ namespace B.EK.Configure
             options.RegisterHardware<MeasureVoltageBehavior>("Multimetr");
 
 
-            options.RegisterHardware<BatteryBehavior>("ИП1");                //-- 3_В
-            options.RegisterHardware<BatteryBehavior>("ИП2_+П");             //-- 30_В Шина +П
-            options.RegisterHardware<BatteryBehavior>("ИП3_+С");             //-- 30_В Шина +С
-            options.RegisterHardware<BatteryBehavior>("ИП4");                //-- 6_В
+            options.RegisterHardware<BatteryBehavior, PowerSourceBehavior>("ИП1");                //-- 3_В
+            options.RegisterHardware<BatteryBehavior, PowerSourceBehavior>("ИП2_+П");             //-- 30_В Шина +П
+            options.RegisterHardware<BatteryBehavior, PowerSourceBehavior>("ИП3_+С");             //-- 30_В Шина +С
+            options.RegisterHardware<BatteryBehavior, PowerSourceBehavior>("ИП4");                //-- 6_В
 
 
             options.RegisterHardware<RelayBehavior>("K{0}", 50, 0);

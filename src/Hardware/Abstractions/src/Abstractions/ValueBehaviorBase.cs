@@ -21,7 +21,7 @@ namespace EquipApps.Hardware
         #endregion
 
         /// <summary>
-        /// Возвращает буферное значение
+        /// Возвращает значение
         /// </summary>
         public abstract TValue Value
         {

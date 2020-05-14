@@ -15,4 +15,8 @@
     <ProjectReference Include="..\..\Abstractions\src\EquipApps.Hardware.Abstractions.csproj" />
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' ==  'net472'">
+    <Reference Include="System.Transactions" />
+  </ItemGroup>
+
 </Project>
