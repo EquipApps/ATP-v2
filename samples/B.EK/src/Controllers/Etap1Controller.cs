@@ -4,8 +4,7 @@ using EquipApps.WorkBench;
 
 namespace B.EK.Controllers
 {
-    /// <summary>
-    /// 
+    /// <summary>    
     /// <para>
     /// Контроллер исходного состояния.
     /// </para>
@@ -16,16 +15,16 @@ namespace B.EK.Controllers
     /// </para>
     /// 
     /// </summary>
-    [Title("Исходное состояние ААП")]
+    [Case("Исходное состояние ААП")]
     public class Etap1Controller : Controller, IEnableContext
     {
-        [Title("Вкл. ИП")]     
+        [Step("Вкл. ИП")]     
         [OrderController("1")]
         public void Action1()
         {
         }
 
-        [Title("ВЫкл. ИП")]
+        [Step("ВЫкл. ИП")]
         [OrderController("6")]
         public void Action2()
         {

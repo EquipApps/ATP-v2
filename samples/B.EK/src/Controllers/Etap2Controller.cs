@@ -132,7 +132,7 @@ namespace B.EK.Controllers
 
 
 
-        [Title("Отключение всех ИП")]
+        [Step("Отключение всех ИП")]
         [OrderController("5")]
         public void Action()
         {

@@ -24,8 +24,14 @@ namespace EquipApps.Mvc
             TitleFormat = title;
         }
 
+        public StepAttribute(string title)
+            : base("action", string.Empty)
+        {
+            TitleFormat = title;
+        }
 
-        public string TitleFormat { get; }
+
+        public string TitleFormat  { get; }
 
         public string NumberFormat { get; }
     }

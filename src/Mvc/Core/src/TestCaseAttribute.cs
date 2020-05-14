@@ -9,12 +9,11 @@ namespace EquipApps.Mvc
     /// Формерует Test Case 
     /// </summary>   
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class CaseAttribute : OrderValueAttribute, IDisplayFormatTitleMetadata, IDisplayIndexMetadata
+    public class CaseAttribute : OrderValueAttribute, IDisplayFormatTitleMetadata
     {
         public CaseAttribute(int number, string title)
             : base("controller", number.ToString())
         {
-            Index = number;
             TitleFormat = title;
         }
 
@@ -31,10 +30,6 @@ namespace EquipApps.Mvc
             TitleFormat = title;
         }
 
-
         public string TitleFormat { get; }
-
-
-        public int? Index { get; }
     }
 }
