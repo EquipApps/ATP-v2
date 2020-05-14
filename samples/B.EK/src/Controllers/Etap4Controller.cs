@@ -1,17 +1,10 @@
 ﻿using B.EK.Models;
 using EquipApps.Hardware;
-using EquipApps.Hardware.Extensions;
 using EquipApps.Mvc;
 using EquipApps.Testing;
 using EquipApps.WorkBench;
 using Microsoft.Extensions.Logging;
-using NLib.AtpNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Transactions;
 
 namespace B.EK.Controllers
@@ -334,7 +327,7 @@ namespace B.EK.Controllers
                 this.Logger.LogError
                     ("Напряжение: {value} (В); Верх.граница: {llim} (В)", voltage, voltagelimit);
 
-                this.ErrorOK();
+                this.Error();
             }
             else
             {
@@ -352,7 +345,7 @@ namespace B.EK.Controllers
             else
             {
                 this.Logger.LogError("Напряжение: {value} (В);", voltage);
-                this.ErrorOK();
+                this.Error();
             }
         }
     }

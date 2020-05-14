@@ -29,20 +29,50 @@ namespace EquipApps.Mvc.Infrastructure
 
         public void Invoke()
         {
-            try
-            {
-                /*
+            /*
                  * Оборачиваем все сообщения внутри вызова.
                  * Необходимо для поиска сообщений
                  */
-                using (var scope = controllerContext.TestContext.TestLogger.BeginScope(controllerContext.ActionDescriptor.Number))
-                {
-                    InvokeInternel();
-                }
+            using (var scope = controllerContext.TestContext.TestLogger.BeginScope(controllerContext.ActionDescriptor.Number))
+            {
+                InvokeInternel();
             }
+        }
+
+        private void InvokeInternel()
+        {
+            var objectMethodExecutor = controllerActionCacheEntry.ObjectMethodExecutor;
+            var actionMethodExecutor = controllerActionCacheEntry.ActionMethodExecutor;
+
+            //-- Создаем контроллер
+            var controller = controlleFactoryDelegate(controllerContext);
+
+            var actionParameters = new Dictionary<string, object>();
+
+            BindProperty(controller);                                                       //-- Привязка свойств            
+            BindParameters(actionParameters);                                               //-- Привзяка параметров
+            PrepareArguments(actionParameters, objectMethodExecutor, out var arguments);    //-- Извлечение аргуменов функции
+
+            //-- 1) Устанавливаем контекст и вызываем функцию инициализации контроллера
+            var controllerBase = controller as ControllerBase;
+            if (controllerBase != null)
+            {
+                controllerBase.ControllerContext = controllerContext;
+                controllerBase.InitializeComponent();
+            }
+
+            //-- 2) Выполняем действие результат
+            try
+            {
+                actionMethodExecutor
+                    .Execute(objectMethodExecutor, controller, arguments)?      //-- Выполняем Действие
+                    .ExecuteResult(controllerContext);                          //-- Выполняем Результат
+            }
+            //-- 3) Обработка исключений
             catch (Exception ex)
             {
                 var exception = ex;
+
                 //TODO: Написать юнит тесты для поиска состояния остановка!
                 if (exception is TargetInvocationException)
                 {
@@ -66,44 +96,14 @@ namespace EquipApps.Mvc.Infrastructure
                         exception);
                 }
             }
-        }
-
-        private void InvokeInternel()
-        {
-            var objectMethodExecutor = controllerActionCacheEntry.ObjectMethodExecutor;
-            var actionMethodExecutor = controllerActionCacheEntry.ActionMethodExecutor;
-
-            //-- Создаем контроллер
-            var controller = controlleFactoryDelegate(controllerContext);
-
-            var actionParameters = new Dictionary<string, object>();
-
-            BindProperty(controller);                                                       //-- Привязка свойств            
-            BindParameters(actionParameters);                                               //-- Привзяка параметров
-            PrepareArguments(actionParameters, objectMethodExecutor, out var arguments);    //-- Извлечение аргуменов функции
-
-            //-- Set Context
-            var controllerBase = controller as ControllerBase;
-            if (controllerBase != null)
+            //-- 4) Вызываем функцию завершения работы контроллера
+            finally
             {
-                controllerBase.ControllerContext = controllerContext;
-                controllerBase.InitializeComponent();
-            }
-
-            //-- Выполняем Действие   
-            var result = actionMethodExecutor.Execute2(objectMethodExecutor, controller, arguments);
-
-            //-- Выполняем Результат        
-            if (result != null)
-            {
-                result.ExecuteResult(controllerContext);
-            }
-
-            //-- Выполняем завершающую часть
-            if (controllerBase != null)
-            {
-                controllerBase.Finally();
-            }            
+                if (controllerBase != null)
+                {
+                    controllerBase.Finally();
+                }
+            } 
         }
 
 

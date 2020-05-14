@@ -53,83 +53,22 @@ namespace EquipApps.Mvc.Controllers
 
         #region Initialize Region
 
-        private bool isIsnitialized = false;
+        private volatile bool isIsnitialized = false;
 
         /// <summary>
-        /// Инициализация. 
-        /// Вызывается после установки контекста данных.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Во время вызова метода, свойства (с привязкой) уже инициализированны.
-        /// </remarks>  
+        /// <para> Инициализация. (Вызывается после установки контекста данных).</para>
+        /// </summary>  
         /// 
         [NonAction]
-        public virtual void InitializeComponent()
-        {
-            //TODO: Проверить что переопределенные методы с пометкой [NonAction] не вызываются!
-
-            if (!isIsnitialized)
-            {
-                isIsnitialized = true;
-                InitializeComponent_LogTestCaseInformation();
-            }
-
-            InitializeComponent_LogTestStepInformation();
-        }
-
-        /// <summary>
-        /// Функция логирования информации о тестовом случае.
-        /// Вызвается один раз для каждого экземпляра класса контроллера
-        /// </summary>
-        protected virtual void InitializeComponent_LogTestStepInformation()
-        {
-            Logger.LogInformation("{Number} - {Title}",
-                                  ControllerContext.ActionDescriptor.TestStep.Number,
-                                  ControllerContext.ActionDescriptor.TestStep.Title);
-        }
-
-        /// <summary>
-        /// Функция логирования информации о тестовом шаге.
-        /// </summary>
-        protected virtual void InitializeComponent_LogTestCaseInformation()
-        {
-
-            Logger.LogInformation("{Number} - {Title}",
-                                  ControllerContext.ActionDescriptor.TestCase.Number,
-                                  ControllerContext.ActionDescriptor.TestCase.Title);
-        }
+        public abstract void InitializeComponent();
 
         /// <summary>
         /// Заключительная функция.
         /// Вызывается после завершения действия.
         /// </summary>
         /// 
-        /// <remarks>
-        /// 
-        /// </remarks>
         [NonAction]
-        public virtual void Finally()
-        {
-            Finaly_PassedIfNotExecutedAndNullException();
-        }
-
-        /// <summary>
-        /// Функция формерует успешеый результат проверки. 
-        /// Если результат не был изменен ранее.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Устанавливает результат проверки как <see cref="ActionObjectResultType.Passed"/>
-        /// если <see cref="ActionDescriptor.Result"/> не установлен.      
-        /// </remarks>
-        protected virtual void Finaly_PassedIfNotExecutedAndNullException()
-        {
-            if (ControllerContext.ActionObject.Result.IsEmpty)
-            {
-                ControllerContext.ActionObject.SetResult(ActionObjectResultType.Passed);
-            }
-        }
+        public abstract void Finally();
 
         #endregion
     }

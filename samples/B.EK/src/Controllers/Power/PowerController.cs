@@ -18,6 +18,11 @@ namespace B.EK.Controllers.check_Power
         public void Action1()
         {
             //TODO: Добавить логику включения источника питания
+
+            if(counter == 0)
+            {
+                Error();
+            }
         }
 
         [Step(2, "Пауза 5с.")]

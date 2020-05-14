@@ -121,7 +121,7 @@ namespace B.EK.Controllers
                 this.Logger.LogError
                     ("Напряжение: {value} (В); Верх.граница: {llim} (В)", voltage, voltagelimit);
 
-                this.ErrorOK();              
+                this.Error();              
             }
             else
             {
@@ -129,8 +129,6 @@ namespace B.EK.Controllers
                     ("Напряжение: {value} (В); Верх.граница: {hlim} (В)", voltage, voltagelimit);
             }
         }
-
-
 
         [Step("Отключение всех ИП")]
         [OrderController("5")]

@@ -2,10 +2,6 @@
 using EquipApps.Mvc;
 using EquipApps.Testing;
 using EquipApps.WorkBench;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using NLib.AtpNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace B.EK.Controllers
 {

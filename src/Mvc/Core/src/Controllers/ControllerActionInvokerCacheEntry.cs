@@ -47,11 +47,11 @@ namespace EquipApps.Mvc.Controllers
                     return Executors[i];
                 }
             }
-            throw new Exception("Не ужается создать ActionMethodExecutor");
+            throw new Exception("Не удается создать ActionMethodExecutor");
         }
 
 
-        public abstract IActionResult Execute2(ObjectMethodExecutor executor, object controller, object[] arguments);
+        public abstract IActionResult Execute(ObjectMethodExecutor executor, object controller, object[] arguments);
 
         protected abstract bool CanExecute(ObjectMethodExecutor executor);
 
@@ -60,7 +60,7 @@ namespace EquipApps.Mvc.Controllers
         // void Foo(..)
         private class VoidExecutor : ActionMethodExecutor
         {
-            public override IActionResult Execute2(ObjectMethodExecutor executor, object controller, object[] arguments)
+            public override IActionResult Execute(ObjectMethodExecutor executor, object controller, object[] arguments)
             {
                 executor.Execute(controller, arguments);
                 return NonActionResult.Instance;
@@ -73,7 +73,7 @@ namespace EquipApps.Mvc.Controllers
         // IActionResult Foo(..)
         private class ResultExecutor : ActionMethodExecutor
         {
-            public override IActionResult Execute2(ObjectMethodExecutor executor, object controller, object[] arguments)
+            public override IActionResult Execute(ObjectMethodExecutor executor, object controller, object[] arguments)
             {
                 var actionResult = (IActionResult)executor.Execute(controller, arguments);
                 EnsureActionResultNotNull(executor, actionResult);
@@ -87,7 +87,7 @@ namespace EquipApps.Mvc.Controllers
         // Task Foo(..)
         private class TaskExecutor : ActionMethodExecutor
         {
-            public override IActionResult Execute2(ObjectMethodExecutor executor, object controller, object[] arguments)
+            public override IActionResult Execute(ObjectMethodExecutor executor, object controller, object[] arguments)
             {
                 var actionTask = (Task)executor.Execute(controller, arguments);
                 EnsureActionTaskNotNull(executor, actionTask);
@@ -101,7 +101,7 @@ namespace EquipApps.Mvc.Controllers
         // Task<IActionResult> Foo(..)
         private class TaskResultExecutor : ActionMethodExecutor
         {
-            public override IActionResult Execute2(ObjectMethodExecutor executor, object controller, object[] arguments)
+            public override IActionResult Execute(ObjectMethodExecutor executor, object controller, object[] arguments)
             {
                 var actionTask = (Task<IActionResult>)executor.Execute(controller, arguments);
                 EnsureActionTaskNotNull(executor, actionTask);
