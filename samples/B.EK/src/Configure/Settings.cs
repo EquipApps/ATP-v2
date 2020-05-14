@@ -2,19 +2,20 @@
 {
     public static class Settings
     {
-        public static string WorkingMode_NS { get; } = "НСТ";
-        public static string WorkingMode_ZI { get; } = "ЗИ";
-        public static string WorkingMode_PC { get; } = "ПСИ";
+        //
+        public const string WorkingMode_NS = "НСТ";
+        public const string WorkingMode_ZI = "ЗИ";
+        public const string WorkingMode_PC = "ПСИ";
 
+        //
+        public const string PowerMode_MIN = "Минимум";
+        public const string PowerMode_NOM = "Номинал";
+        public const string PowerMode_MAX = "Максимум";
 
-        public static string PowerMode_MIN { get; } = "Минимум";
-        public static string PowerMode_NOM { get; } = "Номинал";
-        public static string PowerMode_MAX { get; } = "Максимум";
-
-
-        public static string ExecutingMode_Main { get; } = "Основной";
-        public static string ExecutingMode_Operate { get; } = "Наработка";
-        public static string ExecutingMode_Power { get; } = "10 Циклов подачи питания";
+        //
+        public const string ExecutingMode_Main  = "Основной";
+        public const string ExecutingMode_Operate = "Наработка";
+        public const string ExecutingMode_Power = "10 Циклов подачи питания";
 
     }
 }
