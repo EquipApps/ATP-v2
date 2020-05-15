@@ -92,6 +92,9 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Viewers
 
         }
 
+        [Reactive] public string TileRepeat     { get; private set; } = string.Empty;
+        [Reactive] public string TileRepeatOnce { get; private set; } = string.Empty;
+
         /// <summary>
         /// 
         /// </summary>
@@ -210,11 +213,14 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Viewers
             switch (count)
             {
                 case -1:
+                    TileRepeatOnce = string.Empty;
                     break;
                 case 0:
+                    TileRepeatOnce = string.Empty;
                     IsRepeatOnceEnabled = false;
                     break;
                 default:
+                    TileRepeatOnce = count.ToString();
                     break;
             }
         }
@@ -225,11 +231,14 @@ namespace EquipApps.Mvc.Reactive.WorkFeatures.Viewers
             switch (count)
             {
                 case -1:
+                    TileRepeat = string.Empty;
                     break;
                 case 0:
+                    TileRepeat = string.Empty;
                     IsRepeatEnabled = false;
                     break;
                 default:
+                    TileRepeat = count.ToString();
                     break;
             }
         }

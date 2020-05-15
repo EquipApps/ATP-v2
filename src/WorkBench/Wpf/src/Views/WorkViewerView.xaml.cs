@@ -52,7 +52,15 @@ namespace EquipApps.WorkBench.Views
                 this.BindCommand(this.ViewModel, x => x.Viewer.TestNext, x => x.TestNext)
                     .DisposeWith(disposable);
 
+                this.OneWayBind(this.ViewModel,
+                                x => x.Viewer.TileRepeat,
+                                x => x.TileRepeat.Text)
+                    .DisposeWith(disposable);
 
+                this.OneWayBind(this.ViewModel,
+                                x => x.Viewer.TileRepeatOnce,
+                                x => x.TileRepeatOnce.Text)
+                    .DisposeWith(disposable);
 
                 //this.BindCommand(this.ViewModel, x => x.Setting, x => x.Setting)
                 //   .DisposeWith(disposable);

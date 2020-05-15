@@ -69,16 +69,18 @@
                                     Height="25" Width="25"/>
             </ToggleButton>
 
-            <ToggleButton x:Name="TestRepeat" 
-                          ToolTip="Цикличный режим">
-                <iconPacks:Material Kind="Repeat"  
-                                    Height="25" Width="25"/>
+            <ToggleButton x:Name="TestRepeat" ToolTip="Цикличный режим" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="1">
+                <Grid>
+                    <TextBlock x:Name="TileRepeat" Text="100" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    <iconPacks:PackIconMaterial Kind="Repeat"  Height="25" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>                            
             </ToggleButton>
 
-            <ToggleButton x:Name="TestRepeatOnce"
-                          ToolTip="Цикличный режим">
-                <iconPacks:Material Kind="RepeatOnce" 
-                                    Height="25" Width="25"/>
+            <ToggleButton x:Name="TestRepeatOnce" ToolTip="Цикличный режим"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0">
+                <Grid>
+                    <TextBlock x:Name="TileRepeatOnce" Text="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <iconPacks:PackIconMaterial Kind="RepeatOnce"  Height="25" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>                
             </ToggleButton>
 
         </WrapPanel>
