@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <!--ВАЖНО: 620 отдел использует библиотеки собранные под 32 bit-->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Advantech\PCI_1710\" />
+    <Folder Include="Advantech\PCI_1762\" />
+    <Folder Include="Advantech\PCI_1754\" />
+    <Folder Include="ASBL\" />
+    <Folder Include="GwINSTEK\GDM_Series\GDM_8246\" />
+    <Folder Include="GwINSTEK\GDM_Series\GDM_78341\" />
+    <Folder Include="GwINSTEK\PSH_Series\PSH_3610\" />
+    <Folder Include="GwINSTEK\PST_Series\PST_320\" />
+  </ItemGroup>
+
+</Project>
