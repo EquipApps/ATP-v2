@@ -6,16 +6,6 @@ namespace AtpNetCore.Mvc.Core.Tests.Mok
 {
     #region Index
 
-    public class IndexAttribute : Attribute, IDisplayIndexMetadata
-    {
-        public IndexAttribute(int index)
-        {
-            Index = index;
-        }
-
-        public int? Index { get; private set; }
-    }
-
     public class IndexController
     {
 
@@ -25,7 +15,7 @@ namespace AtpNetCore.Mvc.Core.Tests.Mok
     {
 
     }
-    [Index(3)]
+    
     public class Index2Controller
     {
 
@@ -58,6 +48,15 @@ namespace AtpNetCore.Mvc.Core.Tests.Mok
     }
     public class Mok2Controller : ControllerBase
     {
+        public override void Finally()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void InitializeComponent()
+        {
+            throw new NotImplementedException();
+        }
     }
     public class Mok3Controller : ControllerBase<MokModel>
     {
@@ -80,6 +79,15 @@ namespace AtpNetCore.Mvc.Core.Tests.Mok
 
     public class Mok2NumberController : ControllerBase
     {
+        public override void Finally()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void InitializeComponent()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class Mok3NumberController : ControllerBase<MokModel>

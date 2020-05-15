@@ -1,55 +1,161 @@
 ﻿using DynamicData;
-using EquipApps.Mvc.Reactive.LogsFeatures.Infrastructure;
 using EquipApps.Mvc.Reactive.LogsFeatures.Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
-namespace EquipApps.Mvc.Viewers
+namespace EquipApps.Mvc.Reactive.LogsFeatures.Viewers
 {
-    public class LogViewerCounter : ReactiveObject, IDisposable
+    /// <summary>
+    /// Счетчик.
+    /// </summary>
+    /// 
+    /// <remarks>
+    /// ВАЖНО!. 
+    /// Работает только с вновь добавленными элементами коллекции
+    /// Замена не поддерживается
+    /// </remarks>
+    /// 
+    public class LogViewerCounter : ReactiveObject, IObservable<LogViewerCount>, IDisposable
     {
-        private const double throttleMilliseconds = 500.0;
-        private LogLevelCounter levelCounter;
         private IDisposable disposable;
+        private Subject<LogViewerCount> subject;
 
         public LogViewerCounter(IObservable<IChangeSet<LogEntry>> source)
         {
-            levelCounter = new LogLevelCounter(source);
-            disposable = levelCounter
-                .Throttle(TimeSpan.FromMilliseconds(throttleMilliseconds))
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(OnNext);
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            Сountdbug = 0;
+            Сountinfo = 0;
+            Сountwarn = 0;
+            Сountfail = 0;
+
+            subject = new Subject<LogViewerCount>();
+
+            disposable = source.ObserveOn(RxApp.MainThreadScheduler)
+                               .Subscribe(OnNext);
+        }
+
+        [Reactive]
+        public int Сountdbug
+        {
+            get; private set;
+        }
+        [Reactive]
+        public int Сountinfo
+        {
+            get; private set;
+        }
+        [Reactive]
+        public int Сountwarn
+        {
+            get; private set;
+        }
+        [Reactive]
+        public int Сountfail
+        {
+            get; private set;
+        }
+
+        public IDisposable Subscribe(IObserver<LogViewerCount> observer)
+        {
+            if (observer == null)
+            {
+                throw new ArgumentNullException(nameof(observer));
+            }
+
+            //-- Передаем состояние новому подписчику
+            //-- Необходимо чтобы у подписчика были актуальные данные.
+            //-- (Проверка что подписка не багованная)
+
+            observer.OnNext(new LogViewerCount
+            {
+                Countdbug = Сountdbug,
+                Countinfo = Сountinfo,
+                Countwarn = Сountwarn,
+                Countfail = Сountfail,
+            });
+
+            //-- Сохраняем подписчика
+            return subject.Subscribe(observer);
         }
 
         public void Dispose()
         {
-            disposable.Dispose();
-            levelCounter.Dispose();
+            disposable?.Dispose();
+            subject?.Dispose();
+
+            disposable = null;
+            subject = null;
         }
 
-        private void OnNext(LogLevelCount levelCount)
+        private void OnNext(IChangeSet<LogEntry> changes)
         {
-            CountFail = levelCount.Countfail;
-            CountInfo = levelCount.Countinfo;
-            CountWarn = levelCount.Countwarn;
+            foreach (var change in changes)
+            {
+                switch (change.Reason)
+                {
+                    case ListChangeReason.Add:
+                        {
+                            OnNext(change.Item.Current);
+                        }
+                        break;
+                    case ListChangeReason.AddRange:
+                        {
+                            foreach (var item in change.Range)
+                            {
+                                OnNext(item);
+                            }
+                        }
+                        break;
+                    case ListChangeReason.Clear:
+                        {
+                            Clear();
+                        }
+                        break;
+                    case ListChangeReason.Replace:
+                    case ListChangeReason.Remove:
+                    case ListChangeReason.RemoveRange:
+                    case ListChangeReason.Refresh:
+                    case ListChangeReason.Moved:
+                    default:
+                        break;
+                }
+            }
+
+            subject.OnNext(new LogViewerCount
+            {
+                Countdbug = Сountdbug,
+                Countinfo = Сountinfo,
+                Countwarn = Сountwarn,
+                Countfail = Сountfail,
+            });
         }
 
-        [Reactive] public int CountFail
+        private void OnNext(LogEntry logEntry)
         {
-            get; private set;
+            switch (logEntry.Level)
+            {
+                case LogEntryLevel.dbug: Сountdbug++; break;
+                case LogEntryLevel.info: Сountinfo++; break;
+                case LogEntryLevel.warn: Сountwarn++; break;
+                case LogEntryLevel.fail: Сountfail++; break;
+                default:
+                    break;
+            }
         }
 
-        [Reactive] public int CountInfo
+        private void Clear()
         {
-            get; private set;
-        }
-
-        [Reactive] public int CountWarn
-        {
-            get;
-            private set;
+            Сountdbug = 0;
+            Сountinfo = 0;
+            Сountwarn = 0;
+            Сountfail = 0;
         }
     }
 }

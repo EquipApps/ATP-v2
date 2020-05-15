@@ -16,7 +16,7 @@ namespace EquipApps.Mvc.Reactive.LogsFeatures.Viewers
         private IDisposable _filterScopeListener;
 
         private readonly Dictionary<string, GroupInfo> cache;
-        private const double throttleMilliseconds = 500.0;
+        private const double throttleMilliseconds = 100.0;
 
         public LogViewerFilter(IOptions<LogOptions> options)
         {
@@ -72,8 +72,7 @@ namespace EquipApps.Mvc.Reactive.LogsFeatures.Viewers
         }
 
         public IObservable<Func<LogEntry, bool>> ObservableFilter { get; }
-
-
+        
         [Reactive]
         public bool ShowDbug { get; set; } = false;
 
@@ -85,7 +84,6 @@ namespace EquipApps.Mvc.Reactive.LogsFeatures.Viewers
 
         [Reactive]
         public bool ShowFail { get; set; } = true;
-
 
         [Reactive]
         public string Scope { get; set; } = string.Empty;

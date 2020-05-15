@@ -1,6 +1,5 @@
 ﻿using EquipApps.Mvc.Reactive.LogsFeatures.Infrastructure;
 using EquipApps.Mvc.Reactive.LogsFeatures.Services;
-using EquipApps.Mvc.Reactive.LogsFeatures.Viewers;
 using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -12,12 +11,12 @@ namespace Microsoft.Extensions.DependencyInjection
             //-- Middleware
             services.AddSingleton<LogsMiddleware>();
 
+            //-- Extentions
+            services.AddTransientFeatureProvider<LogsFeatureProvider>();
+
             //-- Extention            
             services.AddSingleton<ILogService, LogService>();
             services.AddSingleton<ILoggerProvider, RxLoggerProvider>();
-
-            //-- Viewers            
-            services.AddTransient<LogViewer>();
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace EquipApps.Mvc.Reactive.LogsFeatures.Infrastructure
+﻿namespace EquipApps.Mvc.Reactive.LogsFeatures.Viewers
 {
-    public struct LogLevelCount
+    public struct LogViewerCount
     {
         public int Countdbug { get; set; }
         public int Countinfo { get; set; }
