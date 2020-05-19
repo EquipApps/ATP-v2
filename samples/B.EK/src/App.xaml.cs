@@ -51,18 +51,19 @@ namespace B.EK
 
         protected override void ConfigureServiceCollection(IServiceCollection serviceCollection)
         {
-            
+            serviceCollection.AddSingleton<ForDebugDevice>();
+            serviceCollection.AddSingleton<ForDebugDeviceAdapter>();
 
             serviceCollection.AddTransient<IMahAppsService, MahAppsService>();
 
             serviceCollection.AddSingleton<OptionsViewModel>();
             
-
-
-            serviceCollection.AddTransient<ForDebugDevice>();
-            serviceCollection.AddTransient<ForDebugDeviceAdapter>();
-
             serviceCollection.ConfigureOptions<ConfigureOptionsHardwareOptions>();
+            serviceCollection.ConfigureOptions<ConfigureOptionsHardwarePci1762>();
+            serviceCollection.ConfigureOptions<ConfigureOptionsHardwarePsh3610>();
+
+
+
             serviceCollection.ConfigureOptions<ConfigureOptionsLogOptions>();
             serviceCollection.ConfigureOptions<ConfigureOptionsTestOptions>();           
             serviceCollection.ConfigureOptions<ConfigureOptionsRuntimeOptions>();
@@ -80,6 +81,7 @@ namespace B.EK
 
             //-- Hardware
             serviceCollection.AddHardware();
+            serviceCollection.AddHardwareExternal();
             serviceCollection.AddHardwareDigital();
 
 

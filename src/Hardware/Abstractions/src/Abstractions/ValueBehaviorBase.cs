@@ -10,28 +10,28 @@ namespace EquipApps.Hardware
     {
         #region IHardwareBehavior
 
-        public abstract IHardware Hardware
+        public virtual IHardware Hardware
         {
             get;
             set;
         }
 
-        public abstract void Attach();
+        /// <inheritdoc/>  
+        public virtual void Attach()
+        {
+
+        }
 
         #endregion
 
-        /// <summary>
-        /// Возвращает значение
-        /// </summary>
-        public abstract TValue Value
+        /// <inheritdoc/>   
+        public virtual TValue Value
         {
             get;
             protected set;
         }
 
-        /// <summary>
-        /// Request To Update Value.
-        /// </summary>
+        /// <inheritdoc/>        
         public virtual void RequestToUpdateValue()
         {
             var valueUpdate = ValueUpdate;
@@ -41,9 +41,7 @@ namespace EquipApps.Hardware
                 valueUpdate.Invoke(this);
         }
 
-        /// <summary>
-        /// Request To Change Value
-        /// </summary>        
+        /// <inheritdoc/>         
         public virtual void RequestToChangeValue(TValue value)
         {
             var valueChange = ValueChange;
@@ -53,23 +51,21 @@ namespace EquipApps.Hardware
                 valueChange.Invoke(this, value);
         }
 
-        /// <summary>
-        /// Set Value
-        /// </summary>
+        /// <inheritdoc/>    
         public virtual void SetValue(TValue value)
         {
             Value = value;
         }
 
         /// <summary>
-        /// Событие на обновление данных. (Для адаптера)
-        /// </summary>
-        public event Action<IValueBehavior<TValue>> ValueUpdate;
+        /// Событие на изменение данных. (Для адаптера)
+        /// </summary>   
+        public event Action<ValueBehaviorBase<TValue>> ValueUpdate;
 
         /// <summary>
-        /// Событие на изменение данных. (Для адаптера)
+        /// Событие на обновление данных. (Для адаптера)
         /// </summary>
-        public event Action<IValueBehavior<TValue>, TValue> ValueChange;
+        public event Action<ValueBehaviorBase<TValue>, TValue> ValueChange;
 
         /// <summary>
         /// Флаг.

@@ -1,5 +1,6 @@
 ﻿using DynamicData;
 using System;
+using System.Collections.Generic;
 
 namespace EquipApps.Hardware
 {
@@ -8,6 +9,7 @@ namespace EquipApps.Hardware
     {
         private IHardware _hardware;
         private SourceCache<IHardwareBehavior, Type> _source;
+        private Dictionary<Type, IHardwareBehavior> _source2;
 
         public HardwareBehaviorCollection(IHardware hardware)
         {
@@ -16,6 +18,8 @@ namespace EquipApps.Hardware
       {
           return x.GetType();
       });
+
+            _source2 = new Dictionary<Type, IHardwareBehavior>();
         }
 
         /// <summary>
@@ -26,7 +30,7 @@ namespace EquipApps.Hardware
         /// <summary>
         /// Возвращает количиство <see cref="IHardwareBehavior"/>
         /// </summary>
-        public int Count => _source.Count;
+        public int Count => _source2.Count;
 
         /// <summary>
         /// Добавляет или обновляет поведение.
@@ -39,6 +43,7 @@ namespace EquipApps.Hardware
                 throw new ArgumentNullException(nameof(behavior));
             }
 
+            _source2.Add(typeof(TBehavior), behavior);
             _source.AddOrUpdate(behavior);
 
             behavior.Hardware = _hardware;
@@ -51,9 +56,8 @@ namespace EquipApps.Hardware
         public TBehavior Get<TBehavior>()
             where TBehavior : class, IHardwareBehavior
         {
-            var result = _source.Lookup(typeof(TBehavior));
-            if (result.HasValue)
-                return result.Value as TBehavior;
+            if (_source2.TryGetValue(typeof(TBehavior), out IHardwareBehavior behavior))
+                return behavior as TBehavior;
             else
                 return null;
         }
@@ -64,7 +68,7 @@ namespace EquipApps.Hardware
         public void Remove<TBehavior>()
             where TBehavior : class, IHardwareBehavior
         {
-            _source.RemoveKey(typeof(TBehavior));
+            _source2.Remove(typeof(TBehavior));
         }
 
         /// <summary>
@@ -72,7 +76,7 @@ namespace EquipApps.Hardware
         /// </summary>
         public void Clear()
         {
-            _source.Clear();
+            _source2.Clear();
         }
 
 
@@ -82,7 +86,7 @@ namespace EquipApps.Hardware
         public bool ContainsBehaviorWithKey<TBehavior>()
             where TBehavior : class, IHardwareBehavior
         {
-            return _source.Lookup(typeof(TBehavior)).HasValue;
+            return _source2.ContainsKey(typeof(TBehavior));
         }
 
         #region IDisposable Support

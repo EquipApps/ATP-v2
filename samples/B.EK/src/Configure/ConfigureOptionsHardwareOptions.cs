@@ -2,6 +2,8 @@
 using EquipApps.Hardware;
 using EquipApps.Hardware.Behaviors.PowerSource;
 using EquipApps.WorkBench;
+using EquipApps.WorkBench.Tools.External.Advantech.PCI_1762;
+using EquipApps.WorkBench.Tools.External.GwINSTEK.PSH_Series.PSH_3610;
 using Microsoft.Extensions.Options;
 
 namespace B.EK.Configure
@@ -36,7 +38,12 @@ namespace B.EK.Configure
             options.RegisterHardware<DigitalBehavior>("F{0}", 17, 1);
           
             //--
-            options.RegisterMapping<ForDebugDevice, ForDebugDeviceAdapter>("DEBUG_DEVICE");
+            
+
+            options.RegisterMapping<Psh3610_Library,  Psh3610_Adapter>  ("PSH_3610");
+            options.RegisterMapping<PCI_1762_Library, PCI_1762_Adapter> ("PCI_1762");
+
+            options.RegisterMapping<ForDebugDevice, ForDebugDeviceAdapter>("SS");
         }
     }
 }

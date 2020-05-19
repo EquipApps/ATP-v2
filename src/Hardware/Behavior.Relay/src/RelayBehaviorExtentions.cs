@@ -11,11 +11,11 @@ namespace EquipApps.Hardware
     {
         public static void RelaySwitch(this IEnableContext enableContext, RelayState relayState, string relayName)
         {
-            enableContext.RequestToChangeValue<RelayBehavior, RelayState>(relayState, relayName);
+            enableContext.RequestToChangeValue<IRelayBehavior, RelayState>(relayState, relayName);
         }
         public static void RelaySwitch(this IEnableContext enableContext, RelayState relayState, params string[] relayNames)
         {
-            enableContext.RequestToChangeValue<RelayBehavior, RelayState>(relayState, relayNames);
+            enableContext.RequestToChangeValue<IRelayBehavior, RelayState>(relayState, relayNames);
         }
         public static void RelayTransaction(this IEnableContext enableContext, RelayState relayState, string relayName)
         {

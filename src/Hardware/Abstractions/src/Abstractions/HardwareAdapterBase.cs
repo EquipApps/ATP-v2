@@ -78,8 +78,9 @@ namespace EquipApps.Hardware
         protected abstract void Adapt(TDevice device, string deviceName);
 
         /// <summary>
-        /// Привязка поведений. (По умолчаню пуст)
+        /// Привязка поведений.
         /// Вызывается во время инициализации.
+        /// <para>(По умолчаню пуст)</para>
         /// </summary>
         protected virtual void AttachBehaviors()
         {

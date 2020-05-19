@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\WorkBench\Tools.External\src\EquipApps.WorkBench.Tools.External.csproj" />
     <ProjectReference Include="..\..\..\src\WorkBench\Wpf\src\EquipApps.WorkBench.WPF.MahApps.csproj" />
   </ItemGroup>
 

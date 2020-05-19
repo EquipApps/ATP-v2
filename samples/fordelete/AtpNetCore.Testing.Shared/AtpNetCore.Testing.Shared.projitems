@@ -10,10 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BatteryBehavior.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\BatteryViewer\BatteryViewerViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\BatteryViewer\BatteryViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\RelayViewer\RelayViewerViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\RelayViewer\RelayViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)ApplicationGraph.dgml" />

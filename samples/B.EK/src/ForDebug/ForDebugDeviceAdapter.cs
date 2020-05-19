@@ -10,8 +10,8 @@ namespace B.EK.ForDebug
 {
     public class ForDebugDeviceAdapter : HardwareAdapterBase<ForDebugDevice>
     {
-        private ForDebugDevice  device;
-        private string          deviceName;
+        private ForDebugDevice device;
+        private string deviceName;
         private ILogger<ForDebugDeviceAdapter> logger;
         private HardwareOptions hardwareOptions;
 
@@ -37,7 +37,7 @@ namespace B.EK.ForDebug
         {
             logger.LogTrace($"{deviceName} - Adapt");
 
-            this.device     = device;
+            this.device = device;
             this.deviceName = deviceName;
         }
 
@@ -87,8 +87,8 @@ namespace B.EK.ForDebug
                     behavior.ValueUpdate += DigitalBehavior_ValueUpdate;
                 }
 
-               
-               
+
+
                 hardware.Behaviors.AddOrUpdate(behavior);
             }
         }
@@ -96,15 +96,17 @@ namespace B.EK.ForDebug
         {
             logger.LogTrace($"{deviceName} - RegisterRelayBehavior");
 
-            foreach (var virtualDefine in hardwareOptions.VirtualDefines.Where(x => x.BehaviorTypes.Contains(typeof(RelayBehavior))))
+            foreach (var virtualDefine in hardwareOptions.VirtualDefines.Where(x => x.BehaviorTypes.Contains(typeof(IRelayBehavior))))
             {
                 var hardware = this.HardwareFeature.HardwareCollection[virtualDefine.Name];
+                if (hardware.Behaviors.ContainsBehaviorWithKey<IRelayBehavior>())
+                    continue;
 
                 var behavior = new RelayBehavior();
-                    behavior.SetValue(RelayState.Disconnect);
-                    behavior.ValueChange += RelayBehavior_ValueChange;
+                behavior.SetValue(RelayState.Disconnect);
+                behavior.ValueChange += RelayBehavior_ValueChange;
 
-                hardware.Behaviors.AddOrUpdate(behavior);
+                hardware.Behaviors.AddOrUpdate<IRelayBehavior>(behavior);
             }
         }
         private void RegisterMeasureVoltageBehavior()
@@ -116,11 +118,10 @@ namespace B.EK.ForDebug
                 var hardware = this.HardwareFeature.HardwareCollection[virtualDefine.Name];
 
                 var behavior = new MeasureVoltageBehavior();
-                    behavior.ValueUpdate += MeasureVoltageBehavior_ValueUpdate;
-                    hardware.Behaviors.AddOrUpdate(behavior);
+                behavior.ValueUpdate += MeasureVoltageBehavior_ValueUpdate;
+                hardware.Behaviors.AddOrUpdate(behavior);
             }
         }
-
         private void RegisterPowerSourceBehavior()
         {
             logger.LogTrace($"{deviceName} - RegisterPowerSourceBehavior");
@@ -136,35 +137,30 @@ namespace B.EK.ForDebug
             }
         }
 
-        private void PowerSourceBehavior_ValueChange(IValueBehavior<PowerSourceState> behavior, PowerSourceState value)
+        private void PowerSourceBehavior_ValueChange(ValueBehaviorBase<PowerSourceState> behavior, PowerSourceState value)
         {
             logger.LogTrace("{device}:{hardware} - {value}", deviceName, behavior.Hardware.Name, value);
             behavior.SetValue(value);
         }
-
-        private void DigitalBehavior_ValueChange(IValueBehavior<DigitalState> behavior, DigitalState value)
+        private void DigitalBehavior_ValueChange(ValueBehaviorBase<DigitalState> behavior, DigitalState value)
         {
             logger.LogTrace("{device}:{hardware} - {value}", deviceName, behavior.Hardware.Name, value);
             behavior.SetValue(value);
         }
-
-        private void DigitalBehavior_ValueUpdate(IValueBehavior<DigitalState> behavior)
+        private void DigitalBehavior_ValueUpdate(ValueBehaviorBase<DigitalState> behavior)
         {
             logger.LogTrace("{device}:{hardware} - Update", deviceName, behavior.Hardware.Name);
 
             behavior.SetValue(DigitalState.Null);
         }
 
-
-
-
-        private void MeasureVoltageBehavior_ValueUpdate(IValueBehavior<double> behavior)
+        private void MeasureVoltageBehavior_ValueUpdate(ValueBehaviorBase<double> behavior)
         {
             logger.LogTrace("{device}:{hardware} - Measure Voltage", deviceName, behavior.Hardware.Name);
 
             behavior.SetValue(0);
         }
-        private void RelayBehavior_ValueChange(IValueBehavior<RelayState> behavior, RelayState value)
+        private void RelayBehavior_ValueChange(ValueBehaviorBase<RelayState> behavior, RelayState value)
         {
             logger.LogTrace("{device}:{hardware} - {value}", deviceName, behavior.Hardware.Name, value);
 
@@ -189,6 +185,6 @@ namespace B.EK.ForDebug
             logger.LogTrace($"{deviceName} - Dispose");
         }
 
-        
+
     }
 }

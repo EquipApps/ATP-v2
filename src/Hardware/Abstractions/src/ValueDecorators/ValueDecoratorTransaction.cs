@@ -7,7 +7,7 @@ namespace EquipApps.Hardware.ValueDecorators
     /// Декоратор. 
     /// С поддержкой <see cref="IEnlistmentNotification"/>.
     /// </summary>
-    public class ValueDecoratorTransaction<TValue> : IValueComonent<TValue>, IEnlistmentNotification
+    public sealed class ValueDecoratorTransaction<TValue> : IValueComonent<TValue>, IEnlistmentNotification
     {
         IValueComonent<TValue> _valueComonent;
 
@@ -42,10 +42,13 @@ namespace EquipApps.Hardware.ValueDecorators
             }
         }
 
-        private bool Enlist()
+        /// <summary>
+        /// Подписаться на транзакцию
+        /// </summary>       
+        public bool Enlist()
         {
             if (_enlisted)
-                //-- Идет ранзакция
+                //-- Идет транзакция
                 return true;
 
             var currentTx = Transaction.Current;

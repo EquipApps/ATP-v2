@@ -4,11 +4,11 @@ using System;
 namespace EquipApps.Hardware
 {
     public class RelayBehavior : ValueBehaviorBase<RelayState>, IHardwareBehavior,
-        IValueComonent<RelayState>, IValueComonent<IHardware>
+        IValueComonent<RelayState>, IValueComonent<IHardware>, IRelayBehavior
     {
-        private ValueDecoratorObservable<RelayState> valueObservable;
-        private ValueDecoratorTransaction<RelayState> valueTransaction;
-        private ValueDecoratorObservable<IHardware> hardwareObservable;
+        private readonly ValueDecoratorObservable<RelayState> valueObservable;
+        private readonly ValueDecoratorTransaction<RelayState> valueTransaction;
+        private readonly ValueDecoratorObservable<IHardware> hardwareObservable;
 
         private RelayState _state = RelayState.Disconnect;
         private IHardware _hardware = null;
@@ -16,8 +16,8 @@ namespace EquipApps.Hardware
         public RelayBehavior()
         {
             //---
-            valueObservable     = new ValueDecoratorObservable<RelayState>(this);
-            valueTransaction    = new ValueDecoratorTransaction<RelayState>(valueObservable);
+            valueObservable = new ValueDecoratorObservable<RelayState>(this);
+            valueTransaction = new ValueDecoratorTransaction<RelayState>(valueObservable);
 
             //---
             hardwareObservable = new ValueDecoratorObservable<IHardware>(this);

@@ -11,23 +11,14 @@ namespace EquipApps.Hardware
     /// </summary>
     public class HardwareFeatureProvider : IFeatureProvider
     {
-        private readonly ILogger<HardwareFeatureProvider> _logger;
         private readonly HardwareOptions _hardwareOptions;
         private readonly IServiceProvider _serviceProvider;
         private readonly IHardwareCollection _hardwares;
 
-        public HardwareFeatureProvider(
-            ILogger<Hardware> hardwareLogger,
-            ILogger<HardwareFeature> hardwareFeatureLogger,
-            ILogger<HardwareFeatureProvider> hardwarelogger,
-            IOptions<HardwareOptions> hardwareOptions,
-
-
-            IServiceProvider serviceProvider,
-            IHardwareCollection hardwares)
+        public HardwareFeatureProvider(IOptions<HardwareOptions> hardwareOptions,
+                                       IServiceProvider serviceProvider,
+                                       IHardwareCollection hardwares)
         {
-            _logger = hardwarelogger ?? throw new ArgumentNullException(nameof(hardwarelogger));
-
             _hardwareOptions = hardwareOptions?.Value ?? throw new ArgumentNullException(nameof(hardwareOptions));
             _serviceProvider = serviceProvider  ?? throw new ArgumentNullException(nameof(serviceProvider));
             _hardwares       = hardwares        ?? throw new ArgumentNullException(nameof(hardwares));
@@ -38,18 +29,11 @@ namespace EquipApps.Hardware
 
         public void OnProvidersExecuted(FeatureProviderContext context)
         {
-            //--
-            _logger.LogTrace($"{nameof(OnProvidersExecuted)}");
-
             //-- Ничего не делаем!
         }
 
         public void OnProvidersExecuting(FeatureProviderContext context)
         {
-            //--
-            _logger.LogTrace($"{nameof(OnProvidersExecuting)}");
-
-
             //-- Создаем фичу
             var hardwareFeature = FactoryHardwareFeature();
             hardwareFeature.HardwareCollection.Clear();
@@ -131,7 +115,7 @@ namespace EquipApps.Hardware
 
             if (instance == null)
             {
-                throw new InvalidOperationException("Не узается создать устройство: " + deviceType.Name);
+                throw new InvalidOperationException("Не удается создать устройство: " + deviceType.Name);
             }
 
             return instance;

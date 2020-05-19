@@ -4,13 +4,19 @@ namespace EquipApps.Hardware
 {
     public interface IValueBehavior<TValue> : IHardwareBehavior
     {
+        /// <summary>
+        /// Value
+        /// </summary>
         TValue Value { get; }
 
+        /// <summary>
+        /// Request To Change Value
+        /// </summary>  
         void RequestToChangeValue(TValue value);
-        void RequestToUpdateValue();
-        void SetValue(TValue value);
 
-        event Action<IValueBehavior<TValue>, TValue> ValueChange;
-        event Action<IValueBehavior<TValue>> ValueUpdate;
+        /// <summary>
+        /// Request To Update Value.
+        /// </summary>
+        void RequestToUpdateValue();
     }
 }
