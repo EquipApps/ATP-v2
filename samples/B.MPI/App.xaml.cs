@@ -1,11 +1,7 @@
-﻿using EquipApps.WorkBench;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using EquipApps.Testing;
+using EquipApps.WorkBench;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace B.MPI
 {
@@ -14,5 +10,17 @@ namespace B.MPI
     /// </summary>
     public partial class App : WbApp
     {
+        protected override void Configure(ITestBuilder builder)
+        {
+        }
+
+        protected override void Configure(ILoggingBuilder builder)
+        {
+        }
+
+        protected override void ConfigureServiceCollection(IServiceCollection serviceCollection)
+        {
+            
+        }
     }
 }
