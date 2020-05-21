@@ -26,7 +26,7 @@ namespace EquipApps.WorkBench.Tools.External.Advantech.PCI_1754
 
         private void PCI_1754_Device_ValueUpdate(ValueBehaviorBase<byte> behavior)
         {
-            throw new NotImplementedException();
+            
         }
 
 
@@ -41,7 +41,7 @@ namespace EquipApps.WorkBench.Tools.External.Advantech.PCI_1754
         public ushort Board_ID { get; }
 
         /// <summary>
-        /// 
+        /// Цифровые порты
         /// </summary>
         public PCI_DI_Port[] Ports { get; }
     }
