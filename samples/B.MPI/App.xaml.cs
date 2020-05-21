@@ -1,4 +1,5 @@
-﻿using EquipApps.Testing;
+﻿using B.MPI.Configure;
+using EquipApps.Testing;
 using EquipApps.WorkBench;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,7 @@ namespace B.MPI
 
         protected override void ConfigureServiceCollection(IServiceCollection serviceCollection)
         {
-            
+            serviceCollection.ConfigureOptions<ConfigureOptionsLogOptions>();
         }
     }
 }
