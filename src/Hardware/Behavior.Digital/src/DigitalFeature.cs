@@ -2,7 +2,7 @@
 
 namespace EquipApps.Hardware
 {
-    public class DigitalFeature : Dictionary<string, DigitalBehavior>
+    public class DigitalFeature : Dictionary<string, IDigitalLineBehavior>
     {
     }
 }

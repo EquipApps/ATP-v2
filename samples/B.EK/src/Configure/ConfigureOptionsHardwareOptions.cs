@@ -22,20 +22,20 @@ namespace B.EK.Configure
             options.RegisterHardware<BatteryBehavior, PowerSourceBehavior>("ИП4");                //-- 6_В
 
 
-            options.RegisterHardware<RelayBehavior>("K{0}", 50, 0);
+            options.RegisterHardware<IRelayBehavior>("K{0}", 50, 0);
 
             //-- Цифровая выдача
-            options.RegisterHardware<DigitalBehavior>("W{0}.1", 16, 1);
-            options.RegisterHardware<DigitalBehavior>("W{0}.2", 16, 1);
-            options.RegisterHardware<DigitalBehavior>("W{0}.3", 16, 1);
+            options.RegisterHardware<IDigitalLineBehavior>("W{0}.1", 16, 1);
+            options.RegisterHardware<IDigitalLineBehavior>("W{0}.2", 16, 1);
+            options.RegisterHardware<IDigitalLineBehavior>("W{0}.3", 16, 1);
 
             //-- Цифровой контроль
-            options.RegisterHardware<DigitalBehavior>("R{0}.1", 16, 1);
-            options.RegisterHardware<DigitalBehavior>("R{0}.2", 16, 1);
-            options.RegisterHardware<DigitalBehavior>("R{0}.3", 16, 1);
+            options.RegisterHardware<IDigitalLineBehavior>("R{0}.1", 16, 1);
+            options.RegisterHardware<IDigitalLineBehavior>("R{0}.2", 16, 1);
+            options.RegisterHardware<IDigitalLineBehavior>("R{0}.3", 16, 1);
 
             //-- Релейный контроль
-            options.RegisterHardware<DigitalBehavior>("F{0}", 17, 1);
+            options.RegisterHardware<IDigitalLineBehavior>("F{0}", 17, 1);
           
             //--
             

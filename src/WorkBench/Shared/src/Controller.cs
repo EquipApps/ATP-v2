@@ -13,40 +13,44 @@ namespace EquipApps.WorkBench
     public abstract class Controller : ControllerBase, IEnableContext
     {
         [NonAction]
-        public virtual void DigitalValidate(Dictionary<string, DigitalState> digitals, DigitalState etalon, params string[] digitalNames)
+        public virtual void Validate<TValue>(IDictionary<string, TValue> valuePairs, TValue etalon, params string[] names)
+            where TValue : struct, IComparable<TValue>
         {
-            foreach (var digitalName in digitalNames)
+            foreach (var digitalName in names)
             {
-                DigitalValidate(digitalName, digitals[digitalName], etalon);
-                digitals.Remove(digitalName);
+                Validate(digitalName, valuePairs[digitalName], etalon);
+                valuePairs.Remove(digitalName);
             }
         }
         [NonAction]
-        public virtual void DigitalValidate(Dictionary<string, DigitalState> digitals, DigitalState etalon, string digitalName)
+        public virtual void Validate<TValue>(IDictionary<string, TValue> valuePairs, TValue etalon, string name)
+            where TValue : struct, IComparable<TValue>
         {
-            DigitalValidate(digitalName, digitals[digitalName], etalon);
-            digitals.Remove(digitalName);
+            Validate(name, valuePairs[name], etalon);
+            valuePairs.Remove(name);
         }
         [NonAction]
-        public virtual void DigitalValidate(Dictionary<string, DigitalState> digitals, DigitalState etalon)
+        public virtual void Validate<TValue>(IDictionary<string, TValue> valuePairs, TValue etalon)
+            where TValue : struct, IComparable<TValue>
         {
-            foreach (var pair in digitals)
+            foreach (var pair in valuePairs)
             {
-                DigitalValidate(pair.Key, pair.Value, etalon);
+                Validate(pair.Key, pair.Value, etalon);
             }
-        }
+        }        
         [NonAction]
-        public virtual void DigitalValidate(string digitalName, DigitalState digital, DigitalState etalon)
+        public virtual void Validate<TValue>(string name, TValue value, TValue etalon)
+            where TValue: struct, IComparable<TValue>
         {
-            if (digital == etalon)
+            if (value.CompareTo(etalon) == 0)
             {
                 Logger.LogDebug
-                    ("{0} - Значение {1}, Эталон {2}", digitalName, digital, etalon);
+                    ("{0} - Значение {1}, Эталон {2}", name, value, etalon);
             }
             else
             {
                 Logger.LogError
-                    ("{0} - Значение {1}, Эталон {2}", digitalName, digital, etalon);
+                    ("{0} - Значение {1}, Эталон {2}", name, value, etalon);
 
                 Error();
             }

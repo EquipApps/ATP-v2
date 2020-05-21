@@ -8,34 +8,34 @@ namespace EquipApps.Hardware
 {
     public static class DigitalBehaviorExtentions
     {
-        public static void DigitalSwitch(this IEnableContext enableContext, DigitalState digitalState, string digitalName)
+        public static void LineSwitch(this IEnableContext enableContext, byte value, string line)
         {
-            enableContext.RequestToChangeValue<DigitalBehavior, DigitalState>(digitalState, digitalName);
+            enableContext.RequestToChangeValue<IDigitalLineBehavior, byte>(value, line);
         }
-        public static void DigitalSwitch(this IEnableContext enableContext, DigitalState digitalState, params string[] digitalNames)
+        public static void LineSwitch(this IEnableContext enableContext, byte value, params string[] lines)
         {
-            enableContext.RequestToChangeValue<DigitalBehavior, DigitalState>(digitalState, digitalNames);
+            enableContext.RequestToChangeValue<IDigitalLineBehavior, byte>(value, lines);
         }
-        public static void DigitalTransaction(this IEnableContext enableContext, DigitalState digitalState, string digitalName)
+        public static void LineTransaction(this IEnableContext enableContext, byte value, string line)
         {
             using (var transactionScope = new TransactionScope())
             {
-                enableContext.DigitalSwitch(digitalState, digitalName);
+                enableContext.LineSwitch(value, line);
 
                 transactionScope.Complete();
             }
         }
-        public static void DigitalTransaction(this IEnableContext enableContext, DigitalState digitalState, params string[] digitalNames)
+        public static void LineTransaction(this IEnableContext enableContext, byte value, params string[] line)
         {
             using (var transactionScope = new TransactionScope())
             {
-                enableContext.DigitalSwitch(digitalState, digitalNames);
+                enableContext.LineSwitch(value, line);
 
                 transactionScope.Complete();
             }
         }
 
-        public static Dictionary<string, DigitalState> DigitalRequest(this IEnableContext enableContext)
+        public static Dictionary<string, byte> LineRequest(this IEnableContext enableContext)
         {
             var feature = enableContext
                 .TestContext
@@ -57,7 +57,7 @@ namespace EquipApps.Hardware
                 transactionScope.Complete();
             }
 
-            var result = new Dictionary<string, DigitalState>();
+            var result = new Dictionary<string, byte>();
 
             foreach (var pair in feature)
             {

@@ -15,10 +15,10 @@ namespace B.EK.Controllers
                 (RelayState.Connect, "K17");
 
             //-- Запрос цифровых состояний
-            var digitals = this.DigitalRequest();
- 
-            DigitalValidate(digitals, DigitalState.One, "F17");
-            DigitalValidate(digitals, DigitalState.Null);
+            var digitals = this.LineRequest();
+
+            Validate<byte>(digitals, 1, "F17");
+            Validate<byte>(digitals, 0);
 
 
             this.RelaySwitch

@@ -67,48 +67,8 @@ namespace B.EK.ForDebug
                 hardware.Behaviors.AddOrUpdate(behavior);
             }
         }
-        private void RegisterDigitalBehavior()
-        {
-            logger.LogTrace($"{deviceName} - RegisterDigitalBehavior");
-
-            foreach (var virtualDefine in hardwareOptions.VirtualDefines.Where(x => x.BehaviorTypes.Contains(typeof(DigitalBehavior))))
-            {
-                var hardware = this.HardwareFeature.HardwareCollection[virtualDefine.Name];
-
-                var behavior = new DigitalBehavior();
-                behavior.SetValue(DigitalState.Zed);
-
-                if (virtualDefine.Name.FirstOrDefault() == 'W')
-                {
-                    behavior.ValueChange += DigitalBehavior_ValueChange;
-                }
-                else
-                {
-                    behavior.ValueUpdate += DigitalBehavior_ValueUpdate;
-                }
-
-
-
-                hardware.Behaviors.AddOrUpdate(behavior);
-            }
-        }
-        private void RegisterRelayBehavior()
-        {
-            logger.LogTrace($"{deviceName} - RegisterRelayBehavior");
-
-            foreach (var virtualDefine in hardwareOptions.VirtualDefines.Where(x => x.BehaviorTypes.Contains(typeof(IRelayBehavior))))
-            {
-                var hardware = this.HardwareFeature.HardwareCollection[virtualDefine.Name];
-                if (hardware.Behaviors.ContainsBehaviorWithKey<IRelayBehavior>())
-                    continue;
-
-                var behavior = new RelayBehavior();
-                behavior.SetValue(RelayState.Disconnect);
-                behavior.ValueChange += RelayBehavior_ValueChange;
-
-                hardware.Behaviors.AddOrUpdate<IRelayBehavior>(behavior);
-            }
-        }
+        
+        
         private void RegisterMeasureVoltageBehavior()
         {
             logger.LogTrace($"{deviceName} - MeasureVoltageBehavior");
@@ -137,21 +97,81 @@ namespace B.EK.ForDebug
             }
         }
 
+
+
+        private void RegisterRelayBehavior()
+        {
+            logger.LogTrace($"{deviceName} - RegisterRelayBehavior");
+
+            foreach (var virtualDefine in hardwareOptions.VirtualDefines.Where(x => x.BehaviorTypes.Contains(typeof(IRelayBehavior))))
+            {
+                var hardware = this.HardwareFeature.HardwareCollection[virtualDefine.Name];
+                if (hardware.Behaviors.ContainsBehaviorWithKey<IRelayBehavior>())
+                    continue;
+
+                var behavior = new RelayBehavior();
+                behavior.SetValue(RelayState.Disconnect);
+                behavior.ValueChange += RelayBehavior_ValueChange;
+
+                hardware.Behaviors.AddOrUpdate<IRelayBehavior>(behavior);
+            }
+        }
+
+
+
+        private void RegisterDigitalBehavior()
+        {
+            logger.LogTrace($"{deviceName} - RegisterDigitalBehavior");
+
+            foreach (var virtualDefine in hardwareOptions.VirtualDefines.Where(x => x.BehaviorTypes.Contains(typeof(IDigitalLineBehavior))))
+            {
+                var hardware = this.HardwareFeature.HardwareCollection[virtualDefine.Name];
+                if (hardware.Behaviors.ContainsBehaviorWithKey<IDigitalLineBehavior>())
+                    continue;
+
+                var behavior = new DigitalBehavior();
+                    behavior.SetValue(0);
+
+                if (virtualDefine.Name.FirstOrDefault() == 'W')
+                {
+                    behavior.ValueChange += DigitalBehavior_ValueChange;
+                }
+                else
+                {
+                    behavior.ValueUpdate += DigitalBehavior_ValueUpdate;
+                }
+
+
+
+                hardware.Behaviors.AddOrUpdate<IDigitalLineBehavior>(behavior);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
         private void PowerSourceBehavior_ValueChange(ValueBehaviorBase<PowerSourceState> behavior, PowerSourceState value)
         {
             logger.LogTrace("{device}:{hardware} - {value}", deviceName, behavior.Hardware.Name, value);
             behavior.SetValue(value);
         }
-        private void DigitalBehavior_ValueChange(ValueBehaviorBase<DigitalState> behavior, DigitalState value)
+        private void DigitalBehavior_ValueChange(ValueBehaviorBase<byte> behavior, byte value)
         {
             logger.LogTrace("{device}:{hardware} - {value}", deviceName, behavior.Hardware.Name, value);
             behavior.SetValue(value);
         }
-        private void DigitalBehavior_ValueUpdate(ValueBehaviorBase<DigitalState> behavior)
+        private void DigitalBehavior_ValueUpdate(ValueBehaviorBase<byte> behavior)
         {
             logger.LogTrace("{device}:{hardware} - Update", deviceName, behavior.Hardware.Name);
 
-            behavior.SetValue(DigitalState.Null);
+            behavior.SetValue(0);
         }
 
         private void MeasureVoltageBehavior_ValueUpdate(ValueBehaviorBase<double> behavior)

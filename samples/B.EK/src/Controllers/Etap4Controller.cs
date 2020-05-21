@@ -23,9 +23,9 @@ namespace B.EK.Controllers
             //-- Выдача Цифра
             using (var transactionScope = new TransactionScope())
             {
-                this.DigitalSwitch(DigitalState.One,  Model.W1);
-                this.DigitalSwitch(DigitalState.Null, Model.W2);
-                this.DigitalSwitch(DigitalState.Null, Model.W3);
+                this.LineSwitch(1,  Model.W1);
+                this.LineSwitch(0, Model.W2);
+                this.LineSwitch(0, Model.W3);
                 transactionScope.Complete();
             }
 
@@ -59,9 +59,9 @@ namespace B.EK.Controllers
             //-- Выдача Цифра
             using (var transactionScope = new TransactionScope())
             {
-                this.DigitalSwitch(DigitalState.Null, Model.W1);
-                this.DigitalSwitch(DigitalState.One,  Model.W2);
-                this.DigitalSwitch(DigitalState.Null, Model.W3);
+                this.LineSwitch(0, Model.W1);
+                this.LineSwitch(1, Model.W2);
+                this.LineSwitch(0, Model.W3);
                 transactionScope.Complete();
             }
 
@@ -93,9 +93,9 @@ namespace B.EK.Controllers
             //-- Выдача Цифра
             using (var transactionScope = new TransactionScope())
             {
-                this.DigitalSwitch(DigitalState.Null, Model.W1);
-                this.DigitalSwitch(DigitalState.Null, Model.W2);
-                this.DigitalSwitch(DigitalState.One, Model.W3);
+                this.LineSwitch(0, Model.W1);
+                this.LineSwitch(0, Model.W2);
+                this.LineSwitch(1, Model.W3);
                 transactionScope.Complete();
             }
 
@@ -106,7 +106,7 @@ namespace B.EK.Controllers
             Thread.Sleep(3);
 
             //-- Запрос цифровых состояний
-            var digitals = this.DigitalRequest();
+            var digitals = this.LineRequest();
 
             //-- Цифровой контроль
             ValidateDigitalOFF();
@@ -130,9 +130,9 @@ namespace B.EK.Controllers
             //-- Выдача Цифра
             using (var transactionScope = new TransactionScope())
             {
-                this.DigitalSwitch(DigitalState.One,  Model.W1);
-                this.DigitalSwitch(DigitalState.One,  Model.W2);
-                this.DigitalSwitch(DigitalState.Null, Model.W3);
+                this.LineSwitch(1, Model.W1);
+                this.LineSwitch(1, Model.W2);
+                this.LineSwitch(0, Model.W3);
                 transactionScope.Complete();
             }
 
@@ -164,9 +164,9 @@ namespace B.EK.Controllers
             //-- Выдача Цифра
             using (var transactionScope = new TransactionScope())
             {
-                this.DigitalSwitch(DigitalState.One,    Model.W1);
-                this.DigitalSwitch(DigitalState.Null,   Model.W2);
-                this.DigitalSwitch(DigitalState.One,    Model.W3);
+                this.LineSwitch(1, Model.W1);
+                this.LineSwitch(0, Model.W2);
+                this.LineSwitch(1, Model.W3);
                 transactionScope.Complete();
             }
 
@@ -198,9 +198,9 @@ namespace B.EK.Controllers
             //-- Выдача Цифра
             using (var transactionScope = new TransactionScope())
             {
-                this.DigitalSwitch(DigitalState.Null,   Model.W1);
-                this.DigitalSwitch(DigitalState.One,    Model.W2);
-                this.DigitalSwitch(DigitalState.One,    Model.W3);
+                this.LineSwitch(0, Model.W1);
+                this.LineSwitch(1, Model.W2);
+                this.LineSwitch(1, Model.W3);
                 transactionScope.Complete();
             }
 
@@ -233,9 +233,9 @@ namespace B.EK.Controllers
             //-- Выдача Цифра
             using (var transactionScope = new TransactionScope())
             {
-                this.DigitalSwitch(DigitalState.One, Model.W1);
-                this.DigitalSwitch(DigitalState.One, Model.W2);
-                this.DigitalSwitch(DigitalState.One, Model.W3);
+                this.LineSwitch(1, Model.W1);
+                this.LineSwitch(1, Model.W2);
+                this.LineSwitch(1, Model.W3);
                 transactionScope.Complete();
             }
 
@@ -266,9 +266,9 @@ namespace B.EK.Controllers
         {
             using (var transactionScope = new TransactionScope())
             {
-                this.DigitalSwitch(DigitalState.Null, Model.W1);
-                this.DigitalSwitch(DigitalState.Null, Model.W2);
-                this.DigitalSwitch(DigitalState.Null, Model.W3);
+                this.LineSwitch(0, Model.W1);
+                this.LineSwitch(0, Model.W2);
+                this.LineSwitch(0, Model.W3);
 
                 transactionScope.Complete();
             }
@@ -288,34 +288,34 @@ namespace B.EK.Controllers
         private void ValidateDigitalON() 
         {
             //-- Запрос цифровых состояний
-            var digitals = this.DigitalRequest();
+            var digitals = this.LineRequest();
 
             //-- Цифровой контроль
-            DigitalValidate(digitals, DigitalState.One, Model.R1);
-            DigitalValidate(digitals, DigitalState.One, Model.R2);
-            DigitalValidate(digitals, DigitalState.One, Model.R3);
+            Validate<byte>(digitals, 1, Model.R1);
+            Validate<byte>(digitals, 1, Model.R2);
+            Validate<byte>(digitals, 1, Model.R3);
 
             //-- Релейный контроль
-            DigitalValidate(digitals, DigitalState.One, Model.F);
+            Validate<byte>(digitals,1, Model.F);
 
             //-- Контроль остальных линий
-            DigitalValidate(digitals, DigitalState.Null);
+            Validate<byte>(digitals, 0);
         }
         private void ValidateDigitalOFF()
         {
             //-- Запрос цифровых состояний
-            var digitals = this.DigitalRequest();
+            var digitals = this.LineRequest();
 
             //-- Цифровой контроль
-            DigitalValidate(digitals, DigitalState.Null, Model.R1);
-            DigitalValidate(digitals, DigitalState.Null, Model.R2);
-            DigitalValidate(digitals, DigitalState.Null, Model.R3);
+            Validate<byte>(digitals, 0, Model.R1);
+            Validate<byte>(digitals, 0, Model.R2);
+            Validate<byte>(digitals, 0, Model.R3);
 
             //-- Релейный контроль
-            DigitalValidate(digitals, DigitalState.Null, Model.F);
+            Validate<byte>(digitals, 0, Model.F);
 
             //-- Контроль остальных линий
-            DigitalValidate(digitals, DigitalState.Null);
+            Validate<byte>(digitals, 0);
         }
         private void ValidateAnalogON()  
         {

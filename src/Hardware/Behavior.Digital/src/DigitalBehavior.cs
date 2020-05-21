@@ -3,21 +3,21 @@ using System;
 
 namespace EquipApps.Hardware
 {
-    public class DigitalBehavior : ValueBehaviorBase<DigitalState>, IHardwareBehavior,
-        IValueComonent<DigitalState>, IValueComonent<IHardware>
+    public class DigitalBehavior : ValueBehaviorBase<byte>,  IHardwareBehavior, IDigitalLineBehavior,
+        IValueComonent<byte>, IValueComonent<IHardware>
     {
-        private ValueDecoratorObservable<DigitalState> valueObservable;
-        private ValueDecoratorTransaction<DigitalState> valueTransaction;
+        private ValueDecoratorObservable<byte> valueObservable;
+        private ValueDecoratorTransaction<byte> valueTransaction;
         private ValueDecoratorObservable<IHardware> hardwareObservable;
 
-        private DigitalState _state = DigitalState.Zed;
+        private byte _state = 0;
         private IHardware _hardware = null;
 
         public DigitalBehavior()
         {
             //---
-            valueObservable = new ValueDecoratorObservable<DigitalState>(this);
-            valueTransaction = new ValueDecoratorTransaction<DigitalState>(valueObservable);
+            valueObservable = new ValueDecoratorObservable<byte>(this);
+            valueTransaction = new ValueDecoratorTransaction<byte>(valueObservable);
 
             //---
             hardwareObservable = new ValueDecoratorObservable<IHardware>(this);
@@ -29,7 +29,7 @@ namespace EquipApps.Hardware
             set => hardwareObservable.Value = value;
         }
 
-        public override DigitalState Value
+        public override byte Value
         {
             get => valueTransaction.Value;
             protected set => valueTransaction.Value = value;
@@ -37,7 +37,7 @@ namespace EquipApps.Hardware
 
         //---
         public IObservable<IHardware> HardwareObservable => hardwareObservable.Observable;
-        public IObservable<DigitalState> StateObservable => valueObservable.Observable;
+        public IObservable<byte> StateObservable => valueObservable.Observable;
 
         //---
         public override void Attach()
@@ -45,7 +45,7 @@ namespace EquipApps.Hardware
         }
 
         //---
-        DigitalState IValueComonent<DigitalState>.Value
+        byte IValueComonent<byte>.Value
         {
             get => _state;
             set => _state = value;
