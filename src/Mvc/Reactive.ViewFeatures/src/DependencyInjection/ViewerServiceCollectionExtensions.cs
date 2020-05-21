@@ -6,7 +6,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ViewerServiceCollectionExtensions 
     {
-        public static void AddViewer(this IServiceCollection services)
+        public static void AddMvcView(this IServiceCollection services)
         {
             //-- Middleware
             services.AddSingleton<ViewMiddleware>();

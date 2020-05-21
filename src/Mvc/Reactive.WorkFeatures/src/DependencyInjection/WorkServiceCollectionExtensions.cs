@@ -6,7 +6,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class WorkServiceCollectionExtensions 
     {
-        public static void AddWorker(this IServiceCollection services)
+        public static void AddMvcWork(this IServiceCollection services)
         {
             //-- Middleware
             services.AddSingleton<RuntimeMiddleware>();

@@ -3,6 +3,7 @@ using EquipApps.Testing.Wpf;
 using EquipApps.WorkBench.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NLib.AtpNetCore.Testing;
 using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
@@ -48,14 +49,21 @@ namespace EquipApps.WorkBench
             //-- Регистрируем все IViewFor
             resolver.RegisterViewsForViewModels(typeof(WbApp).Assembly);
 
-            //TODO: Перенеси как расширение в Core
-            //-------------------------------------------------------------            
-            serviceCollection.AddLogs();
-            serviceCollection.AddViewer();
-            serviceCollection.AddWorker();
+
+            //TODO: Перенеси в ConfigureServiceCollection
+            //-------------------------------------------------------------   
+            //-- Mvc
+            serviceCollection.AddMvc();
+            serviceCollection.AddMvcLogs();
+            serviceCollection.AddMvcView();
+            serviceCollection.AddMvcWork();
+
+            //-- Hardware
+            serviceCollection.AddHardware();           
+            serviceCollection.AddHardwareDigital();
             //-------------------------------------------------------------
 
-            
+
             serviceCollection.AddTransient<WorkViewerViewModel>();
 
             //-------------------------------------------------------------

@@ -1,8 +1,13 @@
 ﻿using B.MPI.Configure;
+using EquipApps.Builder;
+using EquipApps.Mvc.Reactive;
 using EquipApps.Testing;
 using EquipApps.WorkBench;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ReactiveUI;
+using System;
+using System.Reactive;
 
 namespace B.MPI
 {
@@ -11,8 +16,23 @@ namespace B.MPI
     /// </summary>
     public partial class App : WbApp
     {
+        public App()
+        {
+            Interactions.InteractionAcceptSettings.RegisterHandler(Handler);
+        }
+
+        private void Handler(InteractionContext<Unit, bool> interactionContext)
+        {
+            interactionContext.SetOutput(true);
+        }
+
         protected override void Configure(ITestBuilder builder)
         {
+            //-- Инициализация устройств
+            builder.UseHardware();
+
+            //-- Основная проверка
+            builder.UseRuntime();
         }
 
         protected override void Configure(ILoggingBuilder builder)

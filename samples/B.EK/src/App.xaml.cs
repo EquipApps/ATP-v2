@@ -71,18 +71,16 @@ namespace B.EK
             serviceCollection.AddTransientMvcFeatureConvetion<MvcFeatureConvetion>();
 
             //-- MVC
-            serviceCollection.AddMvc();
+            
           
             serviceCollection.AddMvcAssemply(Assembly.GetEntryAssembly());
             
 
             serviceCollection.AddSingletonMvcModelProvider<Command, CommandProvider>();
 
-
             //-- Hardware
-            serviceCollection.AddHardware();
             serviceCollection.AddHardwareExternal();
-            serviceCollection.AddHardwareDigital();
+
 
 
             //-- WB

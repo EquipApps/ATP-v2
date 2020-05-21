@@ -6,7 +6,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class LogServiceCollectionExtensions 
     {
-        public static void AddLogs(this IServiceCollection services)
+        public static void AddMvcLogs(this IServiceCollection services)
         {
             //-- Middleware
             services.AddSingleton<LogsMiddleware>();
