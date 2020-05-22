@@ -4,15 +4,15 @@ using System.Runtime.InteropServices;
 namespace EquipApps.WorkBench.Tools.External.GwINSTEK
 {
     /// <summary>
-    /// Библеотеки одноконального источника питания
+    /// Библеотеки многоканального источника питания
     /// </summary>
-    public class PSxLibrary : Library
+    public class PSxLibraryCh : Library
     {
         private const ushort nullError = 0xFFFF;
 
         //TODO: Добавить локер!
 
-        public PSxLibrary()
+        public PSxLibraryCh()
         {
 
         }
@@ -30,30 +30,30 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
         private GetVerdel _getVerFunc;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        private delegate ushort SetuPdel(ushort num, uint volt, uint limVolt, uint limCurr);
+        private delegate ushort SetuPdel(ushort num, byte ch, uint volt, uint limVolt, uint limCurr);
         private SetuPdel _setupFunc;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        private delegate ushort OutpuTdel(ushort numb, ushort onoff);
+        private delegate ushort OutpuTdel(ushort numb, byte ch, ushort onoff);
         private OutpuTdel _outputFunc;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        private delegate ushort StatuSdel(ushort num, ref uint volt, ref uint curr);
+        private delegate ushort StatuSdel(ushort num, byte ch, ref uint volt, ref uint curr);
         private StatuSdel _statusFunc;
 
         internal override void InitializeComponent(string dllPath)
         {
             base.InitializeComponent(dllPath);
 
-            _initFunc = GetFunc<IniTdel>("INIT");
+            _initFunc   = GetFunc<IniTdel>("INIT");
             _deinitFunc = GetFunc<DeiniTdel>("DEINIT");
             _getVerFunc = GetFunc<GetVerdel>("GET_VER");
 
             _outputFunc = GetFunc<OutpuTdel>("OUTPUT");
-            _setupFunc = GetFunc<SetuPdel>("SETUP");
+            _setupFunc  = GetFunc<SetuPdel>("SETUP");
             _statusFunc = GetFunc<StatuSdel>("STATUS");
         }
-        
+
         /// <summary>
         /// Инициализация
         /// </summary>
@@ -72,7 +72,7 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
         /// <returns></returns>
         public ushort DEINIT(ushort numb)
         {
-            return _deinitFunc == null ? nullError : _deinitFunc(numb);           
+            return _deinitFunc == null ? nullError : _deinitFunc(numb);
         }
 
         /// <summary>
@@ -81,9 +81,9 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
         /// <param name="numb"></param>
         /// <param name="onoff">0 - Вкл.  1 - Выкл</param>
         /// <returns></returns>
-        public ushort OUTPUT(ushort numb, ushort onoff)
+        public ushort OUTPUT(ushort numb, byte ch, ushort onoff)
         {
-            return _outputFunc == null ? nullError : _outputFunc(numb, onoff);
+            return _outputFunc == null ? nullError : _outputFunc(numb, ch, onoff);
         }
 
         /// <summary>
@@ -94,9 +94,9 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
         /// <param name="limVolt"></param>
         /// <param name="limCurr"></param>
         /// <returns></returns>
-        public ushort SETUP(ushort numb, uint volt, uint limVolt, uint limCurr)
+        public ushort SETUP(ushort numb, byte ch, uint volt, uint limVolt, uint limCurr)
         {
-            return _setupFunc == null ? nullError : _setupFunc(numb, volt, limVolt, limCurr);            
+            return _setupFunc == null ? nullError : _setupFunc(numb, ch, volt, limVolt, limCurr);
         }
 
         /// <summary>
@@ -106,9 +106,9 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
         /// <param name="volt"></param>
         /// <param name="curr"></param>
         /// <returns></returns>
-        public ushort STATUS(ushort num, ref uint volt, ref uint curr)
+        public ushort STATUS(ushort num, byte ch, ref uint volt, ref uint curr)
         {
-            return _statusFunc == null ? nullError : _statusFunc(num, ref volt, ref curr);
+            return _statusFunc == null ? nullError : _statusFunc(num, ch, ref volt, ref curr);
         }
     }
 }

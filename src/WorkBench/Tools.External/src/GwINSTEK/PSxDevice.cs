@@ -3,8 +3,10 @@ using System;
 
 namespace EquipApps.WorkBench.Tools.External.GwINSTEK
 {
-    /// <summary>
-    /// 
+    /// <summary>   
+    /// <para>Одноканальное устройство.</para>
+    /// <para>PSP-2010; PSP-405; PSH-3610;</para>
+    /// <para>У всех устройств одинаковые коды ошибок</para>
     /// </summary>
     public abstract class PSxDevice : IPowerSource
     {
