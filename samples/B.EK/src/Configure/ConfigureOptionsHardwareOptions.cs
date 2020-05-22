@@ -3,6 +3,7 @@ using EquipApps.Hardware;
 using EquipApps.Hardware.Behaviors.PowerSource;
 using EquipApps.WorkBench;
 using EquipApps.WorkBench.Tools.External.Advantech.PCI_1762;
+using EquipApps.WorkBench.Tools.External.GwINSTEK;
 using EquipApps.WorkBench.Tools.External.GwINSTEK.PSH_Series.PSH_3610;
 using Microsoft.Extensions.Options;
 
@@ -36,11 +37,19 @@ namespace B.EK.Configure
 
             //-- Релейный контроль
             options.RegisterHardware<IDigitalLineBehavior>("F{0}", 17, 1);
-          
-            //--
-            
 
-            options.RegisterMapping<Psh3610_Library,  Psh3610_Adapter>  ("PSH_3610");
+
+
+
+            /*-- Реальные устройства --*/
+
+            options.RegisterMapping<Psh3610_Device, PS_Adapter<Psh3610_Device>>("ИП1",      () => new Psh3610_Device(1, 1));
+            options.RegisterMapping<Psh3610_Device, PS_Adapter<Psh3610_Device>>("ИП2_+П",   () => new Psh3610_Device(2, 2));
+            options.RegisterMapping<Psh3610_Device, PS_Adapter<Psh3610_Device>>("ИП3_+С",   () => new Psh3610_Device(3, 3));
+            options.RegisterMapping<Psh3610_Device, PS_Adapter<Psh3610_Device>>("ИП4",      () => new Psh3610_Device(4, 4));
+
+
+
             options.RegisterMapping<PCI_1762_Library, PCI_1762_Adapter> ("PCI_1762");
 
             options.RegisterMapping<ForDebugDevice, ForDebugDeviceAdapter>("SS");

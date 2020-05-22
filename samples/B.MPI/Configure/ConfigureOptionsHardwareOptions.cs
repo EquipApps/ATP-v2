@@ -1,8 +1,9 @@
 ﻿using EquipApps.Hardware;
 using EquipApps.Hardware.Behaviors.PowerSource;
 using EquipApps.WorkBench;
-using EquipApps.WorkBench.Tools.External.Advantech.PCI_1762;
-using EquipApps.WorkBench.Tools.External.GwINSTEK.PSH_Series.PSH_3610;
+using EquipApps.WorkBench.Tools.External.GwINSTEK;
+using EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_2010;
+using EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_405;
 using Microsoft.Extensions.Options;
 
 namespace B.MPI.Configure
@@ -11,15 +12,17 @@ namespace B.MPI.Configure
     {
         public void Configure(HardwareOptions options)
         {
+            /*-- Виртуальные устройства --*/
 
             options.RegisterHardware<BatteryBehavior, PowerSourceBehavior>("ИП1");   //-- 3_В
             options.RegisterHardware<BatteryBehavior, PowerSourceBehavior>("ИП2");   //-- 30_В Шина +П
-           
 
 
 
-            options.RegisterMapping<Psh3610_Library, Psh3610_Adapter>("PSH_3610");
-            options.RegisterMapping<PCI_1762_Library, PCI_1762_Adapter>("PCI_1762");
+            /*-- Реальные устройства --*/
+
+            options.RegisterMapping<Psp405_Device,  PS_Adapter<Psp405_Device>>  ("ИП1", () => new Psp405_Device (1,1));
+            options.RegisterMapping<Psp2010_Device, PS_Adapter<Psp2010_Device>> ("ИП2", () => new Psp2010_Device(1,2));
         }
     }
 }

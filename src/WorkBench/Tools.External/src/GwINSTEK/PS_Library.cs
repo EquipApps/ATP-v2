@@ -1,13 +1,24 @@
 ﻿using EquipApps.WorkBench.Tools.External.Internal;
 using System.Runtime.InteropServices;
 
-namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSH_Series
+namespace EquipApps.WorkBench.Tools.External.GwINSTEK
 {
-    public abstract class PshLibrary : Library
+    /// <summary>
+    /// Инфроструктура библеотеки одноконального источника питания
+    /// </summary>
+    public class PS_Library : Library
     {
+        private const ushort nullError = 0xFFFF;
+
+        public PS_Library()
+        {
+
+        }
+
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        private delegate ushort IniTdel(ushort numb, ushort boardId);
+        private delegate ushort IniTdel(ushort numb, ushort com);
         private IniTdel _initFunc;
+
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         private delegate ushort DeiniTdel(ushort numb);
         private DeiniTdel _deinitFunc;
@@ -17,28 +28,39 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSH_Series
         private GetVerdel _getVerFunc;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        private delegate ushort OutpuTdel(ushort numb, ushort onoff);
-        private OutpuTdel _outputFunc;
-
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         private delegate ushort SetuPdel(ushort num, uint volt, uint limVolt, uint limCurr);
         private SetuPdel _setupFunc;
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate ushort OutpuTdel(ushort numb, ushort onoff);
+        private OutpuTdel _outputFunc;
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         private delegate ushort StatuSdel(ushort num, ref uint volt, ref uint curr);
         private StatuSdel _statusFunc;
 
+        internal override void InitializeComponent(string dllPath)
+        {
+            base.InitializeComponent(dllPath);
+
+            _initFunc = GetFunc<IniTdel>("INIT");
+            _deinitFunc = GetFunc<DeiniTdel>("DEINIT");
+            _getVerFunc = GetFunc<GetVerdel>("GET_VER");
+
+            _outputFunc = GetFunc<OutpuTdel>("OUTPUT");
+            _setupFunc = GetFunc<SetuPdel>("SETUP");
+            _statusFunc = GetFunc<StatuSdel>("STATUS");
+        }
+        
         /// <summary>
         /// Инициализация
         /// </summary>
         /// <param name="numb"></param>
-        /// <param name="boardId"></param>
+        /// <param name="com"></param>
         /// <returns></returns>
-        public ushort INIT(ushort numb, ushort boardId)
+        public ushort INIT(ushort numb, ushort com)
         {
-            var result = (ushort)0xFFFF;
-            if (_initFunc != null) result = _initFunc(numb, boardId);
-            return result;
+            return _initFunc == null ? nullError : _initFunc(numb, com);
         }
 
         /// <summary>
@@ -48,18 +70,7 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSH_Series
         /// <returns></returns>
         public ushort DEINIT(ushort numb)
         {
-            var result = (ushort)0xFFFF;
-            if (_deinitFunc != null) result = _deinitFunc(numb);
-            return result;
-        }
-
-        /// <summary>
-        /// Версия
-        /// </summary>
-        /// <returns></returns>
-        public ushort GET_VER()
-        {
-            return _getVerFunc();
+            return _deinitFunc == null ? nullError : _deinitFunc(numb);           
         }
 
         /// <summary>
@@ -70,9 +81,7 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSH_Series
         /// <returns></returns>
         public ushort OUTPUT(ushort numb, ushort onoff)
         {
-            var result = (ushort)0xFFFF;
-            if (_outputFunc != null) result = _outputFunc(numb, onoff);
-            return result;
+            return _outputFunc == null ? nullError : _outputFunc(numb, onoff);
         }
 
         /// <summary>
@@ -83,11 +92,9 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSH_Series
         /// <param name="limVolt"></param>
         /// <param name="limCurr"></param>
         /// <returns></returns>
-        public ushort SETUP(ushort num, uint volt, uint limVolt, uint limCurr) 
+        public ushort SETUP(ushort numb, uint volt, uint limVolt, uint limCurr)
         {
-            var result = (ushort)0xFFFF;
-            if (_setupFunc != null) result = _setupFunc(num, volt, limVolt, limCurr);
-            return result;
+            return _setupFunc == null ? nullError : _setupFunc(numb, volt, limVolt, limCurr);            
         }
 
         /// <summary>
@@ -97,11 +104,9 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSH_Series
         /// <param name="volt"></param>
         /// <param name="curr"></param>
         /// <returns></returns>
-        public ushort STATUS(ushort num, ref uint volt, ref uint curr) 
+        public ushort STATUS(ushort num, ref uint volt, ref uint curr)
         {
-            var result = (ushort)0xFFFF;
-            if (_statusFunc != null) result = _statusFunc(num, ref volt, ref curr);
-            return result;
+            return _statusFunc == null ? nullError : _statusFunc(num, ref volt, ref curr);
         }
     }
 }

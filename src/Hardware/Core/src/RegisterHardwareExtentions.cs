@@ -263,7 +263,22 @@ namespace EquipApps.Hardware
                 throw new ArgumentNullException(nameof(options));
             }
 
-            options.RegisterMapping(typeof(TAdapter), typeof(TDevice), mapName);
+            options.RegisterMapping(typeof(TAdapter), typeof(TDevice), mapName, null);
         }
+
+        public static void RegisterMapping<TDevice, TAdapter>(this HardwareOptions options, string mapName, Func<TDevice> factory)
+            where TDevice : class
+            where TAdapter : class, IHardwareAdapter
+
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            options.RegisterMapping(typeof(TAdapter), typeof(TDevice), mapName, factory);
+        }
+
+
     }
 }

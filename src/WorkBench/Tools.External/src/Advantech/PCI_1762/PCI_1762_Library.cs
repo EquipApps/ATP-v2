@@ -9,8 +9,7 @@ namespace EquipApps.WorkBench.Tools.External.Advantech.PCI_1762
 {
     public class PCI_1762_Library : Library
     {
-        public PCI_1762_Library(IOptions<PCI_1762_Options> options) : 
-            base(options?.Value?.DllPath)
+        public PCI_1762_Library()
         {
 
         }
@@ -93,9 +92,9 @@ namespace EquipApps.WorkBench.Tools.External.Advantech.PCI_1762
         private delegate ushort GetVerdel();
         private GetVerdel _getVerFunc;
 
-        protected override void InitializeComponent()
+        internal override void InitializeComponent(string fff)
         {
-            base.InitializeComponent();
+            base.InitializeComponent(fff);
 
 
             this._initFunc      = base.GetFunc<IniTdel>("INIT");

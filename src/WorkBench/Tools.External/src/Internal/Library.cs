@@ -7,7 +7,7 @@ namespace EquipApps.WorkBench.Tools.External.Internal
     /// <summary>
     /// Библеотека
     /// </summary>
-    public class Library : IDisposable
+    public abstract class Library : IDisposable
     {
         /// <summary>
         /// Дискриптор библеотеки
@@ -15,52 +15,36 @@ namespace EquipApps.WorkBench.Tools.External.Internal
         private IntPtr _hDll = IntPtr.Zero;
 
         /// <summary>
-        /// Путь к библеотеке
-        /// </summary>
-        private string _pDll = string.Empty;
-
-        /// <summary>
-        /// Конструктор
-        /// </summary>       
-        public Library(string dllPath)
-        {
-            if (string.IsNullOrWhiteSpace(dllPath)) 
-                throw new InvalidOperationException(nameof(dllPath));
-
-            _pDll = dllPath;
-        }
-
-        /// <summary>
         /// Загружает библеотеку
         /// </summary>
-        protected virtual void InitializeComponent()
+        internal virtual void InitializeComponent(string dllPath)
         {
             //-- 1) Проверка.
             if (_hDll != IntPtr.Zero)
                 throw new InvalidOperationException("Библиотека уже загруженна.");
 
-            //----- 2) Выполнить. Загрузка библеотеки.
-            _hDll = Kernel32.LoadLibrary(_pDll);
+            //-- 2) Выполнить. Загрузка библеотеки.
+            _hDll = Kernel32.LoadLibrary(dllPath);
 
-            //----- 3) Проверка. Загружеена ли библеотека ?
+            //-- 3) Проверка. Загружеена ли библеотека ?
             if (_hDll == IntPtr.Zero)
-                throw new InvalidOperationException($"При загрузки библиотеки \"{_pDll}\" произошла ошибка.");
+                throw new InvalidOperationException("При загрузки библиотеки произошла ошибка.");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="FuncName"></param>
+        /// <returns></returns>
         protected T GetFunc<T>(string FuncName) where T : class
         {
             var ptr = Kernel32.GetProcAddress(_hDll, FuncName);
 
-            if (ptr != IntPtr.Zero)
-            {
-                var _initFunc = Marshal.GetDelegateForFunctionPointer(ptr, typeof(T)) as T;
+            if (ptr == IntPtr.Zero)
+                throw new InvalidOperationException($"Ошибка загрузки функции: {FuncName}");
 
-                return _initFunc;
-            }
-            {
-                throw new InvalidOperationException($"Библиотека \"{_pDll}\" ошибка загрузки функции: {FuncName}");
-            }
-
+            return Marshal.GetDelegateForFunctionPointer(ptr, typeof(T)) as T;
         }
 
         #region IDisposable Support
@@ -81,7 +65,9 @@ namespace EquipApps.WorkBench.Tools.External.Internal
                 if (_hDll != IntPtr.Zero)
                 {
                     bool result = Kernel32.FreeLibrary(_hDll);
-                    Debug.Assert(result, "Ошибка очистки ");
+                    Debug.Assert(result, "Ошибка очистки");
+
+                    _hDll = IntPtr.Zero;
                 }
 
                 // Set large fields to null.

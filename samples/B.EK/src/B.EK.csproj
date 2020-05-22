@@ -2,10 +2,16 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net472</TargetFramework>
-    <UseWPF>true</UseWPF>
-    <ApplicationIcon />
-    <StartupObject />
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>  
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,9 +27,7 @@
     <ProjectReference Include="..\..\..\src\WorkBench\Wpf\src\EquipApps.WorkBench.WPF.MahApps.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Transactions" />
-  </ItemGroup>
+  
 
   <Import Project="..\..\fordelete\AtpNetCore.Testing.Shared\AtpNetCore.Testing.Shared.projitems" Label="Shared" />
 

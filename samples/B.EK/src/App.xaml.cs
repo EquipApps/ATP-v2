@@ -60,7 +60,7 @@ namespace B.EK
             
             serviceCollection.ConfigureOptions<ConfigureOptionsHardwareOptions>();
             serviceCollection.ConfigureOptions<ConfigureOptionsHardwarePci1762>();
-            serviceCollection.ConfigureOptions<ConfigureOptionsHardwarePsh3610>();
+           
 
 
 

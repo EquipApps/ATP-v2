@@ -42,9 +42,10 @@ namespace B.MPI
 
         protected override void ConfigureServiceCollection(IServiceCollection serviceCollection)
         {
-            
+            serviceCollection.AddHardwareExternal();
 
             serviceCollection.ConfigureOptions<ConfigureOptionsLogOptions>();
+            serviceCollection.ConfigureOptions<ConfigureOptionsHardwareOptions>();
         }
     }
 }

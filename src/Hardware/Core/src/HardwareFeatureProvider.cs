@@ -1,6 +1,5 @@
 ﻿using EquipApps.Testing.Features;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 
@@ -47,7 +46,10 @@ namespace EquipApps.Hardware
             foreach (var adapterMap in _hardwareOptions.AdapterMappings)
             {
                 var adapter = AdapterFactory(adapterMap.AdapterType);
-                var device  = DeviceFactory (adapterMap.DeviceType);
+
+                var device  = adapterMap.Factory != null 
+                    ? adapterMap.Factory() 
+                    : DeviceFactory(adapterMap.DeviceType);
 
                 adapter.Initialize(hardwareFeature, device, adapterMap.Name);
 
@@ -58,20 +60,6 @@ namespace EquipApps.Hardware
             //-- Регистрируем
             context.Collection.Set(hardwareFeature);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         private IHardwareFeature FactoryHardwareFeature()
@@ -90,7 +78,7 @@ namespace EquipApps.Hardware
 
             if (instance == null)
             {
-                throw new InvalidOperationException("Не узается создать адаптер: " + adapterType.Name);
+                throw new InvalidOperationException("Не узается создать адаптер: " + adapterType.FullName);
             }
 
             var adapter = instance as IHardwareAdapter;
@@ -98,7 +86,7 @@ namespace EquipApps.Hardware
             if (adapter == null)
             {
                 throw new InvalidOperationException(
-                    string.Format("Aдаптер: {0} - не реализует интерфейс", adapterType.Name, nameof(IHardwareAdapter)));
+                    string.Format("Aдаптер: {0} - не реализует интерфейс {1}", adapterType.FullName, nameof(IHardwareAdapter)));
             }
 
             return adapter;
@@ -115,7 +103,7 @@ namespace EquipApps.Hardware
 
             if (instance == null)
             {
-                throw new InvalidOperationException("Не удается создать устройство: " + deviceType.Name);
+                throw new InvalidOperationException("Не удается создать устройство: " + deviceType.FullName);
             }
 
             return instance;

@@ -21,5 +21,10 @@ namespace EquipApps.Hardware
         /// Тип устройства
         /// </summary>
         public Type DeviceType { get; internal set; }
+
+        /// <summary>
+        /// Фабричный метод. Создает устройство
+        /// </summary>
+        public Func<object> Factory { get; internal set; }
     }
 }

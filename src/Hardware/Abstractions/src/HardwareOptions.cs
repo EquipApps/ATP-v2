@@ -45,7 +45,7 @@ namespace EquipApps.Hardware
         /// <param name="adapterType"></param>
         /// <param name="devicetype"></param>
         /// <param name="mapName"></param>
-        public void RegisterMapping(Type adapterType, Type devicetype, string mapName)
+        public void RegisterMapping(Type adapterType, Type devicetype, string mapName, Func<object> factory)
         {
             if (adapterType == null)
             {
@@ -70,8 +70,10 @@ namespace EquipApps.Hardware
             _adapterMaps.Add(new HardwareAdapterMap()
             {
                 AdapterType = adapterType,
-                DeviceType  = devicetype,
-                Name        = mapName,
+                DeviceType = devicetype,
+                Name = mapName,
+                Factory = factory
+
             });
         }
 
