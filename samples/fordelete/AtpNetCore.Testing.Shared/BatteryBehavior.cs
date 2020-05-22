@@ -1,9 +1,7 @@
 ﻿using EquipApps.Hardware;
 using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Text;
 
 namespace EquipApps.WorkBench
 {

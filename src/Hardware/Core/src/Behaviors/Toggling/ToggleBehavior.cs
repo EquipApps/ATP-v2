@@ -5,6 +5,10 @@ namespace EquipApps.Hardware.Behaviors.Toggling
     /// <summary>
     /// Поведение тумблера.
     /// </summary>
+    /// 
+    /// <remarks>
+    /// Не ссылаться на прямую. Работать через интерфейс.
+    /// </remarks>
     public class ToggleBehavior : ValueBehaviorBase<Toggle>,
          IValueComonent<Toggle>
     {

@@ -8,13 +8,7 @@ namespace EquipApps.Hardware
 {
     public class HardwareCollection : IHardwareCollection
     {
-        private ILogger<HardwareCollection> _logger;
         private SourceCache<IHardware, string> _source = new SourceCache<IHardware, string>(x => x.Key);
-
-        public HardwareCollection(ILogger<HardwareCollection> logger)
-        {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
 
         /// <summary>
         /// Возволяет подписаться на изменения коллекции

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace EquipApps.Hardware
 {
@@ -9,15 +10,9 @@ namespace EquipApps.Hardware
     /// </summary>
     public class HardwareFeature : IHardwareFeature, IDisposable
     {
-        private readonly ILogger<HardwareFeature> logger;
-
         //---
-        public HardwareFeature(
-            ILogger<HardwareFeature> logger,
-            IHardwareCollection hardwareCollection)
+        public HardwareFeature(IHardwareCollection hardwareCollection)
         {
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
             //---
             HardwareCollection = hardwareCollection
                 ?? throw new ArgumentNullException(nameof(hardwareCollection));
@@ -37,8 +32,6 @@ namespace EquipApps.Hardware
         /// </summary>  
         public void Dispose()
         {
-            logger.LogTrace("Dispose");
-
             //-- Удаляем все адаптеры реальных устройств
             //-- (Каждый адаптер сам знает как очищать ресурсы устройства)
             //-- Отлавливаем ошибки и выыодим в лог файл
@@ -50,7 +43,7 @@ namespace EquipApps.Hardware
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, $"Ошибка освобождения адаптера {hardwareAdapter}");
+                    Debug.Fail($"Ошибка освобождения адаптера {hardwareAdapter}", ex.ToString());
                 }
 
             }
