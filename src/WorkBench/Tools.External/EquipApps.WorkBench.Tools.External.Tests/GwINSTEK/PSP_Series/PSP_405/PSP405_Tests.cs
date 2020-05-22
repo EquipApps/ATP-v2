@@ -7,12 +7,12 @@ using System.Text;
 namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_405.Tests
 {
     [TestClass()]
-    public class Psp405_DeviceTests
+    public class PSP405_Tests
     {
         [TestMethod()]
-        public void Psp405_DeviceTest()
+        public void PSP405_Test()
         {
-            var device = new Psp405_Device(1, 1);
+            var device = new PSP405(1, 1);
             device.Dispose();
         }
     }

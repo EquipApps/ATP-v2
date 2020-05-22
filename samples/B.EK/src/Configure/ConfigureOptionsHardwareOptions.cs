@@ -43,10 +43,10 @@ namespace B.EK.Configure
 
             /*-- Реальные устройства --*/
 
-            options.RegisterMapping<Psh3610_Device, PS_Adapter<Psh3610_Device>>("ИП1",      () => new Psh3610_Device(1, 1));
-            options.RegisterMapping<Psh3610_Device, PS_Adapter<Psh3610_Device>>("ИП2_+П",   () => new Psh3610_Device(2, 2));
-            options.RegisterMapping<Psh3610_Device, PS_Adapter<Psh3610_Device>>("ИП3_+С",   () => new Psh3610_Device(3, 3));
-            options.RegisterMapping<Psh3610_Device, PS_Adapter<Psh3610_Device>>("ИП4",      () => new Psh3610_Device(4, 4));
+            options.RegisterMapping<PSH3610, PSxAdapter<PSH3610>>("ИП1",      () => new PSH3610(1, 1));
+            options.RegisterMapping<PSH3610, PSxAdapter<PSH3610>>("ИП2_+П",   () => new PSH3610(2, 2));
+            options.RegisterMapping<PSH3610, PSxAdapter<PSH3610>>("ИП3_+С",   () => new PSH3610(3, 3));
+            options.RegisterMapping<PSH3610, PSxAdapter<PSH3610>>("ИП4",      () => new PSH3610(4, 4));
 
 
 

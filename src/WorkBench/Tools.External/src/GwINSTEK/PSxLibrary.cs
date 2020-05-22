@@ -6,11 +6,11 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
     /// <summary>
     /// Инфроструктура библеотеки одноконального источника питания
     /// </summary>
-    public class PS_Library : Library
+    public class PSxLibrary : Library
     {
         private const ushort nullError = 0xFFFF;
 
-        public PS_Library()
+        public PSxLibrary()
         {
 
         }

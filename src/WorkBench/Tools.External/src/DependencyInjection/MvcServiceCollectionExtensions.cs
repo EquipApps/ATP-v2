@@ -12,13 +12,13 @@ namespace NLib.AtpNetCore.Testing
         public static void AddHardwareExternal(this IServiceCollection serviceCollection)
         {
             //-- GwINSTEK PSP-2010
-            serviceCollection.AddTransient<PS_Adapter<Psp2010_Device>>();
+            serviceCollection.AddTransient<PSxAdapter<PSP2010>>();
 
             //-- GwINSTEK PSP-405
-            serviceCollection.AddTransient<PS_Adapter<Psp405_Device>>();
+            serviceCollection.AddTransient<PSxAdapter<PSP405>>();
 
             //-- GwINSTEK PSH-3610
-            serviceCollection.AddTransient<PS_Adapter<Psh3610_Device>>();
+            serviceCollection.AddTransient<PSxAdapter<PSH3610>>();
 
 
 

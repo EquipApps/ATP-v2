@@ -6,12 +6,12 @@ using System.Text;
 namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_2010.Tests
 {
     [TestClass()]
-    public class Psp2010_DeviceTests
+    public class PSP2010_Tests
     {
         [TestMethod()]
-        public void Psp2010_DeviceTest()
+        public void PSP2010_Test()
         {
-            var device = new Psp2010_Device(1, 1);
+            var device = new PSP2010(1, 1);
                 device.Dispose();
         }
     }

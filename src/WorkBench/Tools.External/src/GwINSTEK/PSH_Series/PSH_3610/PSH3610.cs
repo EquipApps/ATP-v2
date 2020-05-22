@@ -1,16 +1,16 @@
 ﻿using System;
 
-namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_2010
+namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSH_Series.PSH_3610
 {
     /// <summary>
-    /// Однокональный источник питания PSP-2010
+    /// Устройство PSH-3610
     /// </summary>
-    public class Psp2010_Device : PS_Device, IDisposable
+    public class PSH3610 : PSxDevice, IDisposable
     {
         /// <summary>
         /// Базовый путь к библеотеке
         /// </summary>
-        public static string DLL_Path = "C:\\Windows\\AAPCtrlDev\\PSP_2010_DW_Instek.dll";
+        public static string DLL_Path = "C:\\Windows\\AAPCtrlDev\\PSH_3610_GW_Instek.dll";
 
         //================================================================================
 
@@ -19,10 +19,14 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_2010
         /// </summary>
         /// <param name="number">Порядковый номер</param>
         /// <param name="comport">Номер COM</param>
-        public Psp2010_Device(ushort number, ushort comport)
+        public PSH3610(ushort number, ushort comport)
         {
             InitializeComponent(number, comport, DLL_Path);
         }
+
+        //================================================================================
+
+        //TODO: Проверить коды ошибок библеотеки! Сравнить с кодами ошибок PSP!
 
         //================================================================================
 
@@ -45,8 +49,8 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_2010
             }
         }
 
-       
-         ~Psp2010_Device()
+
+        ~PSH3610()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(false);
@@ -56,7 +60,7 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_2010
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);            
+            Dispose(true);
         }
         #endregion
     }

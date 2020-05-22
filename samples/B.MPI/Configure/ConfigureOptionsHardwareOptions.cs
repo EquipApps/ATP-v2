@@ -21,8 +21,8 @@ namespace B.MPI.Configure
 
             /*-- Реальные устройства --*/
 
-            options.RegisterMapping<Psp405_Device,  PS_Adapter<Psp405_Device>>  ("ИП1", () => new Psp405_Device (1,1));
-            options.RegisterMapping<Psp2010_Device, PS_Adapter<Psp2010_Device>> ("ИП2", () => new Psp2010_Device(1,2));
+            options.RegisterMapping<PSP405,  PSxAdapter<PSP405>>  ("ИП1", () => new PSP405 (1,1));
+            options.RegisterMapping<PSP2010, PSxAdapter<PSP2010>> ("ИП2", () => new PSP2010(1,2));
         }
     }
 }

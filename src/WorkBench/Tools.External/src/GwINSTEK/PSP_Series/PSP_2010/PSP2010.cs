@@ -1,17 +1,11 @@
 ﻿using System;
 
-namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_405
+namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_2010
 {
     /// <summary>
-    /// Однокональный источник питания PSP-405
+    /// Однокональный источник питания PSP-2010
     /// </summary>
-    /// 
-    /// <remarks>
-    /// Использует общую библеотеку с PSP-2010.
-    /// Если в ходе эксплуатации возникнут уникальные поведения, то избавляемся от общего класса!
-    /// </remarks>
-    /// 
-    public class Psp405_Device : PS_Device, IDisposable
+    public class PSP2010 : PSxDevice, IDisposable
     {
         /// <summary>
         /// Базовый путь к библеотеке
@@ -24,10 +18,10 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_405
         /// Конструктор
         /// </summary>
         /// <param name="number">Порядковый номер</param>
-        /// <param name="port">Номер COM</param>
-        public Psp405_Device(ushort number, ushort port)
+        /// <param name="comport">Номер COM</param>
+        public PSP2010(ushort number, ushort comport)
         {
-            InitializeComponent(number, port, DLL_Path);
+            InitializeComponent(number, comport, DLL_Path);
         }
 
         //================================================================================
@@ -51,8 +45,8 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_405
             }
         }
 
-
-        ~Psp405_Device()
+       
+         ~PSP2010()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(false);
@@ -62,7 +56,7 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_405
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
+            Dispose(true);            
         }
         #endregion
     }

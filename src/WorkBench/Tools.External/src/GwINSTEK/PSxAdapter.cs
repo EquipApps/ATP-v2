@@ -9,7 +9,7 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
     /// <para>PSP-2010; PSP-405;</para>
     /// </summary>
     /// <typeparam name="TPowerSource"></typeparam>
-    public class PS_Adapter<TPowerSource> : HardwareAdapterBase<TPowerSource>
+    public class PSxAdapter<TPowerSource> : HardwareAdapterBase<TPowerSource>
         where TPowerSource : class, IPowerSource
     {
         private TPowerSource _device;

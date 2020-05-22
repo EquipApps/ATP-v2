@@ -6,9 +6,9 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
     /// <summary>
     /// 
     /// </summary>
-    public abstract class PS_Device : IPowerSource
+    public abstract class PSxDevice : IPowerSource
     {
-        protected PS_Library library;
+        protected PSxLibrary library;
 
         /// <summary>
         /// Порядковый номер.
@@ -27,7 +27,7 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
             Port = port;
 
             //-- Загрузка Библеотеки
-            library = LibraryCache.Instance.GetOrCreate<PS_Library>(path);
+            library = LibraryCache.Instance.GetOrCreate<PSxLibrary>(path);
         }
 
 

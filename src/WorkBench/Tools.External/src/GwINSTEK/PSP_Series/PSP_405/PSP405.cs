@@ -1,16 +1,22 @@
 ﻿using System;
 
-namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSH_Series.PSH_3610
+namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_405
 {
     /// <summary>
-    /// Устройство PSH-3610
+    /// Однокональный источник питания PSP-405
     /// </summary>
-    public class Psh3610_Device : PS_Device, IDisposable
+    /// 
+    /// <remarks>
+    /// Использует общую библеотеку с PSP-2010.
+    /// Если в ходе эксплуатации возникнут уникальные поведения, то избавляемся от общего класса!
+    /// </remarks>
+    /// 
+    public class PSP405 : PSxDevice, IDisposable
     {
         /// <summary>
         /// Базовый путь к библеотеке
         /// </summary>
-        public static string DLL_Path = "C:\\Windows\\AAPCtrlDev\\PSH_3610_GW_Instek.dll";
+        public static string DLL_Path = "C:\\Windows\\AAPCtrlDev\\PSP_2010_DW_Instek.dll";
 
         //================================================================================
 
@@ -18,15 +24,11 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSH_Series.PSH_3610
         /// Конструктор
         /// </summary>
         /// <param name="number">Порядковый номер</param>
-        /// <param name="comport">Номер COM</param>
-        public Psh3610_Device(ushort number, ushort comport)
+        /// <param name="port">Номер COM</param>
+        public PSP405(ushort number, ushort port)
         {
-            InitializeComponent(number, comport, DLL_Path);
+            InitializeComponent(number, port, DLL_Path);
         }
-
-        //================================================================================
-
-        //TODO: Проверить коды ошибок библеотеки! Сравнить с кодами ошибок PSP!
 
         //================================================================================
 
@@ -50,7 +52,7 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSH_Series.PSH_3610
         }
 
 
-        ~Psh3610_Device()
+        ~PSP405()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(false);
