@@ -9,6 +9,7 @@ using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using Splat.Microsoft.Extensions.Logging;
 using System;
+using System.Reflection;
 
 namespace EquipApps.WorkBench
 {
@@ -52,8 +53,10 @@ namespace EquipApps.WorkBench
 
             //TODO: Перенеси в ConfigureServiceCollection
             //-------------------------------------------------------------   
-            //-- Mvc
-            serviceCollection.AddMvc();
+            
+            serviceCollection.AddMvc();                                     //-- Mvc         
+            serviceCollection.AddMvcAssemply(Assembly.GetEntryAssembly());  //-- Регистрация текущей сборки
+
             serviceCollection.AddMvcLogs();
             serviceCollection.AddMvcView();
             serviceCollection.AddMvcWork();

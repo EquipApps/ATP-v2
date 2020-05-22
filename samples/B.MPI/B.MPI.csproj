@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
@@ -17,14 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\WorkBench\Tools.External\src\EquipApps.WorkBench.Tools.External.csproj" />
     <ProjectReference Include="..\..\src\WorkBench\Wpf\src\EquipApps.WorkBench.WPF.MahApps.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Transactions" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

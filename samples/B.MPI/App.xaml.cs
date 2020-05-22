@@ -5,9 +5,10 @@ using EquipApps.Testing;
 using EquipApps.WorkBench;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NLib.AtpNetCore.Testing;
 using ReactiveUI;
-using System;
 using System.Reactive;
+using System.Reflection;
 
 namespace B.MPI
 {
@@ -41,6 +42,8 @@ namespace B.MPI
 
         protected override void ConfigureServiceCollection(IServiceCollection serviceCollection)
         {
+            
+
             serviceCollection.ConfigureOptions<ConfigureOptionsLogOptions>();
         }
     }

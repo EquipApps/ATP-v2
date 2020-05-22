@@ -24,10 +24,10 @@ namespace EquipApps.WorkBench
 
             //-- Оболочка
             serviceCollection.AddTransient<IShell, WbShell>();
-
+            
             //-------------------------------------------------------------
             //-- Регистрация Инструментов
-            
+
             serviceCollection.AddTransient<TestExplorerViewModel>   ();
             serviceCollection.AddTransient<ErrorListViewModel>      ();
 

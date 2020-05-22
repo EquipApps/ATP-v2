@@ -71,10 +71,6 @@ namespace B.EK
             serviceCollection.AddTransientMvcFeatureConvetion<MvcFeatureConvetion>();
 
             //-- MVC
-            
-          
-            serviceCollection.AddMvcAssemply(Assembly.GetEntryAssembly());
-            
 
             serviceCollection.AddSingletonMvcModelProvider<Command, CommandProvider>();
 
