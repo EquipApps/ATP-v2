@@ -1,6 +1,6 @@
 ﻿using B.EK.ForDebug;
 using EquipApps.Hardware;
-using EquipApps.Hardware.Behaviors.PowerSource;
+using EquipApps.Hardware.Behaviors.Toggling;
 using EquipApps.WorkBench;
 using EquipApps.WorkBench.Tools.External.Advantech.PCI_1762;
 using EquipApps.WorkBench.Tools.External.GwINSTEK;
@@ -17,10 +17,10 @@ namespace B.EK.Configure
             options.RegisterHardware<MeasureVoltageBehavior>("Multimetr");
 
 
-            options.RegisterHardware<BatteryBehavior, PowerSourceBehavior>("ИП1");                //-- 3_В
-            options.RegisterHardware<BatteryBehavior, PowerSourceBehavior>("ИП2_+П");             //-- 30_В Шина +П
-            options.RegisterHardware<BatteryBehavior, PowerSourceBehavior>("ИП3_+С");             //-- 30_В Шина +С
-            options.RegisterHardware<BatteryBehavior, PowerSourceBehavior>("ИП4");                //-- 6_В
+            options.RegisterHardware<BatteryBehavior, ToggleBehavior>("ИП1");                //-- 3_В
+            options.RegisterHardware<BatteryBehavior, ToggleBehavior>("ИП2_+П");             //-- 30_В Шина +П
+            options.RegisterHardware<BatteryBehavior, ToggleBehavior>("ИП3_+С");             //-- 30_В Шина +С
+            options.RegisterHardware<BatteryBehavior, ToggleBehavior>("ИП4");                //-- 6_В
 
 
             options.RegisterHardware<IRelayBehavior>("K{0}", 50, 0);

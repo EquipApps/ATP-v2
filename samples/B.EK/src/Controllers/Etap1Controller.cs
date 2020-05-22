@@ -1,5 +1,5 @@
 ﻿using B.EK.Configure;
-using EquipApps.Hardware.Behaviors.PowerSource;
+using EquipApps.Hardware.Behaviors.Toggling;
 using EquipApps.Mvc;
 using EquipApps.Testing;
 using EquipApps.WorkBench;
@@ -52,14 +52,14 @@ namespace B.EK.Controllers
                     throw new InvalidOperationException("Выбран не поддерживаемый режим ИП");
             }
 
-            this.PowerSourceTransaction(PowerSourceState.ON, "ИП1", "ИП2_+П", "ИП3_+С", "ИП4");
+            this.ToggleTransaction(Toggle.ON, "ИП1", "ИП2_+П", "ИП3_+С", "ИП4");
         }
 
         [Step("ВЫкл. ИП")]
         [OrderController("6")]
         public void Action2()
         {
-            this.PowerSourceTransaction(PowerSourceState.OFF, "ИП1", "ИП2_+П", "ИП3_+С", "ИП4");
+            this.ToggleTransaction(Toggle.OFF, "ИП1", "ИП2_+П", "ИП3_+С", "ИП4");
         }
     }
 }

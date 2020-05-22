@@ -1,5 +1,5 @@
 ﻿using EquipApps.Hardware;
-using EquipApps.Hardware.Behaviors.PowerSource;
+using EquipApps.Hardware.Behaviors.Toggling;
 using System;
 
 namespace EquipApps.WorkBench.Tools.External.GwINSTEK
@@ -32,14 +32,14 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
                 return;
             }
 
-            var behavior = new PowerSourceBehavior();
+            var behavior = new ToggleBehavior();
                 behavior.ValueChange += Behavior_ValueChange;
 
             //-- Сохпвняем поведение
             hardware.Behaviors.AddOrUpdate(behavior);
         }
 
-        private void Behavior_ValueChange(ValueBehaviorBase<PowerSourceState> behaviorBase, PowerSourceState sourceState)
+        private void Behavior_ValueChange(ValueBehaviorBase<Toggle> behaviorBase, Toggle sourceState)
         {
             throw new NotImplementedException();
         }

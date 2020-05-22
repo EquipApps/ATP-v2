@@ -1,9 +1,9 @@
-﻿namespace EquipApps.Hardware.Behaviors.PowerSource
+﻿namespace EquipApps.Hardware.Behaviors.Toggling
 {
     /// <summary>
-    /// Состояние источника питания
+    /// Переключатель
     /// </summary>
-    public enum PowerSourceState :  int
+    public enum Toggle :  int
     {
         /// <summary>
         /// Выкл.

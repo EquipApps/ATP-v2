@@ -1,5 +1,5 @@
 ﻿using EquipApps.Hardware;
-using EquipApps.Hardware.Behaviors.PowerSource;
+using EquipApps.Hardware.Behaviors.Toggling;
 using EquipApps.WorkBench;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -86,10 +86,10 @@ namespace B.EK.ForDebug
         {
             logger.LogTrace($"{deviceName} - RegisterPowerSourceBehavior");
 
-            foreach (var virtualDefine in hardwareOptions.VirtualDefines.Where(x => x.BehaviorTypes.Contains(typeof(PowerSourceBehavior))))
+            foreach (var virtualDefine in hardwareOptions.VirtualDefines.Where(x => x.BehaviorTypes.Contains(typeof(ToggleBehavior))))
             {
                 var hardware = this.HardwareFeature.HardwareCollection[virtualDefine.Name];
-                var behavior = new PowerSourceBehavior();
+                var behavior = new ToggleBehavior();
                 behavior.ValueChange += PowerSourceBehavior_ValueChange;
 
 
@@ -157,7 +157,7 @@ namespace B.EK.ForDebug
 
 
 
-        private void PowerSourceBehavior_ValueChange(ValueBehaviorBase<PowerSourceState> behavior, PowerSourceState value)
+        private void PowerSourceBehavior_ValueChange(ValueBehaviorBase<Toggle> behavior, Toggle value)
         {
             logger.LogTrace("{device}:{hardware} - {value}", deviceName, behavior.Hardware.Name, value);
             behavior.SetValue(value);

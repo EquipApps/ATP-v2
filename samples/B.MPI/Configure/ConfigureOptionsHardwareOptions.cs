@@ -1,5 +1,5 @@
 ﻿using EquipApps.Hardware;
-using EquipApps.Hardware.Behaviors.PowerSource;
+using EquipApps.Hardware.Behaviors.Toggling;
 using EquipApps.WorkBench;
 using EquipApps.WorkBench.Tools.External.GwINSTEK;
 using EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_2010;
@@ -14,8 +14,8 @@ namespace B.MPI.Configure
         {
             /*-- Виртуальные устройства --*/
 
-            options.RegisterHardware<BatteryBehavior, PowerSourceBehavior>("ИП1");   //-- 3_В
-            options.RegisterHardware<BatteryBehavior, PowerSourceBehavior>("ИП2");   //-- 30_В Шина +П
+            options.RegisterHardware<BatteryBehavior, ToggleBehavior>("ИП1");   //-- 3_В
+            options.RegisterHardware<BatteryBehavior, ToggleBehavior>("ИП2");   //-- 30_В Шина +П
 
 
 
