@@ -27,6 +27,7 @@
     <Folder Include="ASBL\" />
     <Folder Include="GwINSTEK\GDM_Series\GDM_8246\" />
     <Folder Include="GwINSTEK\GDM_Series\GDM_78341\" />
+    <Folder Include="GwINSTEK\PSP_Series\" />
     <Folder Include="GwINSTEK\PST_Series\PST_320\" />
   </ItemGroup>
 
