@@ -30,8 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Hardware\Behavior.Digital\src\EquipApps.Hardware.Behavior.Digital.csproj" />
-    <ProjectReference Include="..\..\..\Hardware\Behavior.Relay\src\EquipApps.Hardware.Behavior.Relay.csproj" />
     <ProjectReference Include="..\..\..\Hardware\Core\src\EquipApps.Hardware.Core.csproj" />
   </ItemGroup>
 
