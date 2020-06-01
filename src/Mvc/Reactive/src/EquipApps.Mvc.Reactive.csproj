@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp3.1;net472</TargetFrameworks>
+    <Version>1.0.0-rc10</Version>
+    <Authors>Alexandr G</Authors>
+    <Company>EquipApps</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>Define MVC Reactive</Description>
+    <Copyright>Copyright © 2020 EquipApps</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
