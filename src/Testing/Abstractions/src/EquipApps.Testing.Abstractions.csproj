@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.0;netcoreapp3.1;net472</TargetFrameworks>
     <RootNamespace>EquipApps.Testing</RootNamespace>
-    <Version>1.0.0-rc3</Version>
+    <Version>1.0.0-rc10</Version>
     <Authors>Alexandr G</Authors>
     <Company>EquipApps</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

@@ -8,7 +8,7 @@
     <Description>Define test infrastructure for WPF UI</Description>
     <Copyright>Copyright © 2020 EquipApps</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>1.0.0-rc4</Version>
+    <Version>1.0.0-rc10</Version>
   </PropertyGroup>
 
   <ItemGroup>
