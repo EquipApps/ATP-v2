@@ -54,7 +54,7 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.Tests
 
         public ushort Port => throw new NotImplementedException();
 
-        public void Initalize()
+        public void Init()
         {
             throw new NotImplementedException();
         }

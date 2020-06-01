@@ -2,13 +2,15 @@
 
 namespace EquipApps.WorkBench.Tools.External.GwINSTEK
 {
-
+    /// <summary>
+    /// Инфроструктура источника питания
+    /// </summary>
     public interface IPowerSource
     {
         ushort Number { get; }
         ushort Port { get; }
 
-        void Initalize();
+        void Init();
         void PowerOff();
         void PowerOn();
         void Setup(uint voltage, uint limVoltage, uint limCurrent);

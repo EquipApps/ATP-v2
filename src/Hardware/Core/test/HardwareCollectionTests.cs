@@ -13,7 +13,7 @@ namespace EquipApps.Hardware.Tests
         public void HardwareCollectionTest()
         {
             //-- Создали пустую коллекцию
-            HardwareCollection hardwares = new HardwareCollection(null);
+            HardwareCollection hardwares = new HardwareCollection();
 
             Assert.IsNotNull(hardwares);
             Assert.AreEqual(0, hardwares.Count);
@@ -26,7 +26,7 @@ namespace EquipApps.Hardware.Tests
         public void AddOrUpdateTest1()
         {
             //-- Создали пустую коллекцию
-            HardwareCollection hardwares = new HardwareCollection(null);
+            HardwareCollection hardwares = new HardwareCollection();
             hardwares.AddOrUpdate(null);
         }
 
@@ -37,7 +37,7 @@ namespace EquipApps.Hardware.Tests
             MokHardware mokHardware = new MokHardware(null);
 
             //-- Создали пустую коллекцию
-            HardwareCollection hardwares = new HardwareCollection(null);
+            HardwareCollection hardwares = new HardwareCollection();
             hardwares.AddOrUpdate(mokHardware);
         }
 
@@ -49,7 +49,7 @@ namespace EquipApps.Hardware.Tests
             var hardware3 = new Hardware("hardware3");
 
             //-- Создали пустую коллекцию
-            HardwareCollection hardwares = new HardwareCollection(null);
+            HardwareCollection hardwares = new HardwareCollection();
 
             //--
             hardwares.AddOrUpdate(hardware1);
@@ -81,7 +81,7 @@ namespace EquipApps.Hardware.Tests
         public void RemoveTest()
         {
             //-- Создали пустую коллекцию
-            HardwareCollection hardwares = new HardwareCollection(null);
+            HardwareCollection hardwares = new HardwareCollection();
             hardwares.Remove(null);
         }
 
@@ -89,7 +89,7 @@ namespace EquipApps.Hardware.Tests
         public void RemoveTest1()
         {
             //-- Создали пустую коллекцию
-            HardwareCollection hardwares = new HardwareCollection(null);
+            HardwareCollection hardwares = new HardwareCollection();
             hardwares.Remove("hardware1");
         }
 
@@ -101,7 +101,7 @@ namespace EquipApps.Hardware.Tests
             var hardware3 = new Hardware("hardware3");
 
             //-- Создали пустую коллекцию
-            HardwareCollection hardwares = new HardwareCollection(null);
+            HardwareCollection hardwares = new HardwareCollection();
 
             //--
             hardwares.AddOrUpdate(hardware1);
@@ -125,7 +125,7 @@ namespace EquipApps.Hardware.Tests
             var hardware3 = new Hardware("hardware3");
 
             //-- Создали пустую коллекцию
-            HardwareCollection hardwares = new HardwareCollection(null);
+            HardwareCollection hardwares = new HardwareCollection();
 
             //--
             hardwares.AddOrUpdate(hardware1);

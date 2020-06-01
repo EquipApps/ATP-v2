@@ -8,37 +8,48 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
     /// <para>PSP-2010; PSP-405; PSH-3610;</para>
     /// <para>У всех устройств одинаковые коды ошибок</para>
     /// </summary>
-    public abstract class PSxDevice : IPowerSource
+    public abstract class PSxDevice : IPowerSource, IDisposable
     {
         protected PSxLibrary library;
 
         /// <summary>
         /// Порядковый номер.
         /// </summary>
-        public ushort Number { get; private set; }
+        public ushort Number 
+        { 
+            get; 
+            private set; 
+        }
 
         /// <summary>
         /// Номер COM
         /// </summary>
-        public ushort Port { get; private set; }
+        public ushort Port 
+        { 
+            get; 
+            private set; 
+        }
 
 
         protected virtual void InitializeComponent(ushort number, ushort port, string path)
         {
-            Number = number;
-            Port = port;
+            Number  = number;
+            Port    = port;
 
             //-- Загрузка Библеотеки
             library = LibraryCache.Instance.GetOrCreate<PSxLibrary>(path);
         }
 
 
-        public void Initalize()
+        public void Init()
         {
             var error = library.INIT(Number, Port);
             if (error != 0)
             {
-                throw new InvalidProgramException(nameof(Initalize));
+                var message = PSxErrorHelper.GetErrorMessage(error);
+
+
+                throw new InvalidOperationException("Ошибка");
             }
         }
 
@@ -76,6 +87,11 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
             {
                 throw new InvalidProgramException(nameof(PowerOn));
             }
+        }
+        
+        public void Dispose()
+        {
+            
         }
     }
 }

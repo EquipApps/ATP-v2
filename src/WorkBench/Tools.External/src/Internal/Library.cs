@@ -9,13 +9,16 @@ namespace EquipApps.WorkBench.Tools.External.Internal
     /// </summary>
     public abstract class Library : IDisposable
     {
+        public string Path { get; private set; }
+
         /// <summary>
         /// Дискриптор библеотеки
         /// </summary>
         private IntPtr _hDll = IntPtr.Zero;
 
-        /// <summary>
-        /// Загружает библеотеку
+        /// <summary>      
+        /// <para>Загружает библеотеку.</para>
+        /// <para>Функция вызывается при создании экземпляра библиотеки в фабрике</para>
         /// </summary>
         internal virtual void InitializeComponent(string dllPath)
         {
@@ -29,6 +32,9 @@ namespace EquipApps.WorkBench.Tools.External.Internal
             //-- 3) Проверка. Загружеена ли библеотека ?
             if (_hDll == IntPtr.Zero)
                 throw new InvalidOperationException("При загрузки библиотеки произошла ошибка.");
+
+            //-- Сохраняем путь.
+            Path = dllPath;
         }
 
         /// <summary>

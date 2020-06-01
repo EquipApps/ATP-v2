@@ -13,7 +13,7 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK.PSP_Series.PSP_405.Tests
         public void PSP405_Test()
         {
             var device = new PSP405(1, 1);
-            device.Dispose();
+                device.Dispose();
         }
     }
 }

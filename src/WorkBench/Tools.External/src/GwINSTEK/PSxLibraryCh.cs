@@ -6,16 +6,9 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
     /// <summary>
     /// Библеотеки многоканального источника питания
     /// </summary>
-    public class PSxLibraryCh : Library
+    public abstract class PSxLibraryCh : Library
     {
         private const ushort nullError = 0xFFFF;
-
-        //TODO: Добавить локер!
-
-        public PSxLibraryCh()
-        {
-
-        }
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         private delegate ushort IniTdel(ushort numb, ushort com);
@@ -41,16 +34,17 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
         private delegate ushort StatuSdel(ushort num, byte ch, ref uint volt, ref uint curr);
         private StatuSdel _statusFunc;
 
+        /// <inheritdoc/>      
         internal override void InitializeComponent(string dllPath)
         {
             base.InitializeComponent(dllPath);
 
-            _initFunc   = GetFunc<IniTdel>("INIT");
+            _initFunc   = GetFunc<IniTdel>  ("INIT");
             _deinitFunc = GetFunc<DeiniTdel>("DEINIT");
             _getVerFunc = GetFunc<GetVerdel>("GET_VER");
 
             _outputFunc = GetFunc<OutpuTdel>("OUTPUT");
-            _setupFunc  = GetFunc<SetuPdel>("SETUP");
+            _setupFunc  = GetFunc<SetuPdel> ("SETUP");
             _statusFunc = GetFunc<StatuSdel>("STATUS");
         }
 

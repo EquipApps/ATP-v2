@@ -18,7 +18,8 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
 
         }
 
-        
+        //-------------------------------------------------------------------------------------------
+
         public TPowerSource Device     
         { 
             get; private set; 
@@ -28,6 +29,8 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
         { 
             get; private set; 
         }
+
+        //-------------------------------------------------------------------------------------------
 
         public ToggleBehavior ToggleBehavior 
         { 
@@ -67,12 +70,12 @@ namespace EquipApps.WorkBench.Tools.External.GwINSTEK
 
         protected override void InitializeDevice()
         {
-            
+            throw new NotImplementedException();
         }
 
         protected override void ResetDevice()
         {
-            
+            throw new NotImplementedException();
         }
 
         //-------------------------------------------------------------------------------------------
