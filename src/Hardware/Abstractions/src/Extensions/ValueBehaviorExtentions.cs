@@ -57,27 +57,5 @@ namespace EquipApps.Hardware.Extensions
 
             return results;
         }
-
-
-        //----
-        public static TValue GetValue<TValue>(this IEnableContext enableContext, string hardwareName)
-        {
-            return enableContext.RequestToUpdateValue<ValueBehaviorBase<TValue>, TValue>(hardwareName);
-        }
-        public static TValue[] GetValue<TValue>(this IEnableContext enableContext, params string[] hardwareNames)
-        {
-            return enableContext.RequestToUpdateValue<ValueBehaviorBase<TValue>, TValue>(hardwareNames);
-        }
-
-
-        //----
-        public static void SetValue<TValue>(this IEnableContext enableContext, TValue value, string hardwareName)
-        {
-            enableContext.RequestToChangeValue<ValueBehaviorBase<TValue>, TValue>(value, hardwareName);
-        }
-        public static void SetValue<TValue>(this IEnableContext enableContext, TValue value, params string[] hardwareNames)
-        {
-            enableContext.RequestToChangeValue<ValueBehaviorBase<TValue>, TValue>(value, hardwareNames);
-        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using EquipApps.Hardware.ValueDecorators;
+﻿using EquipApps.Hardware.Abstractions;
+using EquipApps.Hardware.ValueDecorators;
 using System;
 
 namespace EquipApps.Hardware

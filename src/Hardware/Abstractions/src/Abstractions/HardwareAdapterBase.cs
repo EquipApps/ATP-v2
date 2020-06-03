@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EquipApps.Hardware
+namespace EquipApps.Hardware.Abstractions
 {
     /// <summary>
     /// Базовая реализация инфроструктуры <see cref="IHardwareAdapter"/>.

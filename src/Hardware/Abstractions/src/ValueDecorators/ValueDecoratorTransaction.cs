@@ -15,15 +15,14 @@ namespace EquipApps.Hardware.ValueDecorators
         {
             get => _valueComonent.Value;
             set => _valueComonent.Value = value;
-        }
-        private TValue _original;
-        private bool _enlisted;
+        }       
+        private volatile bool _enlisted;
 
         public ValueDecoratorTransaction(IValueComonent<TValue> valueComonent)
         {
             _valueComonent = valueComonent ?? throw new ArgumentNullException(nameof(valueComonent));
 
-            _original = _current;
+            Origin = _current;
             _enlisted = false;
         }
 
@@ -36,10 +35,16 @@ namespace EquipApps.Hardware.ValueDecorators
 
                 if (!Enlist())
                 {
-                    _original = value;
+                    Origin = value;
                 }
                 _current = value;
             }
+        }
+
+        public TValue Origin
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -68,7 +73,7 @@ namespace EquipApps.Hardware.ValueDecorators
         void IEnlistmentNotification.Commit(Enlistment enlistment)
         {
             //СОХРАНЯЕМ
-            _original = _current;
+            Origin = _current;
             _enlisted = false;
 
             enlistment.Done();
@@ -76,7 +81,6 @@ namespace EquipApps.Hardware.ValueDecorators
 
         void IEnlistmentNotification.InDoubt(Enlistment enlistment)
         {
-            //TODO: Что это?
             _enlisted = false;
         }
 
@@ -89,7 +93,7 @@ namespace EquipApps.Hardware.ValueDecorators
         void IEnlistmentNotification.Rollback(Enlistment enlistment)
         {
             //ОТКАТ
-            _current = _original;
+            _current = Origin;
             _enlisted = false;
         }
     }

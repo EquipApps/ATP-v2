@@ -8,7 +8,6 @@ namespace EquipApps.Hardware
     /// </summary>
     public interface IHardwareBehaviorCollection
     {
-        //TODO: Написать юнит тест. когда ключ при регистрации ниже по иерархии чем экземпляр
 
         /// <summary>
         /// Позволяет подписаться на изменения коллекции

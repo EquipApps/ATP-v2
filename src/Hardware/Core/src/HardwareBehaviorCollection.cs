@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace EquipApps.Hardware
 {
+    //TODO: Написать юнит тест. когда ключ при регистрации ниже по иерархии чем экземпляр
 
     public class HardwareBehaviorCollection : IHardwareBehaviorCollection, IDisposable
     {
