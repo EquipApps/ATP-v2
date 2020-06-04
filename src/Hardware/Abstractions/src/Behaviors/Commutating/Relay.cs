@@ -1,9 +1,9 @@
-﻿namespace EquipApps.Hardware
+﻿namespace EquipApps.Hardware.Behaviors.Commutating
 {
     /// <summary>
     /// Состояния реле
     /// </summary>
-    public enum RelayState : byte
+    public enum Relay : byte
     {
         /// <summary>
         /// Open

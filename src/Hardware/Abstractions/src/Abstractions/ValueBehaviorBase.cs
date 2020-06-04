@@ -56,7 +56,7 @@ namespace EquipApps.Hardware.Abstractions
 
             var context = new ValueBehaviorContext<TValue>(Value);
 
-            valueUpdate.Invoke(context);
+            valueUpdate.Invoke(this, context);
 
             var output = context.GetOutput();
 
@@ -72,7 +72,7 @@ namespace EquipApps.Hardware.Abstractions
 
             var context = new ValueBehaviorContext<TValue>(value);
             
-            valueChange.Invoke(context);
+            valueChange.Invoke(this, context);
 
             var output = context.GetOutput();
 

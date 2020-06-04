@@ -117,14 +117,14 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
         }
 
-        private void Behavior_ValueChange1(ValueBehaviorContext<int> context)
+        private void Behavior_ValueChange1(object sender, ValueBehaviorContext<int> context)
         {
             Assert.AreEqual(10, context.Input);
 
             //-- Не обрабатываем
         }
 
-        private void Behavior_ValueChange2(ValueBehaviorContext<int> context)
+        private void Behavior_ValueChange2(object sender, ValueBehaviorContext<int> context)
         {
             Assert.AreEqual(10, context.Input);
 
@@ -134,7 +134,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             throw new NotImplementedException("Ошибка");
         }
 
-        private void Behavior_ValueChange3(ValueBehaviorContext<int> context)
+        private void Behavior_ValueChange3(object sender, ValueBehaviorContext<int> context)
         {
             Assert.AreEqual(10, context.Input);
 
@@ -142,7 +142,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             context.SetOutput(context.Input);
         }
 
-        private void Behavior_ValueChange4(ValueBehaviorContext<int> context)
+        private void Behavior_ValueChange4(object sender, ValueBehaviorContext<int> context)
         {
             Assert.AreEqual(10, context.Input);
 
@@ -235,14 +235,14 @@ namespace EquipApps.Hardware.Abstractions.Tests
 
 
 
-        private void Behavior_ValueUpdate1(ValueBehaviorContext<int> context)
+        private void Behavior_ValueUpdate1(object sender, ValueBehaviorContext<int> context)
         {
             Assert.AreEqual(-1, context.Input);
 
             //-- Не обрабатываем
         }
 
-        private void Behavior_ValueUpdate2(ValueBehaviorContext<int> context)
+        private void Behavior_ValueUpdate2(object sender, ValueBehaviorContext<int> context)
         {
             Assert.AreEqual(-1, context.Input);
 
@@ -252,7 +252,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             throw new NotImplementedException("Ошибка");
         }
 
-        private void Behavior_ValueUpdate3(ValueBehaviorContext<int> context)
+        private void Behavior_ValueUpdate3(object sender, ValueBehaviorContext<int> context)
         {
             Assert.AreEqual(-1, context.Input);
 

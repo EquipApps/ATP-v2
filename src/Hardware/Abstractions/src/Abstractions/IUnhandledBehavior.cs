@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EquipApps.Hardware
+namespace EquipApps.Hardware.Abstractions
 {
     /// <summary>
     /// Маркер поведения. С возможностью появления критичиских исключений

@@ -4,28 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.Transactions;
 
-namespace EquipApps.Hardware
+namespace EquipApps.Hardware.Behaviors.Digital
 {
-    public static class DigitalBehaviorExtentions
+    public static class DigitBehaviorEx
     {
-        public static void LineSwitch(this IEnableContext enableContext, byte value, string line)
+        public static void LineSwitch(this IEnableContext enableContext, Digit value, string line)
         {
-            enableContext.RequestToChangeValue<IDigitalLineBehavior, byte>(value, line);
+            enableContext.RequestToChangeValue<IDigitBehavior, Digit>(value, line);
         }
-        public static void LineSwitch(this IEnableContext enableContext, byte value, params string[] lines)
+        public static void LineSwitch(this IEnableContext enableContext, Digit value, params string[] lines)
         {
-            enableContext.RequestToChangeValue<IDigitalLineBehavior, byte>(value, lines);
+            enableContext.RequestToChangeValue<IDigitBehavior, Digit>(value, lines);
         }
-        public static void LineTransaction(this IEnableContext enableContext, byte value, string line)
-        {
-            using (var transactionScope = new TransactionScope())
-            {
-                enableContext.LineSwitch(value, line);
-
-                transactionScope.Complete();
-            }
-        }
-        public static void LineTransaction(this IEnableContext enableContext, byte value, params string[] line)
+        public static void LineTransaction(this IEnableContext enableContext, Digit value, string line)
         {
             using (var transactionScope = new TransactionScope())
             {
@@ -34,17 +25,26 @@ namespace EquipApps.Hardware
                 transactionScope.Complete();
             }
         }
+        public static void LineTransaction(this IEnableContext enableContext, Digit value, params string[] line)
+        {
+            using (var transactionScope = new TransactionScope())
+            {
+                enableContext.LineSwitch(value, line);
 
-        public static Dictionary<string, byte> LineRequest(this IEnableContext enableContext)
+                transactionScope.Complete();
+            }
+        }
+
+        public static Dictionary<string, Digit> LineRequest(this IEnableContext enableContext)
         {
             var feature = enableContext
                 .TestContext
-                .TestFeatures.Get<DigitalFeature>();
+                .TestFeatures.Get<DigitFeature>();
 
             if (feature == null)
             {
                 throw new InvalidOperationException(
-                   string.Format("{0} не содержит {1}", nameof(TestContext), nameof(DigitalFeature)));
+                   string.Format("{0} не содержит {1}", nameof(TestContext), nameof(DigitFeature)));
             }
 
             using (var transactionScope = new TransactionScope())
@@ -57,7 +57,7 @@ namespace EquipApps.Hardware
                 transactionScope.Complete();
             }
 
-            var result = new Dictionary<string, byte>();
+            var result = new Dictionary<string, Digit>();
 
             foreach (var pair in feature)
             {

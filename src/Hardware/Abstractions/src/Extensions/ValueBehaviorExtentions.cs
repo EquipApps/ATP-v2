@@ -1,4 +1,5 @@
-﻿using EquipApps.Testing;
+﻿using EquipApps.Hardware.Abstractions;
+using EquipApps.Testing;
 
 namespace EquipApps.Hardware.Extensions
 {

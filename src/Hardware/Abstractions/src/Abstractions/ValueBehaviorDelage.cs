@@ -3,5 +3,5 @@
     /// <summary>
     /// Делегат. Используется для обработки <see cref="ValueBehaviorContext{TValue}"/>
     /// </summary>    
-    public delegate void ValueBehaviorDelegate<TValue>(ValueBehaviorContext<TValue> context);
+    public delegate void ValueBehaviorDelegate<TValue>(object sender, ValueBehaviorContext<TValue> context);
 }

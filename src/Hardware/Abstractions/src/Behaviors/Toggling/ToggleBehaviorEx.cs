@@ -22,7 +22,7 @@ namespace EquipApps.Hardware.Behaviors.Toggling
         /// <param name="toggleName">Имя переключателя</param>
         public static void ToggleSwitch(this IEnableContext enableContext, Toggle toggle, string toggleName)
         {
-            enableContext.RequestToChangeValue<ToggleBehavior, Toggle>(toggle, toggleName);
+            enableContext.RequestToChangeValue<IToggleBehavior, Toggle>(toggle, toggleName);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace EquipApps.Hardware.Behaviors.Toggling
         /// <param name="toggleNames">Имена переключателей</param>
         public static void ToggleSwitch(this IEnableContext enableContext, Toggle toggle, string[] toggleNames)
         {
-            enableContext.RequestToChangeValue<ToggleBehavior, Toggle>(toggle, toggleNames);
+            enableContext.RequestToChangeValue<IToggleBehavior, Toggle>(toggle, toggleNames);
         }
 
         /// <summary>

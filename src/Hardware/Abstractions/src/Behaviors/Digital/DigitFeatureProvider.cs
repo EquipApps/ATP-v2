@@ -1,38 +1,35 @@
 ﻿using EquipApps.Testing.Features;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace EquipApps.Hardware
+namespace EquipApps.Hardware.Behaviors.Digital
 {
-    public class DigitalFeatureProvider : IFeatureProvider
+    public class DigitFeatureProvider : IFeatureProvider
     {
-        private ILogger<DigitalFeatureProvider> logger;
+        private ILogger<DigitFeatureProvider> logger;
         private HardwareOptions hardwareOptions;
 
         public int Order => int.MinValue;
 
 
-        public DigitalFeatureProvider(
-            IOptions<HardwareOptions> hardwareOptions, 
+        public DigitFeatureProvider(
+            IOptions<HardwareOptions> hardwareOptions,
             ILoggerFactory loggerFactory)
         {
             this.hardwareOptions = hardwareOptions?.Value ?? throw new ArgumentNullException(nameof(hardwareOptions));
 
-            if (loggerFactory == null) 
+            if (loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory));
 
-            this.logger = loggerFactory.CreateLogger<DigitalFeatureProvider>();
-            this.logger.LogTrace("ctr");
+            logger = loggerFactory.CreateLogger<DigitFeatureProvider>();
+            logger.LogTrace("ctr");
         }
 
         public void OnProvidersExecuted(FeatureProviderContext context)
         {
-            this.logger.LogTrace(nameof(OnProvidersExecuted));
+            logger.LogTrace(nameof(OnProvidersExecuted));
 
             /*
              * Идея!
@@ -51,10 +48,10 @@ namespace EquipApps.Hardware
                     $"Проверьте вызывыв AddHardware");
 
 
-            var digitalFeature = new DigitalFeature();
- 
+            var digitalFeature = new DigitFeature();
+
             //-- Конфигурация
-            foreach (var virtualDefine in hardwareOptions.VirtualDefines.Where(x => x.BehaviorTypes.Contains(typeof(DigitalBehavior))))
+            foreach (var virtualDefine in hardwareOptions.VirtualDefines.Where(x => x.BehaviorTypes.Contains(typeof(DigitlBehavior))))
             {
                 var hardware = hardwareFeature.HardwareCollection[virtualDefine.Name];
                 if (hardware == null)
@@ -65,7 +62,7 @@ namespace EquipApps.Hardware
                     continue;
                 }
 
-                var behavior = hardware.Behaviors.Get<DigitalBehavior>();
+                var behavior = hardware.Behaviors.Get<DigitlBehavior>();
                 if (behavior == null)
                 {
                     logger.LogError(
@@ -74,7 +71,7 @@ namespace EquipApps.Hardware
                     continue;
                 }
 
-                if(!behavior.CanUpdateValue)
+                if (!behavior.CanUpdateValue)
                 {
                     logger.LogWarning(
                         $"Виртуальное устройство {virtualDefine.Name} не может обновлять значение");
@@ -92,7 +89,7 @@ namespace EquipApps.Hardware
 
         public void OnProvidersExecuting(FeatureProviderContext context)
         {
-            this.logger.LogTrace(nameof(OnProvidersExecuted));
+            logger.LogTrace(nameof(OnProvidersExecuted));
             //-- Ничего не делаем!
         }
     }

@@ -1,20 +1,15 @@
-﻿namespace EquipApps.Hardware
+﻿namespace EquipApps.Hardware.Behaviors.Digital
 {
-    public enum DigitalState
+    public enum Digit : byte
     {
         /// <summary>
         /// Логичиский нуль
         /// </summary>
-        Null = 0,
+        Nil = 0,
 
         /// <summary>
         /// Логическая единица
         /// </summary>
         One = 1,
-
-        /// <summary>
-        /// Состояние высокого импеданса
-        /// </summary>
-        Zed = 2,
     }
 }

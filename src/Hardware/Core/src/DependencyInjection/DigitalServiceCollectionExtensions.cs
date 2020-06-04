@@ -1,4 +1,4 @@
-﻿using EquipApps.Hardware;
+﻿using EquipApps.Hardware.Behaviors.Digital;
 using EquipApps.Testing.Features;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,7 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddTransient<IFeatureProvider, DigitalFeatureProvider>();     //-- Enumerable
+            services.AddTransient<IFeatureProvider, DigitFeatureProvider>();     //-- Enumerable
         }
     }
 }

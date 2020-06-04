@@ -11,10 +11,10 @@ namespace EquipApps.Hardware.Abstractions
     public abstract class ValueBehavior<TValue> : ValueBehaviorBase<TValue>,
         IEnlistmentNotification, IValueComonent<TValue>, IDisposable, IUnhandledBehavior
     {
-        private volatile object locker = new object();
-        private volatile bool _enlisted = false;
-        private volatile bool _prepare = false;
-        private volatile TransactionType _transaction;
+        protected volatile object locker = new object();
+        protected volatile bool _enlisted = false;
+        protected volatile bool _prepare = false;
+        protected volatile TransactionType _transaction;
 
         private readonly ValueDecoratorObservable<TValue> valueDecoratorObservable;
         private readonly ValueDecoratorTransaction<TValue> valueDecoratorTransaction;
@@ -29,7 +29,7 @@ namespace EquipApps.Hardware.Abstractions
 
         public override TValue Value
         {
-            get => valueDecoratorTransaction.Value;
+            get           => valueDecoratorTransaction.Value;
             protected set => valueDecoratorTransaction.Value = value;
         }
 
@@ -66,13 +66,23 @@ namespace EquipApps.Hardware.Abstractions
 
         #region EnlistmentRegion
 
-        private bool Enlist(TransactionType transactionType)
+        protected virtual bool Enlist(TransactionType transactionType)
         {
             lock (locker)
             {
                 //-- Идет транзакция
                 if (_enlisted)
-                    return true;
+                {
+                    //-- Идет транзакция тогоже типа!
+                    if (_transaction == transactionType)
+                        return true;
+                    else
+                        throw new InvalidOperationException(
+                            $"Попытка начать новую транзакцию\n" +
+                            $"Текущий тип транзакции {_transaction}" +
+                            $"Новый тип транзакции {transactionType}");
+                }
+                    
 
                 //-- Извлекаем транзакцию. Если ее нет, то выходим.
                 var currentTx = Transaction.Current;
@@ -206,7 +216,7 @@ namespace EquipApps.Hardware.Abstractions
             set => _value = value;
         }
 
-        private enum TransactionType
+        protected enum TransactionType
         {
             empty,
             RequestToChange,

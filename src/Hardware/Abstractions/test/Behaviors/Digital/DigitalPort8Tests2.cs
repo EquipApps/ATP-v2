@@ -1,17 +1,18 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using EquipApps.Hardware.Abstractions;
 using System.Transactions;
 
-namespace EquipApps.Hardware.Abstractions.Tests
+namespace EquipApps.Hardware.Behaviors.Digital.Tests
 {
     [TestClass()]
-    public class ValueBehaviorTests
+    public class DigitalPort8Tests2
     {
-        public class MocValue : ValueBehavior<int>
+        public class MocValue : DigitalPort8
         {
             public MocValue()
             {
-                Value = -1;
+                Value = byte.MaxValue;
             }
         }
 
@@ -32,7 +33,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
             }
         }
 
@@ -53,7 +54,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
             }
         }
 
@@ -74,7 +75,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
             }
         }
 
@@ -119,14 +120,14 @@ namespace EquipApps.Hardware.Abstractions.Tests
         }
 
 
-        private void Behavior_ValueChange1(object sender, ValueBehaviorContext<int> context)
+        private void Behavior_ValueChange1(object sender, ValueBehaviorContext<byte> context)
         {
             Assert.AreEqual(10, context.Input);
 
             //-- Не обрабатываем
         }
 
-        private void Behavior_ValueChange2(object sender, ValueBehaviorContext<int> context)
+        private void Behavior_ValueChange2(object sender, ValueBehaviorContext<byte> context)
         {
             Assert.AreEqual(10, context.Input);
 
@@ -136,7 +137,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             throw new NotImplementedException("Ошибка");
         }
 
-        private void Behavior_ValueChange3(object sender, ValueBehaviorContext<int> context)
+        private void Behavior_ValueChange3(object sender, ValueBehaviorContext<byte> context)
         {
             Assert.AreEqual(10, context.Input);
 
@@ -144,7 +145,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             context.SetOutput(context.Input);
         }
 
-        private void Behavior_ValueChange4(object sender, ValueBehaviorContext<int> context)
+        private void Behavior_ValueChange4(object sender, ValueBehaviorContext<byte> context)
         {
             Assert.AreEqual(10, context.Input);
 
@@ -170,7 +171,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
             }
         }
 
@@ -191,7 +192,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
             }
         }
 
@@ -212,7 +213,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
             }
         }
 
@@ -237,16 +238,16 @@ namespace EquipApps.Hardware.Abstractions.Tests
         }
 
 
-        private void Behavior_ValueUpdate1(object sender, ValueBehaviorContext<int> context)
+        private void Behavior_ValueUpdate1(object sender, ValueBehaviorContext<byte> context)
         {
-            Assert.AreEqual(-1, context.Input);
+            Assert.AreEqual(byte.MaxValue, context.Input);
 
             //-- Не обрабатываем
         }
 
-        private void Behavior_ValueUpdate2(object sender, ValueBehaviorContext<int> context)
+        private void Behavior_ValueUpdate2(object sender, ValueBehaviorContext<byte> context)
         {
-            Assert.AreEqual(-1, context.Input);
+            Assert.AreEqual(byte.MaxValue, context.Input);
 
             context.SetOutput(10);
 
@@ -254,9 +255,9 @@ namespace EquipApps.Hardware.Abstractions.Tests
             throw new NotImplementedException("Ошибка");
         }
 
-        private void Behavior_ValueUpdate3(object sender, ValueBehaviorContext<int> context)
+        private void Behavior_ValueUpdate3(object sender, ValueBehaviorContext<byte> context)
         {
-            Assert.AreEqual(-1, context.Input);
+            Assert.AreEqual(byte.MaxValue, context.Input);
 
             context.SetOutput(10);
 
@@ -288,7 +289,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
             }
         }
 
@@ -311,7 +312,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
             }
         }
 
@@ -324,12 +325,12 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countCall = 0;
 
             var behavior = new MocValue();
-            behavior.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 Assert.AreEqual(10, context.Input);
                 countCall++;
-                    //-- Не обрабатываем
-                };
+                //-- Не обрабатываем
+            };
 
             try
             {
@@ -347,7 +348,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
                 Assert.AreEqual(1, countCall);
             }
         }
@@ -358,7 +359,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countCall = 0;
 
             var behavior = new MocValue();
-            behavior.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 Assert.AreEqual(10, context.Input);
                 countCall++;
@@ -379,7 +380,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
                 Assert.AreEqual(0, countCall);
             }
         }
@@ -393,7 +394,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countCall = 0;
 
             var behavior = new MocValue();
-            behavior.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 Assert.AreEqual(10, context.Input);
                 countCall++;
@@ -420,7 +421,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
                 Assert.AreEqual(1, countCall);
             }
         }
@@ -431,7 +432,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countCall = 0;
 
             var behavior = new MocValue();
-            behavior.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 Assert.AreEqual(10, context.Input);
                 countCall++;
@@ -457,7 +458,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
                 Assert.AreEqual(0, countCall);
             }
         }
@@ -470,7 +471,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countCall = 0;
 
             var behavior = new MocValue();
-            behavior.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 Assert.AreEqual(10, context.Input);
                 countCall++;
@@ -506,7 +507,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countCall = 0;
 
             var behavior = new MocValue();
-            behavior.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 Assert.AreEqual(10, context.Input);
                 countCall++;
@@ -529,7 +530,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
                 Assert.AreEqual(0, countCall);
             }
         }
@@ -542,7 +543,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countCall = 0;
 
             var behavior = new MocValue();
-            behavior.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 Assert.AreEqual(10, context.Input);
                 countCall++;
@@ -578,7 +579,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countCall = 0;
 
             var behavior = new MocValue();
-            behavior.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 Assert.AreEqual(10, context.Input);
                 countCall++;
@@ -601,7 +602,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
                 Assert.AreEqual(0, countCall);
             }
         }
@@ -632,7 +633,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
             }
         }
 
@@ -655,7 +656,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
             }
         }
 
@@ -668,9 +669,9 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countCall = 0;
 
             var behavior = new MocValue();
-            behavior.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueUpdate += (object sender, ValueBehaviorContext<byte> context) =>
             {
-                Assert.AreEqual(-1, context.Input);
+                Assert.AreEqual(byte.MaxValue, context.Input);
                 countCall++;
                 //-- Не обрабатываем
             };
@@ -691,7 +692,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
                 Assert.AreEqual(1, countCall);
             }
         }
@@ -702,9 +703,9 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countCall = 0;
 
             var behavior = new MocValue();
-            behavior.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueUpdate += (object sender, ValueBehaviorContext<byte> context) =>
             {
-                Assert.AreEqual(-1, context.Input);
+                Assert.AreEqual(byte.MaxValue, context.Input);
                 countCall++;
                 //-- Не обрабатываем
             };
@@ -724,7 +725,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
                 Assert.AreEqual(0, countCall);
             }
         }
@@ -738,9 +739,9 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countCall = 0;
 
             var behavior = new MocValue();
-            behavior.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueUpdate += (object sender, ValueBehaviorContext<byte> context) =>
             {
-                Assert.AreEqual(-1, context.Input);
+                Assert.AreEqual(byte.MaxValue, context.Input);
                 countCall++;
 
                 context.SetOutput(10);
@@ -765,7 +766,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
                 Assert.AreEqual(1, countCall);
             }
         }
@@ -776,9 +777,9 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countCall = 0;
 
             var behavior = new MocValue();
-            behavior.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueUpdate += (object sender, ValueBehaviorContext<byte> context) =>
             {
-                Assert.AreEqual(-1, context.Input);
+                Assert.AreEqual(byte.MaxValue, context.Input);
                 countCall++;
 
                 context.SetOutput(10);
@@ -802,7 +803,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
                 Assert.AreEqual(0, countCall);
             }
         }
@@ -815,9 +816,9 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countCall = 0;
 
             var behavior = new MocValue();
-            behavior.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueUpdate += (object sender, ValueBehaviorContext<byte> context) =>
             {
-                Assert.AreEqual(-1, context.Input);
+                Assert.AreEqual(byte.MaxValue, context.Input);
                 countCall++;
 
                 context.SetOutput(10);
@@ -851,7 +852,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countCall = 0;
 
             var behavior = new MocValue();
-            behavior.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueUpdate += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 Assert.AreEqual(-1, context.Input);
                 countCall++;
@@ -876,14 +877,14 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
                 Assert.AreEqual(0, countCall);
             }
         }
 
 
         //=======================================================================
-        
+
         [ExpectedException(typeof(TransactionAbortedException))]
         [TestMethod()]
         public void RequestToChangeValueTM()
@@ -895,78 +896,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int value = 0;
 
             var behavior1 = new MocValue();
-                behavior1.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
-                {
-                    count1++;
-
-                    value = context.Input;
-
-                    //-- Значение установлено
-                    context.SetOutput(context.Input);
-                };
-
-            var behavior2 = new MocValue();
-                behavior2.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
-                {
-                    count2++;
-
-                    //-- Не обрабатываем
-                };
-
-            var behavior3 = new MocValue();
-                behavior3.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
-                {
-                    count3++;
-
-                    //-- Значение установлено
-                    context.SetOutput(context.Input);
-                };
-
-
-            try
-            {
-                using (var scope = new TransactionScope())
-                {
-                    //-- Исключение без подписки
-                    behavior1.RequestToChangeValue(10);
-                    behavior2.RequestToChangeValue(20);
-                    behavior2.RequestToChangeValue(30);
-
-                    scope.Complete();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                Assert.AreEqual(-1, value);  
-
-                Assert.AreEqual(-1, behavior1.Value);
-                Assert.AreEqual(-1, behavior2.Value);
-                Assert.AreEqual(-1, behavior3.Value);
-
-                Assert.AreEqual(2, count1);     //-- Функция вызываетя 2 раза !
-                Assert.AreEqual(1, count2);
-                Assert.AreEqual(0, count3);
-            }
-
-
-        }
-
-        [ExpectedException(typeof(TransactionAbortedException))]
-        [TestMethod()]
-        public void RequestToChangeValueTM2()
-        {
-            int count1 = 0;
-            int count2 = 0;
-            int count3 = 0;
-
-            int value = 0;
-
-            var behavior1 = new MocValue();
-            behavior1.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior1.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count1++;
 
@@ -974,22 +904,18 @@ namespace EquipApps.Hardware.Abstractions.Tests
 
                 //-- Значение установлено
                 context.SetOutput(context.Input);
-
             };
 
             var behavior2 = new MocValue();
-            behavior2.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior2.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count2++;
 
-                //-- Значение установлено
-                context.SetOutput(context.Input);
-
-                throw new InvalidOperationException("Ошибка");
+                //-- Не обрабатываем
             };
 
             var behavior3 = new MocValue();
-            behavior3.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior3.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count3++;
 
@@ -1016,11 +942,86 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, value);
+                Assert.AreEqual(byte.MaxValue, value);
 
-                Assert.AreEqual(-1, behavior1.Value);
-                Assert.AreEqual(-1, behavior2.Value);
-                Assert.AreEqual(-1, behavior3.Value);
+                Assert.AreEqual(byte.MaxValue, behavior1.Value);
+                Assert.AreEqual(byte.MaxValue, behavior2.Value);
+                Assert.AreEqual(byte.MaxValue, behavior3.Value);
+
+                Assert.AreEqual(2, count1);     //-- Функция вызываетя 2 раза !
+                Assert.AreEqual(1, count2);
+                Assert.AreEqual(0, count3);
+            }
+
+
+        }
+
+        [ExpectedException(typeof(TransactionAbortedException))]
+        [TestMethod()]
+        public void RequestToChangeValueTM2()
+        {
+            int count1 = 0;
+            int count2 = 0;
+            int count3 = 0;
+
+            int value = 0;
+
+            var behavior1 = new MocValue();
+            behavior1.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
+            {
+                count1++;
+
+                value = context.Input;
+
+                //-- Значение установлено
+                context.SetOutput(context.Input);
+
+            };
+
+            var behavior2 = new MocValue();
+            behavior2.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
+            {
+                count2++;
+
+                //-- Значение установлено
+                context.SetOutput(context.Input);
+
+                throw new InvalidOperationException("Ошибка");
+            };
+
+            var behavior3 = new MocValue();
+            behavior3.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
+            {
+                count3++;
+
+                //-- Значение установлено
+                context.SetOutput(context.Input);
+            };
+
+
+            try
+            {
+                using (var scope = new TransactionScope())
+                {
+                    //-- Исключение без подписки
+                    behavior1.RequestToChangeValue(10);
+                    behavior2.RequestToChangeValue(20);
+                    behavior2.RequestToChangeValue(30);
+
+                    scope.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                Assert.AreEqual(byte.MaxValue, value);
+
+                Assert.AreEqual(byte.MaxValue, behavior1.Value);
+                Assert.AreEqual(byte.MaxValue, behavior2.Value);
+                Assert.AreEqual(byte.MaxValue, behavior3.Value);
 
                 Assert.AreEqual(2, count1);     //-- Функция вызываетя 2 раза !
                 Assert.AreEqual(1, count2);
@@ -1040,7 +1041,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int value = 0;
 
             var behavior1 = new MocValue();
-            behavior1.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior1.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count1++;
 
@@ -1051,7 +1052,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             };
 
             var behavior2 = new MocValue();
-            behavior2.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior2.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count2++;
 
@@ -1059,7 +1060,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             };
 
             var behavior3 = new MocValue();
-            behavior3.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior3.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count3++;
 
@@ -1090,11 +1091,11 @@ namespace EquipApps.Hardware.Abstractions.Tests
 
                 Assert.AreEqual(0, value);
 
-                Assert.AreEqual(-1, behavior1.Value);
-                Assert.AreEqual(-1, behavior2.Value);
-                Assert.AreEqual(-1, behavior3.Value);
+                Assert.AreEqual(byte.MaxValue, behavior1.Value);
+                Assert.AreEqual(byte.MaxValue, behavior2.Value);
+                Assert.AreEqual(byte.MaxValue, behavior3.Value);
 
-               
+
             }
 
 
@@ -1113,7 +1114,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int value = 0;
 
             var behavior1 = new MocValue();
-            behavior1.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior1.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count1++;
 
@@ -1131,7 +1132,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             };
 
             var behavior2 = new MocValue();
-            behavior2.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior2.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count2++;
 
@@ -1139,7 +1140,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             };
 
             var behavior3 = new MocValue();
-            behavior3.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior3.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count3++;
 
@@ -1166,11 +1167,11 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, value);
+                Assert.AreEqual(byte.MaxValue, value);
 
-                Assert.AreEqual(-1, behavior1.Value);
-                Assert.AreEqual(-1, behavior2.Value);
-                Assert.AreEqual(-1, behavior3.Value);
+                Assert.AreEqual(byte.MaxValue, behavior1.Value);
+                Assert.AreEqual(byte.MaxValue, behavior2.Value);
+                Assert.AreEqual(byte.MaxValue, behavior3.Value);
 
                 Assert.AreEqual(2, count1);     //-- Функция вызываетя 2 раза !
                 Assert.AreEqual(1, count2);
@@ -1192,14 +1193,14 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countUpdate = 0;
 
             var behavior = new MocValue();
-            behavior.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 countChange++;
 
                 //-- Значение установлено
                 context.SetOutput(100);
-            };            
-            behavior.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            };
+            behavior.ValueUpdate += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 countUpdate++;
 
@@ -1225,7 +1226,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
 
                 Assert.AreEqual(0, countChange);
                 Assert.AreEqual(0, countUpdate);
@@ -1240,14 +1241,14 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int countUpdate = 0;
 
             var behavior = new MocValue();
-            behavior.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 countChange++;
 
                 //-- Значение установлено
                 context.SetOutput(100);
             };
-            behavior.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            behavior.ValueUpdate += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 countUpdate++;
 
@@ -1271,7 +1272,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             }
             finally
             {
-                Assert.AreEqual(-1, behavior.Value);
+                Assert.AreEqual(byte.MaxValue, behavior.Value);
 
                 Assert.AreEqual(0, countChange);
                 Assert.AreEqual(0, countUpdate);
@@ -1290,7 +1291,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int value = 0;
 
             var behavior1 = new MocValue();
-            behavior1.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior1.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count1++;
 
@@ -1301,13 +1302,13 @@ namespace EquipApps.Hardware.Abstractions.Tests
             };
 
             var behavior2 = new MocValue();
-            behavior2.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior2.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count2++;
 
                 //-- Не обрабатываем
             };
-            behavior2.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            behavior2.ValueUpdate += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 countUpdate++;
 
@@ -1316,7 +1317,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             };
 
             var behavior3 = new MocValue();
-            behavior3.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior3.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count3++;
 
@@ -1352,9 +1353,9 @@ namespace EquipApps.Hardware.Abstractions.Tests
 
                 Assert.AreEqual(0, value);
 
-                Assert.AreEqual(-1, behavior1.Value);
-                Assert.AreEqual(-1, behavior2.Value);
-                Assert.AreEqual(-1, behavior3.Value);
+                Assert.AreEqual(byte.MaxValue, behavior1.Value);
+                Assert.AreEqual(byte.MaxValue, behavior2.Value);
+                Assert.AreEqual(byte.MaxValue, behavior3.Value);
             }
 
 
@@ -1372,7 +1373,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             int value = 0;
 
             var behavior1 = new MocValue();
-            behavior1.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior1.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count1++;
 
@@ -1383,13 +1384,13 @@ namespace EquipApps.Hardware.Abstractions.Tests
             };
 
             var behavior2 = new MocValue();
-            behavior2.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior2.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count2++;
 
                 //-- Не обрабатываем
             };
-            behavior2.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            behavior2.ValueUpdate += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 countUpdate++;
 
@@ -1398,7 +1399,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
             };
 
             var behavior3 = new MocValue();
-            behavior3.ValueChange += (object sender, ValueBehaviorContext<int> context) =>
+            behavior3.ValueChange += (object sender, ValueBehaviorContext<byte> context) =>
             {
                 count3++;
 
@@ -1435,13 +1436,12 @@ namespace EquipApps.Hardware.Abstractions.Tests
 
                 Assert.AreEqual(0, value);
 
-                Assert.AreEqual(-1, behavior1.Value);
-                Assert.AreEqual(-1, behavior2.Value);
-                Assert.AreEqual(-1, behavior3.Value);
+                Assert.AreEqual(byte.MaxValue, behavior1.Value);
+                Assert.AreEqual(byte.MaxValue, behavior2.Value);
+                Assert.AreEqual(byte.MaxValue, behavior3.Value);
             }
 
 
         }
     }
-
 }

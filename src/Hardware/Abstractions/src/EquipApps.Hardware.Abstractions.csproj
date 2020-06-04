@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp3.1;net472;</TargetFrameworks>
     <RootNamespace>EquipApps.Hardware</RootNamespace>
-    <Version>1.0.0-rc11</Version>
+    <Version>1.0.0-rc12</Version>
     <Authors>Alexandr G</Authors>
     <Company>EquipApps</Company>
     <Description>Define hardware infrastructure</Description>
