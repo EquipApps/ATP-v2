@@ -2,7 +2,7 @@
 
 namespace EquipApps.Hardware.Behaviors.Digital
 {
-    public sealed class DigitlBehavior : ValueBehavior<Digit>, IDigitBehavior
+    public sealed class DigitBehavior : ValueBehavior<Digit>, IDigitBehavior
     {
 
     }

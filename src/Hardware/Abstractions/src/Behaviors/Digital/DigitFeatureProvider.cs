@@ -51,7 +51,7 @@ namespace EquipApps.Hardware.Behaviors.Digital
             var digitalFeature = new DigitFeature();
 
             //-- Конфигурация
-            foreach (var virtualDefine in hardwareOptions.VirtualDefines.Where(x => x.BehaviorTypes.Contains(typeof(DigitlBehavior))))
+            foreach (var virtualDefine in hardwareOptions.VirtualDefines.Where(x => x.BehaviorTypes.Contains(typeof(IDigitBehavior))))
             {
                 var hardware = hardwareFeature.HardwareCollection[virtualDefine.Name];
                 if (hardware == null)
@@ -62,7 +62,7 @@ namespace EquipApps.Hardware.Behaviors.Digital
                     continue;
                 }
 
-                var behavior = hardware.Behaviors.Get<DigitlBehavior>();
+                var behavior = hardware.Behaviors.Get<IDigitBehavior>();
                 if (behavior == null)
                 {
                     logger.LogError(
