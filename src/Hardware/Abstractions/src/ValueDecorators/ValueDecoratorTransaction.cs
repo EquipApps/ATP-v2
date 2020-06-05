@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EquipApps.Hardware.Abstractions;
+using System;
 using System.Transactions;
 
 namespace EquipApps.Hardware.ValueDecorators
@@ -7,9 +8,9 @@ namespace EquipApps.Hardware.ValueDecorators
     /// Декоратор. 
     /// С поддержкой <see cref="IEnlistmentNotification"/>.
     /// </summary>
-    public sealed class ValueDecoratorTransaction<TValue> : IValueComonent<TValue>, IEnlistmentNotification
+    public sealed class ValueDecoratorTransaction<TValue> : IValueComponent<TValue>, IEnlistmentNotification
     {
-        IValueComonent<TValue> _valueComonent;
+        IValueComponent<TValue> _valueComonent;
 
         private TValue _current
         {
@@ -18,7 +19,7 @@ namespace EquipApps.Hardware.ValueDecorators
         }       
         private volatile bool _enlisted;
 
-        public ValueDecoratorTransaction(IValueComonent<TValue> valueComonent)
+        public ValueDecoratorTransaction(IValueComponent<TValue> valueComonent)
         {
             _valueComonent = valueComonent ?? throw new ArgumentNullException(nameof(valueComonent));
 

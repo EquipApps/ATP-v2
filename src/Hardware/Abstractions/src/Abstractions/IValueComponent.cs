@@ -1,9 +1,9 @@
-﻿namespace EquipApps.Hardware.ValueDecorators
+﻿namespace EquipApps.Hardware.Abstractions
 {
     /// <summary>
     /// Компонент
     /// </summary>    
-    public interface IValueComonent<TValue>
+    public interface IValueComponent<TValue>
     {
         TValue Value { get; set; }
     }

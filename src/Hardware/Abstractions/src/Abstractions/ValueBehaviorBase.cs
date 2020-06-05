@@ -80,31 +80,27 @@ namespace EquipApps.Hardware.Abstractions
         }
 
         /// <summary>
+        /// Событие на изменение данных. (Для обработки адаптером)
+        /// </summary>   
+        public event ValueBehaviorDelegate<TValue> ValueUpdate;
+
+        /// <summary>
+        /// Событие на обновление данных. (Для обработки адаптером)
+        /// </summary>
+        public event ValueBehaviorDelegate<TValue> ValueChange;
+
+        /// <inheritdoc/>    
+        public bool CanUpdateValue => ValueUpdate != null;
+
+        /// <inheritdoc/>    
+        public bool CanChangeValue => ValueChange != null;
+
+        /// <summary>
         /// Изменяет <see cref="Value"/>
         /// </summary>
-        public virtual void SetValue(TValue value)
+        protected virtual void SetValue(TValue value)
         {
             Value = value;
         }
-
-        /// <summary>
-        /// Событие на изменение данных. (Для адаптера)
-        /// </summary>   
-        public event ValueBehaviorDelegate<TValue> ValueUpdate;
-        
-        /// <summary>
-        /// Событие на обновление данных. (Для адаптера)
-        /// </summary>
-        public event ValueBehaviorDelegate<TValue> ValueChange;
-       
-        /// <summary>
-        /// Флаг.
-        /// </summary>
-        public bool CanUpdateValue => ValueUpdate != null;
-
-        /// <summary>
-        /// Флаг.
-        /// </summary>
-        public bool CanChangeValue => ValueChange != null;
     }
 }

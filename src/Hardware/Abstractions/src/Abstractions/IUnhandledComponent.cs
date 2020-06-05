@@ -5,7 +5,7 @@ namespace EquipApps.Hardware.Abstractions
     /// <summary>
     /// Маркер поведения. С возможностью появления критичиских исключений
     /// </summary>
-    public interface IUnhandledBehavior
+    public interface IUnhandledComponent
     {
         /// <summary>
         /// Событие необработоного исключения.

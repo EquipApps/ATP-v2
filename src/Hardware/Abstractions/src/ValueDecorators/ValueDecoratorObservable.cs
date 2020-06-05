@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EquipApps.Hardware.Abstractions;
+using System;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
@@ -8,12 +9,12 @@ namespace EquipApps.Hardware.ValueDecorators
     /// Декоратор. 
     /// С поддержкой <see cref="IObservable{}"/>.
     /// </summary>   
-    public class ValueDecoratorObservable<TValue> : IValueComonent<TValue>, IDisposable
+    public class ValueDecoratorObservable<TValue> : IValueComponent<TValue>, IDisposable
     {
         private ReplaySubject<TValue> _valueComonentSubject = new ReplaySubject<TValue>();
-        private IValueComonent<TValue> _valueComonent;
+        private IValueComponent<TValue> _valueComonent;
 
-        public ValueDecoratorObservable(IValueComonent<TValue> valueComonent)
+        public ValueDecoratorObservable(IValueComponent<TValue> valueComonent)
         {
             _valueComonent = valueComonent ?? throw new ArgumentNullException(nameof(valueComonent));
         }

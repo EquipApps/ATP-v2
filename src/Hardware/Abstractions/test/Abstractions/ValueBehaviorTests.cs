@@ -11,7 +11,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
         {
             public MocValue()
             {
-                Value = -1;
+                SetValue(-1);
             }
         }
 
@@ -1181,6 +1181,227 @@ namespace EquipApps.Hardware.Abstractions.Tests
 
 
         }
+
+        //===============
+
+        [ExpectedException(typeof(TransactionAbortedException))]
+        [TestMethod()]
+        public void RequestToUpdateValueTM()
+        {
+            int count1 = 0;
+            int count2 = 0;
+            int count3 = 0;
+
+            int value = 0;
+
+            var behavior1 = new MocValue();
+            behavior1.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            {
+                count1++;
+
+                value = context.Input;
+
+                //-- Значение установлено
+                context.SetOutput(100);
+            };
+
+            var behavior2 = new MocValue();
+            behavior2.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            {
+                count2++;
+
+                //-- Не обрабатываем
+            };
+
+            var behavior3 = new MocValue();
+            behavior3.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            {
+                count3++;
+
+                //-- Значение установлено
+                context.SetOutput(300);
+            };
+
+
+            try
+            {
+                using (var scope = new TransactionScope())
+                {
+                    //-- Исключение без подписки
+                    behavior1.RequestToUpdateValue();
+                    behavior2.RequestToUpdateValue();
+                    behavior2.RequestToUpdateValue();
+
+                    scope.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                Assert.AreEqual(-1, value);
+
+                Assert.AreEqual(-1, behavior1.Value);
+                Assert.AreEqual(-1, behavior2.Value);
+                Assert.AreEqual(-1, behavior3.Value);
+
+                Assert.AreEqual(1, count1);     //-- Функция вызываетя 2 раза !
+                Assert.AreEqual(1, count2);
+                Assert.AreEqual(0, count3);
+            }
+
+
+        }
+
+        [ExpectedException(typeof(TransactionAbortedException))]
+        [TestMethod()]
+        public void RequestToUpdateValueTM2()
+        {
+            int count1 = 0;
+            int count2 = 0;
+            int count3 = 0;
+
+            int value = 0;
+
+            var behavior1 = new MocValue();
+            behavior1.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            {
+                count1++;
+
+                value = context.Input;
+
+                //-- Значение установлено
+                context.SetOutput(100);
+
+            };
+
+            var behavior2 = new MocValue();
+            behavior2.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            {
+                count2++;
+
+                //-- Значение установлено
+                context.SetOutput(200);
+
+                throw new InvalidOperationException("Ошибка");
+            };
+
+            var behavior3 = new MocValue();
+            behavior3.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            {
+                count3++;
+
+                //-- Значение установлено
+                context.SetOutput(300);
+            };
+
+
+            try
+            {
+                using (var scope = new TransactionScope())
+                {
+                    //-- Исключение без подписки
+                    behavior1.RequestToUpdateValue();
+                    behavior2.RequestToUpdateValue();
+                    behavior2.RequestToUpdateValue();
+
+                    scope.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                Assert.AreEqual(-1, value);
+
+                Assert.AreEqual(-1, behavior1.Value);
+                Assert.AreEqual(-1, behavior2.Value);
+                Assert.AreEqual(-1, behavior3.Value);
+
+                Assert.AreEqual(1, count1);     //-- Функция вызываетя 2 раза !
+                Assert.AreEqual(1, count2);
+                Assert.AreEqual(0, count3);
+            }
+
+
+        }
+
+        [TestMethod()]
+        public void RequestToUpdateValueTM_С()
+        {
+            int count1 = 0;
+            int count2 = 0;
+            int count3 = 0;
+
+            int value = 0;
+
+            var behavior1 = new MocValue();
+            behavior1.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            {
+                count1++;
+
+                value = context.Input;
+
+                //-- Значение установлено
+                context.SetOutput(100);
+            };
+
+            var behavior2 = new MocValue();
+            behavior2.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            {
+                count2++;
+
+                //-- Не обрабатываем
+            };
+
+            var behavior3 = new MocValue();
+            behavior3.ValueUpdate += (object sender, ValueBehaviorContext<int> context) =>
+            {
+                count3++;
+
+                //-- Значение установлено
+                context.SetOutput(300);
+            };
+
+
+            try
+            {
+                using (var scope = new TransactionScope())
+                {
+                    //-- Исключение без подписки
+                    behavior1.RequestToUpdateValue();
+                    behavior2.RequestToUpdateValue();
+                    behavior2.RequestToUpdateValue();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                Assert.AreEqual(0, count1);
+                Assert.AreEqual(0, count2);
+                Assert.AreEqual(0, count3);
+
+                Assert.AreEqual(0, value);
+
+                Assert.AreEqual(-1, behavior1.Value);
+                Assert.AreEqual(-1, behavior2.Value);
+                Assert.AreEqual(-1, behavior3.Value);
+
+
+            }
+
+
+        }
+
+        
+
 
         //=======================================================================
 

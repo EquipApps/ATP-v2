@@ -35,5 +35,15 @@
         /// Request To Update Value.
         /// </summary>
         void RequestToUpdateValue();
+
+        /// <summary>
+        /// Флаг. Можно ли обновлять значение
+        /// </summary>
+        bool CanUpdateValue { get; }
+
+        /// <summary>
+        /// Флаг. Можно ли изменять значение
+        /// </summary>
+        bool CanChangeValue { get; }
     }
 }

@@ -10,7 +10,7 @@ namespace EquipApps.Hardware.Abstractions.Tests
         {
             public MocValue()
             {
-                Value = -1;
+                SetValue(-1);                
             }
         }
 

@@ -2,18 +2,16 @@
 using EquipApps.Hardware.ValueDecorators;
 using System;
 using System.Collections.Generic;
-using System.Transactions;
 
 namespace EquipApps.Hardware.Behaviors.Digital
 {
-    public class DigitalPort8   : ValueBehavior<byte>
+    public abstract class DigitalPort<TValue> : ValueBehavior<TValue>, IDigitalPort, IDisposable
     {
-        public DigitalPort8()
-        {
-            InitializeLines(8);
-        }
-                
-        protected virtual void InitializeLines(int count)
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="count">Число линий в порту</param>
+        public DigitalPort(int count)
         {
             //-- Создаем массив.
             var list = new DigitalLine[count];
@@ -21,10 +19,9 @@ namespace EquipApps.Hardware.Behaviors.Digital
             for (int i = 0; i < count; i++)
             {
                 //--
-                var line = new DigitalLine(i);
+                var line = new DigitalLine(this, i);
                     line.ValueChange += Line_ValueChange;
                     line.ValueUpdate += Line_ValueUpdate;
-                
                 //--
                 list[i] = line;
             }
@@ -33,131 +30,73 @@ namespace EquipApps.Hardware.Behaviors.Digital
             Lines = list;
         }
 
-        public IReadOnlyList<DigitalLine> Lines 
-        { 
-            get; private set; 
-        }
+        /// <summary>
+        /// Обработка запроса на обновление состояния линии
+        /// </summary>
+        /// <param name="line">Цифровая линия</param>
+        protected abstract void Line_ValueUpdate(DigitalLine line);
 
-        private void Line_ValueUpdate(object sender, ValueBehaviorContext<Digit> context)
+        /// <summary>
+        /// Обработка запроса на изменение состояния линии
+        /// </summary>
+        /// <param name="line">Цифровая линия</param>
+        /// <param name="digit">Цифровое значение</param>
+        protected abstract void Line_ValueChange(DigitalLine line, Digit digit);
+
+        /// <summary>
+        /// Подписка на транзакцию линий
+        /// </summary>
+        protected override void Enlist()
         {
-            RequestToUpdateValue();
-        }
-        private void Line_ValueChange(object sender, ValueBehaviorContext<Digit> context)
-        {
-            //-- Линия
-            var line  = sender as DigitalLine;
+            base.Enlist();
 
-            //-- Новое значение для порта
-            var value = context.Input == Digit.Nil
-                ? ValueHelper.ToNil(Value, line.Index)
-                : ValueHelper.ToOne(Value, line.Index);
-
-            //-- Передаем дальше
-            RequestToChangeValue(value);
-        }
-
-        public override void SetValue(byte value)
-        {
-            //-- Устанавливаем значение Порта
-            Value = value;
-
-            //-- Устанавливаем значение Линии
-            for (int i = 0; i < Lines.Count; i++)
+            //-- Зарегистрировались ЛИНИЮ
+            foreach (var line in Lines)
             {
-                var digit = ValueHelper.GetDigit(value, i);
-
-                Lines[i].SetValue(digit);
+                line.Enlist();
             }
         }
 
-        protected override bool Enlist(TransactionType transactionType)
-        {
-            lock (locker)
-            {
-                //-- Идет транзакция
-                if (_enlisted)
-                {
-                    //-- Идет транзакция тогоже типа!
-                    if (_transaction == transactionType)
-                        return true;
-                    else
-                        throw new InvalidOperationException(
-                            $"Попытка начать новую транзакцию\n" +
-                            $"Текущий тип транзакции {_transaction}" +
-                            $"Новый тип транзакции {transactionType}");
-                }
-
-
-                //-- Извлекаем транзакцию. Если ее нет, то выходим.
-                var currentTx = Transaction.Current;
-                if (currentTx == null)
-                {
-                    return false;
-                }
-
-                //-- Зарегистрировались СИНХРОНИЗАЦИЮ!
-                currentTx.EnlistVolatile(this, EnlistmentOptions.None);
-
-                //-- Зарегистрировались ЛИНИЮ
-                foreach (var line in Lines)
-                {
-                    line.Enlist();
-                }
-
-
-
-                _enlisted = true;
-                _transaction = transactionType;
-
-                return true;
-            }
-        }
-
-    }
-
-    public class DigitalPort16  : ValueBehavior<ushort>
-    {
-        public DigitalPort16()
-        {
-            InitializeLines(16);
-        }
-
-        protected virtual void InitializeLines(int count)
-        {
-            //-- Создаем массив.
-            var list = new DigitalLine[count];
-
-            for (int i = 0; i < count; i++)
-            {
-                //--
-                var line = new DigitalLine(i);
-                line.ValueChange += Line_ValueChange;
-                line.ValueUpdate += Line_ValueUpdate;
-
-                //--
-                list[i] = line;
-            }
-
-            //-- Сохраняем.
-            Lines = list;
-        }
-
+        /// <summary>
+        /// Цифровые линии порта
+        /// </summary>
         public IReadOnlyList<DigitalLine> Lines
         {
             get; private set;
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Dispose()
+        {
+            base.Dispose();
 
-        private void Line_ValueUpdate(object sender, ValueBehaviorContext<Digit> context)
+            //-- Вызываем Dispose для каждой линии
+
+            foreach (var line in Lines)
+            {
+                line.Dispose();
+            }
+        }
+    }
+
+    public class DigitalPort8   : DigitalPort<byte>
+    {
+        public DigitalPort8() :base(8)
+        {
+            
+        }
+
+        protected override void Line_ValueUpdate(DigitalLine line)
         {
             RequestToUpdateValue();
         }
-        private void Line_ValueChange(object sender, ValueBehaviorContext<Digit> context)
-        {
-            //-- Линия
-            var line = sender as DigitalLine;
 
+        protected override void Line_ValueChange(DigitalLine line, Digit digit)
+        {
             //-- Новое значение для порта
-            var value = context.Input == Digit.Nil
+            var value = digit == Digit.Nil
                 ? ValueHelper.ToNil(Value, line.Index)
                 : ValueHelper.ToOne(Value, line.Index);
 
@@ -165,7 +104,7 @@ namespace EquipApps.Hardware.Behaviors.Digital
             RequestToChangeValue(value);
         }
 
-        public override void SetValue(ushort value)
+        protected override void SetValue(byte value)
         {
             //-- Устанавливаем значение Порта
             Value = value;
@@ -179,48 +118,44 @@ namespace EquipApps.Hardware.Behaviors.Digital
             }
         }
 
-        protected override bool Enlist(TransactionType transactionType)
-        {
-            lock (locker)
-            {
-                //-- Идет транзакция
-                if (_enlisted)
-                {
-                    //-- Идет транзакция тогоже типа!
-                    if (_transaction == transactionType)
-                        return true;
-                    else
-                        throw new InvalidOperationException(
-                            $"Попытка начать новую транзакцию\n" +
-                            $"Текущий тип транзакции {_transaction}" +
-                            $"Новый тип транзакции {transactionType}");
-                }
-
-
-                //-- Извлекаем транзакцию. Если ее нет, то выходим.
-                var currentTx = Transaction.Current;
-                if (currentTx == null)
-                {
-                    return false;
-                }
-
-                //-- Зарегистрировались СИНХРОНИЗАЦИЮ!
-                currentTx.EnlistVolatile(this, EnlistmentOptions.None);
-
-                //-- Зарегистрировались ЛИНИЮ
-                foreach (var line in Lines)
-                {
-                    line.Enlist();
-                }
-
-
-
-                _enlisted = true;
-                _transaction = transactionType;
-
-                return true;
-            }
-        }
     }
 
+    public class DigitalPort16  : DigitalPort<ushort>
+    {
+        public DigitalPort16() :base(16)
+        {
+           
+        }
+
+        protected override void Line_ValueUpdate(DigitalLine line)
+        {
+            RequestToUpdateValue();
+        }
+
+        protected override void Line_ValueChange(DigitalLine line, Digit digit)
+        {
+            //-- Новое значение для порта
+            var value = digit == Digit.Nil
+                ? ValueHelper.ToNil(Value, line.Index)
+                : ValueHelper.ToOne(Value, line.Index);
+
+            //-- Передаем дальше
+            RequestToChangeValue(value);
+        }
+
+        protected override void SetValue(ushort value)
+        {
+            //-- Устанавливаем значение Порта
+            Value = value;
+
+            //-- Устанавливаем значение Линии
+            for (int i = 0; i < Lines.Count; i++)
+            {
+                var digit = ValueHelper.GetDigit(value, i);
+
+                Lines[i].SetValue(digit);
+            }
+        }
+
+    }
 }

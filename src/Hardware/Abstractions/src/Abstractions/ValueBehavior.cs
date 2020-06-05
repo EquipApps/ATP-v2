@@ -8,31 +8,32 @@ namespace EquipApps.Hardware.Abstractions
     /// <summary>
     /// Реализация поведения с поддержкой транзакции.
     /// </summary>    
-    public abstract class ValueBehavior<TValue> : ValueBehaviorBase<TValue>,
-        IEnlistmentNotification, IValueComonent<TValue>, IDisposable, IUnhandledBehavior
+    public abstract class ValueBehavior<TValue> : ValueBehaviorBase<TValue>, IEnlistmentNotification,
+        IValueComponent<TValue>, IUnhandledComponent, 
+        IDisposable
     {
-        protected volatile object locker = new object();
-        protected volatile bool _enlisted = false;
-        protected volatile bool _prepare = false;
-        protected volatile TransactionType _transaction;
+        private volatile object locker  = new object();
+        private volatile bool _enlisted = false;
+        private volatile bool _prepare  = false;
+        private volatile TransactionType _transaction;
 
-        private readonly ValueDecoratorObservable<TValue> valueDecoratorObservable;
+        private readonly ValueDecoratorObservable <TValue> valueDecoratorObservable;
         private readonly ValueDecoratorTransaction<TValue> valueDecoratorTransaction;
-
-        private TValue _value;
 
         public ValueBehavior()
         {
-            valueDecoratorObservable = new ValueDecoratorObservable<TValue>(this);
+            valueDecoratorObservable  = new ValueDecoratorObservable<TValue>(this);
             valueDecoratorTransaction = new ValueDecoratorTransaction<TValue>(valueDecoratorObservable);
         }
 
+        ///<inheritdoc/>
         public override TValue Value
         {
             get           => valueDecoratorTransaction.Value;
             protected set => valueDecoratorTransaction.Value = value;
         }
 
+        ///<inheritdoc/>
         public override void RequestToChangeValue(TValue value)
         {
             if (Enlist(TransactionType.RequestToChange))
@@ -47,6 +48,7 @@ namespace EquipApps.Hardware.Abstractions
             }
         }
 
+        ///<inheritdoc/>
         public override void RequestToUpdateValue()
         {
             if (Enlist(TransactionType.RequestToUpdate))
@@ -59,9 +61,16 @@ namespace EquipApps.Hardware.Abstractions
             }
         }
 
+        ///<inheritdoc/>
+        public virtual void Dispose()
+        {
+            valueDecoratorObservable.Dispose();
+        }
+
         ///<inheritdoc/>           
         public event UnhandledExceptionEventHandler UnhandledExceptionEvent;
 
+        ///<inheritdoc/>     
         public IObservable<TValue> ObservableValue => valueDecoratorObservable.Observable;
 
         #region EnlistmentRegion
@@ -93,12 +102,19 @@ namespace EquipApps.Hardware.Abstractions
 
                 //-- Зарегистрировались СИНХРОНИЗАЦИЮ!
                 currentTx.EnlistVolatile(this, EnlistmentOptions.None);
+                          Enlist();
 
-                _enlisted = true;
+                _enlisted    = true;
                 _transaction = transactionType;
 
                 return true;
             }
+        }
+
+        protected virtual void Enlist()
+        {
+            //-- Подписаться на транзакцию
+            valueDecoratorTransaction.Enlist();
         }
 
         void IEnlistmentNotification.Commit(Enlistment enlistment)
@@ -210,10 +226,10 @@ namespace EquipApps.Hardware.Abstractions
 
         #endregion
 
-        TValue IValueComonent<TValue>.Value
+        TValue IValueComponent<TValue>.Value
         {
-            get => _value;
-            set => _value = value;
+            get =>  base.Value;
+            set =>  base.Value = value;
         }
 
         protected enum TransactionType
@@ -221,11 +237,6 @@ namespace EquipApps.Hardware.Abstractions
             empty,
             RequestToChange,
             RequestToUpdate
-        }
-
-        public void Dispose()
-        {
-            valueDecoratorObservable.Dispose();
         }
     }
 }
