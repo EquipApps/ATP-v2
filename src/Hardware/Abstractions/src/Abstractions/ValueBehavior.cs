@@ -6,9 +6,25 @@ using System.Transactions;
 namespace EquipApps.Hardware.Abstractions
 {
     /// <summary>
-    /// Реализация поведения с поддержкой транзакции.
+    /// Реализация поведения значения.
     /// </summary>    
-    public abstract class ValueBehavior<TValue> : ValueBehaviorBase<TValue>, IEnlistmentNotification,
+    /// 
+    /// <remarks>
+    /// ОПИСАНИЕ:
+    ///  
+    ///  |A|                    |B|  <---- (Request)    |E| 1) Расширение отправляет запросы через поведение
+    ///  |D| <---- (Event)      |E|                     |X| 2) Поведение отовещает адаптер через событие
+    ///  |A|  ---> (Context)    |H|                     |T| 3) Адаптер обрабатывает событие 
+    ///  |P|                    |A|  ----> (Value)      |E| и устанавливает результат обработки через контекст события
+    ///  |T|                    |V|                     |N| 4) Поведение анализирует состояние контекста и изменяет состояние буферного значения Value
+    ///  |E|                    |I|                     |T| 5) Расширение анализирует значение Value
+    ///  |R|                    |O|                     |I|
+    ///                         |R|                     |O|
+    ///                                                 |N|
+    /// 
+    /// </remarks>
+    ///  
+    public abstract class ValueBehavior<TValue> : IValueBehavior<TValue>, IEnlistmentNotification,
         IValueComponent<TValue>, IUnhandledComponent, 
         IDisposable
     {
@@ -19,6 +35,7 @@ namespace EquipApps.Hardware.Abstractions
 
         private readonly ValueDecoratorObservable <TValue> valueDecoratorObservable;
         private readonly ValueDecoratorTransaction<TValue> valueDecoratorTransaction;
+        private TValue _value;
 
         public ValueBehavior()
         {
@@ -26,15 +43,34 @@ namespace EquipApps.Hardware.Abstractions
             valueDecoratorTransaction = new ValueDecoratorTransaction<TValue>(valueDecoratorObservable);
         }
 
+        #region IHardwareBehavior
+
+        /// <inheritdoc/>  
+        public virtual IHardware Hardware
+        {
+            get;
+            set;
+        }
+
+        /// <inheritdoc/>  
+        public virtual void Attach()
+        {
+
+        }
+
+        #endregion
+
+        #region IValueBehavior
+
         ///<inheritdoc/>
-        public override TValue Value
+        public TValue Value
         {
             get           => valueDecoratorTransaction.Value;
             protected set => valueDecoratorTransaction.Value = value;
         }
 
         ///<inheritdoc/>
-        public override void RequestToChangeValue(TValue value)
+        public void RequestToChangeValue(TValue value)
         {
             if (Enlist(TransactionType.RequestToChange))
             {
@@ -44,12 +80,12 @@ namespace EquipApps.Hardware.Abstractions
             }
             else
             {
-                base.RequestToChangeValue(value);
+                ValueChangeCall(value);
             }
         }
 
         ///<inheritdoc/>
-        public override void RequestToUpdateValue()
+        public void RequestToUpdateValue()
         {
             if (Enlist(TransactionType.RequestToUpdate))
             {
@@ -57,21 +93,68 @@ namespace EquipApps.Hardware.Abstractions
             }
             else
             {
-                base.RequestToUpdateValue();
+                ValueUpdateCall();
             }
         }
 
-        ///<inheritdoc/>
-        public virtual void Dispose()
-        {
-            valueDecoratorObservable.Dispose();
-        }
+        /// <inheritdoc/>    
+        public bool CanUpdateValue => ValueUpdate != null;
+
+        /// <inheritdoc/>    
+        public bool CanChangeValue => ValueChange != null;
+
+        #endregion
+
+        /// <summary>
+        /// Событие на изменение данных. (Для обработки адаптером)
+        /// </summary>   
+        public event ValueBehaviorDelegate<TValue> ValueUpdate;
+
+        /// <summary>
+        /// Событие на обновление данных. (Для обработки адаптером)
+        /// </summary>
+        public event ValueBehaviorDelegate<TValue> ValueChange;
 
         ///<inheritdoc/>           
         public event UnhandledExceptionEventHandler UnhandledExceptionEvent;
 
-        ///<inheritdoc/>     
-        public IObservable<TValue> ObservableValue => valueDecoratorObservable.Observable;
+        /// <summary>
+        /// Изменяет <see cref="Value"/>
+        /// </summary>
+        protected virtual void SetValue(TValue value)
+        {
+            Value = value;
+        }
+        
+        private void ValueUpdateCall()            
+        {
+            var valueUpdate = ValueUpdate;
+            if (valueUpdate == null)
+                throw new InvalidOperationException("Запрос на обновление значения не поддерживается");
+
+            var context = new ValueBehaviorContext<TValue>(Value);
+
+            valueUpdate.Invoke(this, context);
+
+            var output = context.GetOutput();
+
+            SetValue(output);
+        }
+
+        private void ValueChangeCall(TValue value)
+        {
+            var valueChange = ValueChange;
+            if (valueChange == null)
+                throw new InvalidOperationException("Запрос на изменение значения не поддерживается");
+
+            var context = new ValueBehaviorContext<TValue>(value);
+
+            valueChange.Invoke(this, context);
+
+            var output = context.GetOutput();
+
+            SetValue(output);
+        }
 
         #region EnlistmentRegion
 
@@ -102,7 +185,7 @@ namespace EquipApps.Hardware.Abstractions
 
                 //-- Зарегистрировались СИНХРОНИЗАЦИЮ!
                 currentTx.EnlistVolatile(this, EnlistmentOptions.None);
-                          Enlist();
+                          EnlistDecorator();
 
                 _enlisted    = true;
                 _transaction = transactionType;
@@ -111,7 +194,7 @@ namespace EquipApps.Hardware.Abstractions
             }
         }
 
-        protected virtual void Enlist()
+        protected virtual void EnlistDecorator()
         {
             //-- Подписаться на транзакцию
             valueDecoratorTransaction.Enlist();
@@ -148,12 +231,12 @@ namespace EquipApps.Hardware.Abstractions
                 {
                     case TransactionType.RequestToChange:
                         {
-                            base.RequestToChangeValue(Value);
+                            ValueChangeCall(Value);
                             break;
                         }
                     case TransactionType.RequestToUpdate:
                         {
-                            base.RequestToUpdateValue();
+                            ValueUpdateCall();
                             break;
                         }
                     default:
@@ -180,7 +263,7 @@ namespace EquipApps.Hardware.Abstractions
                     {
                         case TransactionType.RequestToChange:
                             {
-                                base.RequestToChangeValue(valueDecoratorTransaction.Origin);
+                                ValueChangeCall(valueDecoratorTransaction.Origin);
                                 break;
                             }
                         case TransactionType.RequestToUpdate:
@@ -226,12 +309,19 @@ namespace EquipApps.Hardware.Abstractions
 
         #endregion
 
-        TValue IValueComponent<TValue>.Value
+        ///<inheritdoc/>
+        public virtual void Dispose()
         {
-            get =>  base.Value;
-            set =>  base.Value = value;
+            valueDecoratorObservable.Dispose();
         }
 
+        /// <inheritdoc/>
+        TValue IValueComponent<TValue>.Value
+        {
+            get => _value;
+            set => _value = value;
+        }
+               
         protected enum TransactionType
         {
             empty,

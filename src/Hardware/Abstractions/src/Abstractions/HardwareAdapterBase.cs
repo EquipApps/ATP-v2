@@ -57,9 +57,9 @@ namespace EquipApps.Hardware.Abstractions
 
             Adapt(device as TDevice, deviceName);
 
-            AttachBehaviors();
-
             InitializeDevice();
+
+            AttachBehaviors();
         }
 
 

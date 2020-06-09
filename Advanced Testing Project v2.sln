@@ -40,6 +40,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0179A542-F07F-4D5B-9C62-4B8B2994674C}"
 	ProjectSection(SolutionItems) = preProject
 		ApplicationGraph.dgml = ApplicationGraph.dgml
+		BehaviorGraph.dgml = BehaviorGraph.dgml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EquipApps.Mvc.Reactive", "src\Mvc\Reactive\src\EquipApps.Mvc.Reactive.csproj", "{6D983ADB-39B8-47B5-8FED-0DD739439248}"

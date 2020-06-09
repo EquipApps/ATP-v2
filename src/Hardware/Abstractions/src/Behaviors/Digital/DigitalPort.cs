@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EquipApps.Hardware.Behaviors.Digital
 {
-    public abstract class DigitalPort<TValue> : ValueBehavior<TValue>, IDigitalPort, IDisposable
+    public abstract class DigitalPort<TValue> : ValueBehavior<TValue>, IDisposable
     {
         /// <summary>
         /// Конструктор
@@ -34,21 +34,21 @@ namespace EquipApps.Hardware.Behaviors.Digital
         /// Обработка запроса на обновление состояния линии
         /// </summary>
         /// <param name="line">Цифровая линия</param>
-        protected abstract void Line_ValueUpdate(DigitalLine line);
+        protected abstract void Line_ValueUpdate(ValueLine<Digit> line);
 
         /// <summary>
         /// Обработка запроса на изменение состояния линии
         /// </summary>
         /// <param name="line">Цифровая линия</param>
         /// <param name="digit">Цифровое значение</param>
-        protected abstract void Line_ValueChange(DigitalLine line, Digit digit);
+        protected abstract void Line_ValueChange(ValueLine<Digit> line, Digit digit);
 
         /// <summary>
         /// Подписка на транзакцию линий
         /// </summary>
-        protected override void Enlist()
+        protected override void EnlistDecorator()
         {
-            base.Enlist();
+            base.EnlistDecorator();
 
             //-- Зарегистрировались ЛИНИЮ
             foreach (var line in Lines)
@@ -88,12 +88,12 @@ namespace EquipApps.Hardware.Behaviors.Digital
             
         }
 
-        protected override void Line_ValueUpdate(DigitalLine line)
+        protected override void Line_ValueUpdate(ValueLine<Digit> line)
         {
             RequestToUpdateValue();
         }
 
-        protected override void Line_ValueChange(DigitalLine line, Digit digit)
+        protected override void Line_ValueChange(ValueLine<Digit> line, Digit digit)
         {
             //-- Новое значение для порта
             var value = digit == Digit.Nil
@@ -127,12 +127,12 @@ namespace EquipApps.Hardware.Behaviors.Digital
            
         }
 
-        protected override void Line_ValueUpdate(DigitalLine line)
+        protected override void Line_ValueUpdate(ValueLine<Digit> line)
         {
             RequestToUpdateValue();
         }
 
-        protected override void Line_ValueChange(DigitalLine line, Digit digit)
+        protected override void Line_ValueChange(ValueLine<Digit> line, Digit digit)
         {
             //-- Новое значение для порта
             var value = digit == Digit.Nil
